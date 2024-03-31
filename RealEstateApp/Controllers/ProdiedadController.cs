@@ -56,13 +56,23 @@ namespace RealEstateApp.Controllers
                     Baños = 2,
                     Habitaciones = 2,
                     Tamaño = 60
-                },
+                }
             };
         }
 
-        public IActionResult Index()
+        public IActionResult Index(ListaPropiedadViewModel vm)
         {
-            return View();
+            if (vm == null)
+            {
+                vm = new ListaPropiedadViewModel();
+                vm.propiedades = propiedades.ToList();
+            }
+            else
+            {
+                vm.propiedades = propiedades.Where(p => vm.TipoPropiedad == p.Tipo).ToList();
+            }
+
+            return View(vm);
         }
 
         public IActionResult Privacy()
