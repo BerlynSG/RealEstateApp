@@ -8,5 +8,6 @@
         public double PrecioMaximo { get; set; }
         public int Habitaciones { get; set; }
         public int Baños { get; set; }
+        public string Codigo { get; set; }
     }
 }

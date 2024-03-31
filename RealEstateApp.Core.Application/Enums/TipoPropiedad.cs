@@ -2,6 +2,7 @@
 {
     public enum TipoPropiedad
     {
+        None = 0,
         Apartamento,
         Casa
     }

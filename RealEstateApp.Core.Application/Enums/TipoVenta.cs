@@ -2,6 +2,7 @@
 {
     public enum TipoVenta
     {
+        None = 0,
         Alquiler,
         Venta
     }

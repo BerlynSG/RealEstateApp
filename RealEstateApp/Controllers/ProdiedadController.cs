@@ -60,24 +60,32 @@ namespace RealEstateApp.Controllers
             };
         }
 
-        public IActionResult Index(ListaPropiedadViewModel vm)
+        public IActionResult Index()
         {
-            if (vm == null)
-            {
-                vm = new ListaPropiedadViewModel();
-                vm.propiedades = propiedades.ToList();
-            }
-            else
-            {
-                vm.propiedades = propiedades.Where(p => vm.TipoPropiedad == p.Tipo).ToList();
-            }
+            ListaPropiedadViewModel vm= new ListaPropiedadViewModel();
+            vm.propiedades = propiedades.ToList();
 
             return View(vm);
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public IActionResult Index(ListaPropiedadViewModel vm)
         {
-            return View();
+            if (vm != null)
+            {
+                vm.propiedades = propiedades.Where(p => (vm.TipoPropiedad == p.Tipo || vm.TipoPropiedad == 0)
+                && (vm.Habitaciones == p.Habitaciones || vm.Habitaciones == 0) && (vm.Baños == p.Baños || vm.Baños == 0)
+                && (vm.PrecioMinimo <= p.Valor || vm.PrecioMinimo == 0) && (vm.PrecioMaximo >= p.Valor || vm.PrecioMaximo == 0)
+                && (vm.Codigo == null || vm.Codigo == "" || p.Codigo.Contains(vm.Codigo))).ToList();
+                return View(vm);
+            }
+            return RedirectToRoute(new { controller = "Propiedad", action = "Index" });
+        }
+
+        public IActionResult Detalles(string codigo)
+        {
+            PropiedadViewModel vm = propiedades.FirstOrDefault(p => p.Codigo == codigo);
+            return View(vm);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
