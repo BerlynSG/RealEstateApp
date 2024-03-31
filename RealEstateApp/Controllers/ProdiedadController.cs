@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
+using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Models;
 using System.Diagnostics;
 
@@ -17,45 +18,101 @@ namespace RealEstateApp.Controllers
                 {
                     Codigo = "153843",
                     Tipo = (int)TipoPropiedad.Apartamento,
-                    Imagen = "/img/Propiedades/Apartamento.jpg",
+                    Imagenes = new() { "/img/Propiedades/Apartamento.jpg", "/img/Propiedades/Apartamento.jpg", "/img/Propiedades/Apartamento.jpg" },
                     TipoVenta = (int)TipoVenta.Alquiler,
                     Valor = 59.99,
                     Baños = 1,
                     Habitaciones = 2,
-                    Tamaño = 50
+                    Tamaño = 50,
+                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
+                    " incididunt ut labore et dolore magna aliqua.",
+                    Agente = new()
+                    {
+                        Nombre = "José Antonio",
+                        Apellidos = "Fernandez Ramirez",
+                        Foto = "/img/Agentes/Agente.jpeg",
+                        Celular = "829 254 3687",
+                        Correo = "JoséFernandez@email.com"
+                    },
+                    Mejoras = new()
+                    {
+                        new(){ Nombre = "Balcon"}, new(){ Nombre = "Sala/Comedor"}, new(){ Nombre = "Cocina"}, new(){ Nombre = "Piscina"}
+                    }
                 },
                 new()
                 {
                     Codigo = "157832",
                     Tipo = (int)TipoPropiedad.Casa,
-                    Imagen = "/img/Propiedades/Apartamento.jpg",
+                    Imagenes = new() { "/img/Propiedades/Apartamento.jpg" },
                     TipoVenta = (int)TipoVenta.Alquiler,
                     Valor = 129.99,
                     Baños = 3,
                     Habitaciones = 4,
-                    Tamaño = 100
+                    Tamaño = 100,
+                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
+                    " incididunt ut labore et dolore magna aliqua.",
+                    Agente = new()
+                    {
+                        Nombre = "José Antonio",
+                        Apellidos = "Fernandez Ramirez",
+                        Foto = "/img/Agentes/Agente.jpeg",
+                        Celular = "829 254 3687",
+                        Correo = "JoséFernandez@email.com"
+                    },
+                    Mejoras = new()
+                    {
+                        new(){ Nombre = "Balcon"}, new(){ Nombre = "Sala/Comedor"}, new(){ Nombre = "Cocina"}, new(){ Nombre = "Piscina"}
+                    }
                 },
                 new()
                 {
                     Codigo = "953782",
                     Tipo = (int)TipoPropiedad.Apartamento,
-                    Imagen = "/img/Propiedades/Apartamento.jpg",
+                    Imagenes = new() { "/img/Propiedades/Apartamento.jpg" },
                     TipoVenta = (int)TipoVenta.Venta,
                     Valor = 33.99,
                     Baños = 1,
                     Habitaciones = 1,
-                    Tamaño = 45
+                    Tamaño = 45,
+                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
+                    " incididunt ut labore et dolore magna aliqua.",
+                    Agente = new()
+                    {
+                        Nombre = "José Antonio",
+                        Apellidos = "Fernandez Ramirez",
+                        Foto = "/img/Agentes/Agente.jpeg",
+                        Celular = "829 254 3687",
+                        Correo = "JoséFernandez@email.com"
+                    },
+                    Mejoras = new()
+                    {
+                        new(){ Nombre = "Balcon"}, new(){ Nombre = "Sala/Comedor"}, new(){ Nombre = "Cocina"}, new(){ Nombre = "Piscina"}
+                    }
                 },
                 new()
                 {
                     Codigo = "775262",
                     Tipo = (int)TipoPropiedad.Casa,
-                    Imagen = "/img/Propiedades/Apartamento.jpg",
+                    Imagenes = new() { "/img/Propiedades/Apartamento.jpg" },
                     TipoVenta = (int)TipoVenta.Venta,
                     Valor = 89.99,
                     Baños = 2,
                     Habitaciones = 2,
-                    Tamaño = 60
+                    Tamaño = 60,
+                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
+                    " incididunt ut labore et dolore magna aliqua.",
+                    Agente = new()
+                    {
+                        Nombre = "José Antonio",
+                        Apellidos = "Fernandez Ramirez",
+                        Foto = "/img/Agentes/Agente.jpeg",
+                        Celular = "829 254 3687",
+                        Correo = "JoséFernandez@email.com"
+                    },
+                    Mejoras = new()
+                    {
+                        new(){ Nombre = "Balcon"}, new(){ Nombre = "Sala/Comedor"}, new(){ Nombre = "Cocina"}, new(){ Nombre = "Piscina"}
+                    }
                 }
             };
         }

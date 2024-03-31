@@ -50,13 +50,15 @@
                     <a asp-controller="Propiedad" asp-action="Detalles" asp-route-codigo="@item.Codigo" class="item-propiedad">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <img class="img-fluid" src="@item.Imagen" />
-                                <h4> <b> @(Enum.GetName(typeof(TipoPropiedad), item.Tipo)) </b></h4>
+                                <img class="img-fluid" src="@item.Imagenes[0]" />
+                                <h4> <b> @Enum.GetName(typeof(TipoPropiedad), item.Tipo) </b></h4>
                                 <small class="text-body-secondary">
                                     <b> Código: </b> @item.Codigo
-                                    <br> <b> Venta: </b> RD$ @item.Valor
+                                    <br> <b> @Enum.GetName(typeof(TipoVenta), item.TipoVenta):
+                                    </b> RD$ @item.Valor
                                     <br> <b> Habitaciones: </b> @item.Habitaciones
                                     <br> <b> Baños: </b> @item.Baños
+                                    <br> <b> Tamaño: </b> @item.Tamaño m²
                                 </small>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
