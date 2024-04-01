@@ -20,3 +20,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.item-propiedad {
+    text-decoration: none;
+    color: inherit;
+}
+
+.item-propiedad:hover {
+    text-decoration: none;
+    color: inherit;
+}

@@ -1,9 +1,9 @@
 ﻿namespace RealEstateApp.Core.Application.Enums
 {
-    public enum TipoPropiedad
+    public enum TipoVenta
     {
         None = 0,
-        Apartamento,
-        Casa
+        Alquiler,
+        Venta
     }
 }
