@@ -12,9 +12,10 @@
         </div>
         <div class="col-6">
             <form method="get" asp-controller="Agente" asp-action="Index" class="d-flex">
-                <input type="text" class="form-control me-2" placeholder="Buscar por nombre" name="searchString" value="@Model.SearchString">
+                <input type="text" class="form-control me-2" placeholder="Buscar por nombre" name="searchTerm" value="@Model.SearchTerm">
                 <button class="btn btn-primary" type="submit">Buscar</button>
             </form>
+
         </div>
     </div>
     <div class="row">

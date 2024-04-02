@@ -30,22 +30,20 @@ namespace RealEstateApp.Controllers
             }
         };
 
-        public IActionResult Index(string searchString)
+        public IActionResult Index(string searchTerm)
         {
-            var agentes = _agentes;
+            List<AgenteViewModel> agentes = _agentes;
 
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                agentes = agentes.Where(a => a.Nombre.Contains(searchString) || a.Apellidos.Contains(searchString)).ToList();
+                agentes = agentes
+                    .Where(a => a.Nombre.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase) || a.Apellidos.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase))
+                    .ToList();
             }
 
-            var viewModel = new ListaAgenteViewModel
-            {
-                Agentes = agentes.OrderBy(a => a.Nombre).ToList(),
-                SearchString = searchString
-            };
+            agentes = agentes.OrderBy(a => a.Nombre).ToList();
 
-            return View(viewModel);
+            return View(new ListaAgenteViewModel { Agentes = agentes, SearchTerm = searchTerm });
         }
 
         public IActionResult Detalles(int? id)
