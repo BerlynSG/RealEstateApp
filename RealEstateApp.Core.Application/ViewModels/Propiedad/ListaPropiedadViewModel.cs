@@ -9,5 +9,8 @@
         public int Habitaciones { get; set; }
         public int Baños { get; set; }
         public string Codigo { get; set; }
+
+        //de preuba
+        public bool Cliente { get; set; }
     }
 }
