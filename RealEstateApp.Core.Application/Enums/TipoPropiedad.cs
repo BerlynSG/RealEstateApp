@@ -4,6 +4,7 @@
     {
         None = 0,
         Apartamento,
-        Casa
+        Casa,
+        Terreno
     }
 }

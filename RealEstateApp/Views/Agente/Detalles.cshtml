@@ -1,0 +1,57 @@
+﻿@model RealEstateApp.Core.Application.ViewModels.Agente.AgenteViewModel;
+@using RealEstateApp.Core.Application.Enums;
+
+@{
+    ViewData["Title"] = "Detalles del Agente";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-8">
+            <h1>Detalles del Agente</h1>
+            <div class="row">
+                <div class="col-3">
+                    <img src="@Model.Foto" class="img-fluid rounded-circle" alt="Foto del Agente">
+                </div>
+                <div class="col-9">
+                    <h3>@Model.Nombre @Model.Apellidos</h3>
+                    <p>
+                        <b>Número de Celular:</b> @Model.Celular<br>
+                        <b>Correo:</b> @Model.Correo
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <h2>Propiedades del Agente</h2>
+            @if (Model.Propiedades != null && Model.Propiedades.Any())
+            {
+                <div class="row">
+                    @foreach (var propiedad in Model.Propiedades)
+                    {
+                        <div class="col-4 mb-4">
+                            <div class="card">
+                                <img src="@propiedad.Imagenes.FirstOrDefault()" class="card-img-top" alt="Imagen de la propiedad">
+                                <div class="card-body">
+                                    <h5 class="card-title">@Enum.GetName(typeof(TipoPropiedad), propiedad.Tipo)</h5>
+                                    <p class="card-text">
+                                        <b>Código:</b> @propiedad.Codigo<br>
+                                        <b>Tipo de Venta:</b> @Enum.GetName(typeof(TipoVenta), propiedad.TipoVenta)<br>
+                                        <b>Costo:</b> RD$ @propiedad.Valor<br>
+                                        <b>Habitaciones:</b> @propiedad.Habitaciones<br>
+                                        <b>Baños:</b> @propiedad.Baños<br>
+                                        <b>Tamaño:</b> @propiedad.Tamaño m²
+                                    </p>
+                                    <a href="#" class="btn btn-primary">Ver Detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No hay propiedades registradas para este agente.</p>
+            }
+        </div>
+    </div>
+</div>

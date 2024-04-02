@@ -1,0 +1,41 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.Agente;
+@model ListaAgenteViewModel
+@{
+    ViewData["Title"] = "Agentes";
+}
+
+<div class="container-fluid">
+    <h1>Listado de Agentes</h1>
+    <div class="row mb-3">
+        <div class="col-6">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Volver al menú</a>
+        </div>
+        <div class="col-6">
+            <form method="get" asp-controller="Agente" asp-action="Index" class="d-flex">
+                <input type="text" class="form-control me-2" placeholder="Buscar por nombre" name="searchString" value="@Model.SearchString">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        @if (Model == null || Model.Agentes.Count == 0)
+        {
+            <h2>No hay agentes registrados</h2>
+        }
+        else
+        {
+            @foreach (var agente in Model.Agentes.OrderBy(a => a.Nombre))
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="@agente.Foto" class="card-img-top" alt="Foto del Agente">
+                        <div class="card-body">
+                            <h5 class="card-title">@agente.Nombre @agente.Apellidos</h5>
+                            <a href="@Url.Action("Detalles", "Agente", new { id = agente.Id })" class="btn btn-primary">Ver Propiedades</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
