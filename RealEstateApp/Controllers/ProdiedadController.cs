@@ -10,6 +10,7 @@ namespace RealEstateApp.Controllers
     public class PropiedadController : Controller
     {
         private List<PropiedadViewModel> propiedades;
+        private bool cliente = true;
         public PropiedadController()
         {
             propiedades = new List<PropiedadViewModel>()
@@ -121,6 +122,7 @@ namespace RealEstateApp.Controllers
         {
             ListaPropiedadViewModel vm= new ListaPropiedadViewModel();
             vm.propiedades = propiedades.ToList();
+            vm.Cliente = cliente;
 
             return View(vm);
         }
