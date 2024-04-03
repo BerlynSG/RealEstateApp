@@ -22,14 +22,33 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Propiedad" asp-action="Index">Home</a>
                         </li>
+                        <!--No está cuando eres agente-->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Agente" asp-action="Index">Agentes</a>
                         </li>
+                        <!--Esto es para el agente-->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="MiPerfil">Mi Perfil</a>
+                        </li>
+                        <!--Esto es para el cliente-->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Propiedad" asp-action="Favoritos">Mis Propiedades</a>
+                        </li>
+                        <!--Esto es para el agente-->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Propiedad" asp-action="Mentenimiento">Mantenimiento de Propiedades</a>
+                        </li>
+                        <!--Esto es para cuando no estás logeado-->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Unirse">Únete a la app</a>
                         </li>
+                        <!--Esto es para cuando no estás logeado-->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="IniciarSesion">Iniciar Sesión</a>
+                        </li>
+                        <!--Esto es para cuando estás logeado-->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="CerrarSesion">Cerrar Sesión</a>
                         </li>
                     </ul>
                 </div>

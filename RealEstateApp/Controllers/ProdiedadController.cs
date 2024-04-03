@@ -4,8 +4,6 @@ using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
-using RealEstateApp.Models;
-using System.Diagnostics;
 
 namespace RealEstateApp.Controllers
 {
@@ -163,12 +161,6 @@ namespace RealEstateApp.Controllers
                 return RedirectToRoute(new { controller = "Propiedad", action = "Index" });
             }
             return View(vm);
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
