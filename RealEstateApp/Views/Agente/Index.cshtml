@@ -25,15 +25,20 @@
         }
         else
         {
-            @foreach (var agente in Model.Agentes.OrderBy(a => a.Nombre))
+            @foreach (var item in Model.Agentes.OrderBy(a => a.Nombre))
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="@agente.Foto" class="card-img-top" alt="Foto del Agente">
-                        <div class="card-body">
-                            <h5 class="card-title">@agente.Nombre @agente.Apellidos</h5>
-                            <a href="@Url.Action("Detalles", "Agente", new { id = agente.Id })" class="btn btn-primary">Ver Propiedades</a>
-                        </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card shadow-sm">
+                        <a asp-controller="Agente" asp-action="Detalles" asp-route-id="@item.Id" class="item-propiedad">
+                            <div class="card-body row">
+                                <div class="col-6">
+                                    <img class="img-fluid rounded-circle m-0" src="@item.Foto" />
+                                </div>
+                                <div class="col-6">
+                                    <h4> <b> @item.Nombre @item.Apellidos </b></h4>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             }
