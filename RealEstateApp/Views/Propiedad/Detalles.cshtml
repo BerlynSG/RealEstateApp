@@ -5,34 +5,56 @@
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-8">
-            <div id="carouselFotos" class="carousel slide">
-                <div class="carousel-inner">
-                    @for (var i = 0; i < Model.Imagenes.Count(); i++)
-                    {
-                        <div class="carousel-item @(i == 0 ? "active" : "")">
-                            <img src="@Model.Imagenes[i]" class="d-block w-100" alt="Foto Propiedad">
-                        </div>
-                    }
+    <div id="carouselFotos" class="carousel slide">
+        <div class="carousel-inner">
+            @for (var i = 0; i < Model.Imagenes.Count(); i++)
+            {
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <img src="@Model.Imagenes[i]" class="d-block w-100" alt="Foto Propiedad">
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselFotos" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselFotos" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselFotos" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselFotos" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <div class="card shadow-sm mt-3">
+        <div class="card-body">
+            <div class="row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex flex-column flex-lg-row flex-md-row">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-12">
+                        <h4> <b> @Model.TipoPropiedad.Nombre </b> <small class="text-body-secondary"> @Model.Codigo </small> </h4>
+                    </div>
+                </div>
+                <div class="card shadow-sm">
+                    <a asp-controller="Agente" asp-action="Detalles" asp-route-id="@Model.Agente.Id" class="item-propiedad">
+                        <div class="card-body row">
+                            <div class="col-lg-3 col-md-3 col-2">
+                                <img class="img-fluid rounded-circle m-0" height="150px" width="auto" src="@Model.Agente.Foto" />
+                            </div>
+                            <div class="col-lg-9 col-md-9 col-10">
+                                <h6> <b> @Model.Agente.Nombre @Model.Agente.Apellidos </b></h6>
+                                <p> @Model.Agente.Correo
+                                <br /> @Model.Agente.Celular </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
-            <div>
-                <h4> <b> @Model.TipoPropiedad.Nombre </b> <small class="text-body-secondary"> @Model.Codigo </small> </h4>
-                <div class="row-cols-4 d-flex flex-row">
-                    <div>
+            <div class="row-cols-lg-4 row-cols-md-4 row-cols-2 d-flex flex-column flex-lg-row flex-md-row">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-12">
                         <p class="mb-0"> @Model.TipoVenta.Nombre </p>
                         <p> <b> RD$@Model.Valor </b> </p>
                     </div>
-                    <div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-12">
                         <p>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-lamp" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M5.04.303A.5.5 0 0 1 5.5 0h5c.2 0 .38.12.46.303l3 7a.5.5 0 0 1-.363.687h-.002q-.225.044-.45.081a33 33 0 0 1-4.645.425V13.5a.5.5 0 1 1-1 0V8.495a33 33 0 0 1-4.645-.425q-.225-.036-.45-.08h-.003a.5.5 0 0 1-.362-.688l3-7ZM3.21 7.116A31 31 0 0 0 8 7.5a31 31 0 0 0 4.791-.384L10.171 1H5.83z" />
@@ -41,16 +63,20 @@
                             @Model.Habitaciones
                         </p>
                     </div>
-                    <div>
-                        <p>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-droplet" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M7.21.8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z" />
-                                <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z" />
-                            </svg>
-                            @Model.Baños
-                        </p>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-12">
+                    <p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-droplet" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M7.21.8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z" />
+                            <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z" />
+                        </svg>
+                        @Model.Baños
+                    </p>
                     </div>
-                    <div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-12">
                         <p>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-rulers" viewBox="0 0 16 16">
                                 <path d="M1 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5v-1H2v-1h4v-1H4v-1h2v-1H2v-1h4V9H4V8h2V7H2V6h4V2h1v4h1V4h1v2h1V2h1v4h1V4h1v2h1V2h1v4h1V1a1 1 0 0 0-1-1z" />
@@ -59,29 +85,20 @@
                         </p>
                     </div>
                 </div>
-                <div class="row-cols-5 d-flex flex-row">
-                    <div>
-                        <p> <b>Mejoras: </b> </p>
-                    </div>
-                    @foreach(var item in Model.Mejoras)
-                    {
-                        <div>
-                            @item.Nombre@(", ")
-                        </div>
-                    }
-                </div>
-                <h5><b>Descripción</b></h5>
-                <p>@Model.Descripcion</p>
             </div>
-        </div>
-        <div class="col-4">
-            <h3><b>Agente</b></h3>
-            <small class="text-body-secondary">
-                <img src="@Model.Agente.Foto" class="img-fluid rounded-circle" alt="Foto del Agente" height="50px" width="50px" />
-                @Model.Agente.Nombre @Model.Agente.Apellidos
-                <br> <b> Celular: </b> @Model.Agente.Celular
-                <br> <b> Correo: </b> @Model.Agente.Correo
-            </small>
+            <div class="row-cols-lg-6 row-cols-md-6 row-cols-sm-6 row-cols-2 d-flex flex-column flex-lg-row flex-md-row flex-sm-row">
+                <div>
+                    <p> <b>Mejoras: </b> </p>
+                </div>
+                @foreach(var item in Model.Mejoras)
+                {
+                    <div>
+                        @item.Nombre
+                    </div>
+                }
+            </div>
+            <h5><b>Descripción</b></h5>
+            <p>@Model.Descripcion</p>
         </div>
     </div>
 </div>

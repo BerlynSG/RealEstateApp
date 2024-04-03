@@ -58,7 +58,7 @@ namespace RealEstateApp.Controllers
                     Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
                     " incididunt ut labore et dolore magna aliqua.",
                     Agente = agentes[0],
-                    Mejoras = new() { mejoras[0], mejoras[2] }
+                    Mejoras = new() { mejoras[1], mejoras[3] }
                 },
                 new()
                 {
@@ -73,7 +73,7 @@ namespace RealEstateApp.Controllers
                     Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
                     " incididunt ut labore et dolore magna aliqua.",
                     Agente = agentes[0],
-                    Mejoras = new() { mejoras[1], mejoras[2], mejoras[3] }
+                    Mejoras = new() { mejoras[2], mejoras[3], mejoras[4] }
                 },
                 new()
                 {
@@ -88,7 +88,7 @@ namespace RealEstateApp.Controllers
                     Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
                     " incididunt ut labore et dolore magna aliqua.",
                     Agente = agentes[0],
-                    Mejoras = new() { mejoras[0], mejoras[3] }
+                    Mejoras = new() { mejoras[1], mejoras[4] }
                 },
                 new()
                 {
@@ -103,7 +103,7 @@ namespace RealEstateApp.Controllers
                     Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
                     " incididunt ut labore et dolore magna aliqua.",
                     Agente = agentes[0],
-                    Mejoras = new() { mejoras[0], mejoras[1], mejoras[2], mejoras[3] }
+                    Mejoras = new() { mejoras[1], mejoras[2], mejoras[3], mejoras[4] }
                 }
             };
         }
@@ -137,6 +137,10 @@ namespace RealEstateApp.Controllers
         public IActionResult Detalles(string codigo)
         {
             PropiedadViewModel vm = propiedades.FirstOrDefault(p => p.Codigo == codigo);
+            if (vm == null)
+            {
+                return RedirectToRoute(new { controller = "Propiedad", action = "Index" });
+            }
             return View(vm);
         }
 
