@@ -12,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Propiedad" asp-action="Index">RealEstateApp</a>
+                <a class="navbar-brand" asp-controller="Propiedad" asp-action="Index" asp-route-id="0">RealEstateApp</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,35 +20,35 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Propiedad" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="0">Home</a>
                         </li>
                         <!--No está cuando eres agente-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Agente" asp-action="Index">Agentes</a>
+                            <a class="nav-link text-dark" asp-controller="Agente" asp-action="Index">Agentes</a>
                         </li>
                         <!--Esto es para el agente-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="MiPerfil">Mi Perfil</a>
+                            <a class="nav-link text-dark" asp-controller="Usuario" asp-action="MiPerfil">Mi Perfil</a>
                         </li>
                         <!--Esto es para el cliente-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Propiedad" asp-action="Favoritos">Mis Propiedades</a>
+                            <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Favoritos">Mis Propiedades</a>
                         </li>
                         <!--Esto es para el agente-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Propiedad" asp-action="Mentenimiento">Mantenimiento de Propiedades</a>
+                            <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="1">Mantenimiento de Propiedades</a>
                         </li>
                         <!--Esto es para cuando no estás logeado-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Unirse">Únete a la app</a>
+                            <a class="nav-link text-dark" asp-controller="Usuario" asp-action="Unirse">Únete a la app</a>
                         </li>
                         <!--Esto es para cuando no estás logeado-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="IniciarSesion">Iniciar Sesión</a>
+                            <a class="nav-link text-dark" asp-controller="Usuario" asp-action="IniciarSesion">Iniciar Sesión</a>
                         </li>
                         <!--Esto es para cuando estás logeado-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="CerrarSesion">Cerrar Sesión</a>
+                            <a class="nav-link text-dark" asp-controller="Usuario" asp-action="CerrarSesion">Cerrar Sesión</a>
                         </li>
                     </ul>
                 </div>

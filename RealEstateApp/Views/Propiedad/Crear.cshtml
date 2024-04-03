@@ -1,0 +1,59 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.Propiedad
+@model SavePropiedadViewModel
+@{
+    bool editMode = Model.Codigo != "";
+    ViewData["Title"] = "Detalles de la propiedad";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header bg-dark text-light">
+                    <h4>Registro nuevo médico</h4>
+                </div>
+                <div class="card-body">
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    <form method="post" enctype="multipart/form-data" asp-controller="Medicos" asp-action="@(editMode ? "Edit" : "Register")">
+                        <div class="mb-3">
+                            <label asp-for="TipoPropiedad" class="form-label">Nombres: </label>
+                            <input asp-for="TipoPropiedad" class="form-control" />
+                            <span asp-validation-for="TipoPropiedad" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TipoPropiedad" class="form-label">Apellidos: </label>
+                            <input asp-for="TipoPropiedad" class="form-control" />
+                            <span asp-validation-for="TipoPropiedad" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TipoPropiedad" class="form-label">Cédula: </label>
+                            <input asp-for="TipoPropiedad" class="form-control" />
+                            <span asp-validation-for="TipoPropiedad" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TipoPropiedad" class="form-label">Correo Electrónico: </label>
+                            <input asp-for="TipoPropiedad" class="form-control" />
+                            <span asp-validation-for="TipoPropiedad" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TipoPropiedad" class="form-label">Teléfono: </label>
+                            <input asp-for="TipoPropiedad" class="form-control" />
+                            <span asp-validation-for="TipoPropiedad" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TipoPropiedad" class="form-label">Imagen: </label>
+                            <input type="image" name="TipoPropiedad" asp-for="TipoPropiedad" class="btn btn-primary" />
+                            <span asp-validation-for="TipoPropiedad" class="text-danger"></span>
+                        </div>
+
+                        <input type="hidden" asp-for="TipoPropiedad" />
+                        <input type="hidden" asp-for="TipoPropiedad" />
+
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a asp-controller="Medicos" asp-action="Index" class="btn btn-warning">Volver atrás</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

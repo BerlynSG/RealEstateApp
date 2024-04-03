@@ -15,5 +15,6 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
 
         //de preuba
         public bool Cliente { get; set; }
+        public bool Mantenimiento { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
+using System.Diagnostics;
 
 namespace RealEstateApp.Controllers
 {
@@ -117,11 +118,12 @@ namespace RealEstateApp.Controllers
             };
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
             ListaPropiedadViewModel vm = new ListaPropiedadViewModel();
+            vm.Mantenimiento = id != 0;
             var prop = propiedades.ToList();
-            if (tipoUsuario == 2)
+            if (tipoUsuario == 2 || vm.Mantenimiento)
             {
                 prop = prop.Where(p => p.Agente.Id == idAgente).ToList();
             }
@@ -138,7 +140,7 @@ namespace RealEstateApp.Controllers
             if (vm != null)
             {
                 var prop = propiedades.ToList();
-                if (tipoUsuario == 2)
+                if (tipoUsuario == 2 || vm.Mantenimiento)
                 {
                     prop = prop.Where(p => p.Agente.Id == idAgente).ToList();
                 }
@@ -161,6 +163,22 @@ namespace RealEstateApp.Controllers
                 return RedirectToRoute(new { controller = "Propiedad", action = "Index" });
             }
             return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Eliminar(ListaPropiedadViewModel vm)
+        {
+            Debug.WriteLine("Código de la propiedad a eliminar: " + vm.Codigo);
+            return RedirectToRoute(new { controller = "Propiedad", action = "Index", id="1" });
+        }
+
+        public IActionResult Crear(ListaPropiedadViewModel vm)
+        {
+            if (vm != null && vm.Codigo != null && vm.Codigo != "")
+            {
+                return View(vm);
+            }
+            return RedirectToRoute(new { controller = "Propiedad", action = "Index", id = "1" });
         }
     }
 }
