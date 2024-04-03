@@ -1,5 +1,4 @@
 ﻿@model RealEstateApp.Core.Application.ViewModels.Agente.AgenteViewModel;
-@using RealEstateApp.Core.Application.Enums;
 
 @{
     ViewData["Title"] = "Detalles del Agente";
@@ -32,10 +31,10 @@
                             <div class="card">
                                 <img src="@propiedad.Imagenes.FirstOrDefault()" class="card-img-top" alt="Imagen de la propiedad">
                                 <div class="card-body">
-                                    <h5 class="card-title">@Enum.GetName(typeof(TipoPropiedad), propiedad.Tipo)</h5>
+                                    <h5 class="card-title">@propiedad.TipoPropiedad.Nombre</h5>
                                     <p class="card-text">
                                         <b>Código:</b> @propiedad.Codigo<br>
-                                        <b>Tipo de Venta:</b> @Enum.GetName(typeof(TipoVenta), propiedad.TipoVenta)<br>
+                                        <b>Tipo de Venta:</b> @propiedad.TipoVenta.Nombre<br>
                                         <b>Costo:</b> RD$ @propiedad.Valor<br>
                                         <b>Habitaciones:</b> @propiedad.Habitaciones<br>
                                         <b>Baños:</b> @propiedad.Baños<br>

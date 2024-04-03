@@ -1,5 +1,4 @@
 ﻿@using RealEstateApp.Core.Application.ViewModels.Propiedad
-@using RealEstateApp.Core.Application.Enums
 @model PropiedadViewModel
 @{
     ViewData["Title"] = "Detalles de la propiedad";
@@ -30,9 +29,9 @@
                 <small class="text-body-secondary">
                     <b> Código: </b> @Model.Codigo
                 </small>
-                <h4> <b> @Model.TipoPropiedad </b></h4>
+                <h4> <b> @Model.TipoPropiedad.Nombre </b></h4>
                 <small class="text-body-secondary">
-                    <b> Tipo de venta: </b> @Model.TipoVenta
+                    <b> Tipo de venta: </b> @Model.TipoVenta.Nombre
                     <br /> <b> Costo: </b> RD$ @Model.Valor
                     <br />
                     <span class="me-4">
