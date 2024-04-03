@@ -26,40 +26,50 @@
                 </button>
             </div>
             <div>
-                <small class="text-body-secondary">
-                    <b> Código: </b> @Model.Codigo
-                </small>
-                <h4> <b> @Model.TipoPropiedad.Nombre </b></h4>
-                <small class="text-body-secondary">
-                    <b> Tipo de venta: </b> @Model.TipoVenta.Nombre
-                    <br /> <b> Costo: </b> RD$ @Model.Valor
-                    <br />
-                    <span class="me-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-lamp" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M5.04.303A.5.5 0 0 1 5.5 0h5c.2 0 .38.12.46.303l3 7a.5.5 0 0 1-.363.687h-.002q-.225.044-.45.081a33 33 0 0 1-4.645.425V13.5a.5.5 0 1 1-1 0V8.495a33 33 0 0 1-4.645-.425q-.225-.036-.45-.08h-.003a.5.5 0 0 1-.362-.688l3-7ZM3.21 7.116A31 31 0 0 0 8 7.5a31 31 0 0 0 4.791-.384L10.171 1H5.83z" />
-                            <path d="M6.493 12.574a.5.5 0 0 1-.411.575c-.712.118-1.28.295-1.655.493a1.3 1.3 0 0 0-.37.265.3.3 0 0 0-.052.075l-.001.004-.004.01V14l.002.008.016.033a.6.6 0 0 0 .145.15c.165.13.435.27.813.395.751.25 1.82.414 3.024.414s2.273-.163 3.024-.414c.378-.126.648-.265.813-.395a.6.6 0 0 0 .146-.15l.015-.033L12 14v-.004a.3.3 0 0 0-.057-.09 1.3 1.3 0 0 0-.37-.264c-.376-.198-.943-.375-1.655-.493a.5.5 0 1 1 .164-.986c.77.127 1.452.328 1.957.594C12.5 13 13 13.4 13 14c0 .426-.26.752-.544.977-.29.228-.68.413-1.116.558-.878.293-2.059.465-3.34.465s-2.462-.172-3.34-.465c-.436-.145-.826-.33-1.116-.558C3.26 14.752 3 14.426 3 14c0-.599.5-1 .961-1.243.505-.266 1.187-.467 1.957-.594a.5.5 0 0 1 .575.411" />
-                        </svg>
-                        @Model.Habitaciones
-                    </span>
-                    <span class="me-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-droplet" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M7.21.8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z" />
-                            <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z" />
-                        </svg>
-                        @Model.Baños
-                    </span>
-                    <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-rulers" viewBox="0 0 16 16">
-                            <path d="M1 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5v-1H2v-1h4v-1H4v-1h2v-1H2v-1h4V9H4V8h2V7H2V6h4V2h1v4h1V4h1v2h1V2h1v4h1V4h1v2h1V2h1v4h1V1a1 1 0 0 0-1-1z" />
-                        </svg>
-                        @(Model.Tamaño)m²
-                    </span>
-                    <br /> <b>Mejoras: </b>
+                <h4> <b> @Model.TipoPropiedad.Nombre </b> <small class="text-body-secondary"> @Model.Codigo </small> </h4>
+                <div class="row-cols-4 d-flex flex-row">
+                    <div>
+                        <p class="mb-0"> @Model.TipoVenta.Nombre </p>
+                        <p> <b> RD$@Model.Valor </b> </p>
+                    </div>
+                    <div>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-lamp" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M5.04.303A.5.5 0 0 1 5.5 0h5c.2 0 .38.12.46.303l3 7a.5.5 0 0 1-.363.687h-.002q-.225.044-.45.081a33 33 0 0 1-4.645.425V13.5a.5.5 0 1 1-1 0V8.495a33 33 0 0 1-4.645-.425q-.225-.036-.45-.08h-.003a.5.5 0 0 1-.362-.688l3-7ZM3.21 7.116A31 31 0 0 0 8 7.5a31 31 0 0 0 4.791-.384L10.171 1H5.83z" />
+                                <path d="M6.493 12.574a.5.5 0 0 1-.411.575c-.712.118-1.28.295-1.655.493a1.3 1.3 0 0 0-.37.265.3.3 0 0 0-.052.075l-.001.004-.004.01V14l.002.008.016.033a.6.6 0 0 0 .145.15c.165.13.435.27.813.395.751.25 1.82.414 3.024.414s2.273-.163 3.024-.414c.378-.126.648-.265.813-.395a.6.6 0 0 0 .146-.15l.015-.033L12 14v-.004a.3.3 0 0 0-.057-.09 1.3 1.3 0 0 0-.37-.264c-.376-.198-.943-.375-1.655-.493a.5.5 0 1 1 .164-.986c.77.127 1.452.328 1.957.594C12.5 13 13 13.4 13 14c0 .426-.26.752-.544.977-.29.228-.68.413-1.116.558-.878.293-2.059.465-3.34.465s-2.462-.172-3.34-.465c-.436-.145-.826-.33-1.116-.558C3.26 14.752 3 14.426 3 14c0-.599.5-1 .961-1.243.505-.266 1.187-.467 1.957-.594a.5.5 0 0 1 .575.411" />
+                            </svg>
+                            @Model.Habitaciones
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-droplet" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M7.21.8C7.69.295 8 0 8 0q.164.544.371 1.038c.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8m.413 1.021A31 31 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z" />
+                                <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87z" />
+                            </svg>
+                            @Model.Baños
+                        </p>
+                    </div>
+                    <div>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-rulers" viewBox="0 0 16 16">
+                                <path d="M1 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5v-1H2v-1h4v-1H4v-1h2v-1H2v-1h4V9H4V8h2V7H2V6h4V2h1v4h1V4h1v2h1V2h1v4h1V4h1v2h1V2h1v4h1V1a1 1 0 0 0-1-1z" />
+                            </svg>
+                            @(Model.Tamaño)m²
+                        </p>
+                    </div>
+                </div>
+                <div class="row-cols-5 d-flex flex-row">
+                    <div>
+                        <p> <b>Mejoras: </b> </p>
+                    </div>
                     @foreach(var item in Model.Mejoras)
                     {
-                        @item.Nombre@(", ")
+                        <div>
+                            @item.Nombre@(", ")
+                        </div>
                     }
-                </small>
+                </div>
                 <h5><b>Descripción</b></h5>
                 <p>@Model.Descripcion</p>
             </div>
@@ -67,8 +77,9 @@
         <div class="col-4">
             <h3><b>Agente</b></h3>
             <small class="text-body-secondary">
-                <img src="@Model.Agente.Foto" height="50px" width="50px" /> @Model.Agente.Nombre @Model.Agente.Apellidos
-                <br> <b> Número de Célular: </b> RD$ @Model.Agente.Celular
+                <img src="@Model.Agente.Foto" class="img-fluid rounded-circle" alt="Foto del Agente" height="50px" width="50px" />
+                @Model.Agente.Nombre @Model.Agente.Apellidos
+                <br> <b> Celular: </b> @Model.Agente.Celular
                 <br> <b> Correo: </b> @Model.Agente.Correo
             </small>
         </div>
