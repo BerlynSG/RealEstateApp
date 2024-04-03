@@ -16,7 +16,8 @@ namespace RealEstateApp.Controllers
         private List<MejoraViewModel> mejoras;
         private List<TipoPropiedadViewModel> tiposPropiedad;
         private List<TipoVentaViewModel> tiposVenta;
-        private bool cliente = true;
+        private int tipoUsuario = 0;
+        private int idAgente = 0;
         //los tipos de propiedad y venta serán tablas y no enums
         public PropiedadController()
         {
@@ -24,8 +25,18 @@ namespace RealEstateApp.Controllers
             {
                 new()
                     {
+                        Id = 0,
                         Nombre = "José Antonio",
                         Apellidos = "Fernandez Ramirez",
+                        Foto = "/img/Agentes/Agente.jpeg",
+                        Celular = "829 254 3687",
+                        Correo = "JoséFernandez@email.com"
+                    },
+                new()
+                    {
+                        Id = 1,
+                        Nombre = "Pedro",
+                        Apellidos = "De La Cruz",
                         Foto = "/img/Agentes/Agente.jpeg",
                         Celular = "829 254 3687",
                         Correo = "JoséFernandez@email.com"
@@ -57,7 +68,7 @@ namespace RealEstateApp.Controllers
                     Tamaño = 50,
                     Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
                     " incididunt ut labore et dolore magna aliqua.",
-                    Agente = agentes[0],
+                    Agente = agentes[1],
                     Mejoras = new() { mejoras[1], mejoras[3] }
                 },
                 new()
@@ -102,7 +113,7 @@ namespace RealEstateApp.Controllers
                     Tamaño = 60,
                     Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
                     " incididunt ut labore et dolore magna aliqua.",
-                    Agente = agentes[0],
+                    Agente = agentes[1],
                     Mejoras = new() { mejoras[1], mejoras[2], mejoras[3], mejoras[4] }
                 }
             };
@@ -111,9 +122,14 @@ namespace RealEstateApp.Controllers
         public IActionResult Index()
         {
             ListaPropiedadViewModel vm = new ListaPropiedadViewModel();
-            vm.propiedades = propiedades.ToList();
+            var prop = propiedades.ToList();
+            if (tipoUsuario == 2)
+            {
+                prop = prop.Where(p => p.Agente.Id == idAgente).ToList();
+            }
+            vm.propiedades = prop;
             vm.tiposPropiedad = tiposPropiedad.ToList();
-            vm.Cliente = cliente;
+            vm.Cliente = tipoUsuario == 1;
 
             return View(vm);
         }
@@ -123,12 +139,17 @@ namespace RealEstateApp.Controllers
         {
             if (vm != null)
             {
-                vm.propiedades = propiedades.Where(p => (tiposPropiedad[vm.TipoPropiedad] == p.TipoPropiedad || vm.TipoPropiedad == 0)
+                var prop = propiedades.ToList();
+                if (tipoUsuario == 2)
+                {
+                    prop = prop.Where(p => p.Agente.Id == idAgente).ToList();
+                }
+                vm.propiedades = prop.Where(p => (tiposPropiedad[vm.TipoPropiedad] == p.TipoPropiedad || vm.TipoPropiedad == 0)
                 && (vm.Habitaciones == p.Habitaciones || vm.Habitaciones == 0) && (vm.Baños == p.Baños || vm.Baños == 0)
                 && (vm.PrecioMinimo <= p.Valor || vm.PrecioMinimo == 0) && (vm.PrecioMaximo >= p.Valor || vm.PrecioMaximo == 0)
                 && (vm.Codigo == null || vm.Codigo == "" || p.Codigo.Contains(vm.Codigo))).ToList();
                 vm.tiposPropiedad = tiposPropiedad.ToList();
-                vm.Cliente = cliente;
+                vm.Cliente = tipoUsuario == 1;
                 return View(vm);
             }
             return RedirectToRoute(new { controller = "Propiedad", action = "Index" });
