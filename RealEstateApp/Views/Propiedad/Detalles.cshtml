@@ -30,9 +30,9 @@
                 <small class="text-body-secondary">
                     <b> Código: </b> @Model.Codigo
                 </small>
-                <h4> <b> @Enum.GetName(typeof(TipoPropiedad), Model.Tipo) </b></h4>
+                <h4> <b> @Model.TipoPropiedad </b></h4>
                 <small class="text-body-secondary">
-                    <b> Tipo de venta: </b> @Enum.GetName(typeof(TipoVenta), Model.TipoVenta)
+                    <b> Tipo de venta: </b> @Model.TipoVenta
                     <br /> <b> Costo: </b> RD$ @Model.Valor
                     <br />
                     <span class="me-4">
