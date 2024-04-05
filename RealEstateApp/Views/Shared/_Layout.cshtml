@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using RealEstateApp.Core.Application.ViewModels.User
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,10 +29,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Agente" asp-action="Index">Agentes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Unirse">Únete a la app</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="IniciarSesion">Iniciar Sesión</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item align-content-end">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Cerrar Sesión</a>
                         </li>
                     </ul>
                 </div>
