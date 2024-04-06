@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RealEstateApp.Core.Application.Enums;
-using RealEstateApp.Core.Application.ViewModels.Propiedad;
+using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Mejora;
-using RealEstateApp.Models;
+using RealEstateApp.Core.Application.ViewModels.Propiedad;
+using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
+using RealEstateApp.Core.Application.ViewModels.TipoVenta;
 using System.Diagnostics;
 
 namespace RealEstateApp.Controllers
@@ -10,119 +11,125 @@ namespace RealEstateApp.Controllers
     public class PropiedadController : Controller
     {
         private List<PropiedadViewModel> propiedades;
-        private bool cliente = true;
+        private List<AgenteViewModel> agentes;
+        private List<MejoraViewModel> mejoras;
+        private List<TipoPropiedadViewModel> tiposPropiedad;
+        private List<TipoVentaViewModel> tiposVenta;
+        private int tipoUsuario = 0;
+        private int idAgente = 0;
+        //los tipos de propiedad y venta serán tablas y no enums
         public PropiedadController()
         {
-            propiedades = new List<PropiedadViewModel>()
+            agentes = new List<AgenteViewModel>()
             {
                 new()
-                {
-                    Codigo = "153843",
-                    Tipo = (int)TipoPropiedad.Apartamento,
-                    Imagenes = new() { "/img/Propiedades/Apartamento.jpg", "/img/Propiedades/Apartamento.jpg", "/img/Propiedades/Apartamento.jpg" },
-                    TipoVenta = (int)TipoVenta.Alquiler,
-                    Valor = 59.99,
-                    Baños = 1,
-                    Habitaciones = 2,
-                    Tamaño = 50,
-                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
-                    " incididunt ut labore et dolore magna aliqua.",
-                    Agente = new()
                     {
+                        Id = 0,
                         Nombre = "José Antonio",
                         Apellidos = "Fernandez Ramirez",
                         Foto = "/img/Agentes/Agente.jpeg",
                         Celular = "829 254 3687",
                         Correo = "JoséFernandez@email.com"
                     },
-                    Mejoras = new()
+                new()
                     {
-                        new(){ Nombre = "Balcon"}, new(){ Nombre = "Sala/Comedor"}, new(){ Nombre = "Cocina"}, new(){ Nombre = "Piscina"}
+                        Id = 1,
+                        Nombre = "Pedro",
+                        Apellidos = "De La Cruz",
+                        Foto = "/img/Agentes/Agente.jpeg",
+                        Celular = "829 254 3687",
+                        Correo = "JoséFernandez@email.com"
                     }
+            };
+            mejoras = new List<MejoraViewModel>()
+            {
+                new(), new(){ Nombre = "Balcon" }, new(){ Nombre = "Sala/Comedor" }, new(){ Nombre = "Cocina" }, new(){ Nombre = "Piscina" }
+            };
+            tiposPropiedad = new List<TipoPropiedadViewModel>()
+            {
+                new(), new(){ Nombre = "Apartamento" }, new(){ Nombre = "Casa" }
+            };
+            tiposVenta = new List<TipoVentaViewModel>()
+            {
+                new(), new(){ Nombre = "Alquiler" }, new(){ Nombre = "Venta" }
+            };
+            propiedades = new List<PropiedadViewModel>()
+            {
+                new()
+                {
+                    Codigo = "153843",
+                    TipoPropiedad = tiposPropiedad[1],
+                    Imagenes = new() { "/img/Propiedades/Apartamento.jpg", "/img/Propiedades/Apartamento.jpg", "/img/Propiedades/Apartamento.jpg" },
+                    TipoVenta = tiposVenta[1],
+                    Valor = 59.99,
+                    Baños = 0,
+                    Habitaciones = 2,
+                    Tamaño = 50,
+                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
+                    " incididunt ut labore et dolore magna aliqua.",
+                    Agente = agentes[1],
+                    Mejoras = new() { mejoras[1], mejoras[3] }
                 },
                 new()
                 {
                     Codigo = "157832",
-                    Tipo = (int)TipoPropiedad.Casa,
+                    TipoPropiedad = tiposPropiedad[2],
                     Imagenes = new() { "/img/Propiedades/Apartamento.jpg" },
-                    TipoVenta = (int)TipoVenta.Alquiler,
+                    TipoVenta = tiposVenta[1],
                     Valor = 129.99,
                     Baños = 3,
                     Habitaciones = 4,
                     Tamaño = 100,
                     Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
                     " incididunt ut labore et dolore magna aliqua.",
-                    Agente = new()
-                    {
-                        Nombre = "José Antonio",
-                        Apellidos = "Fernandez Ramirez",
-                        Foto = "/img/Agentes/Agente.jpeg",
-                        Celular = "829 254 3687",
-                        Correo = "JoséFernandez@email.com"
-                    },
-                    Mejoras = new()
-                    {
-                        new(){ Nombre = "Balcon"}, new(){ Nombre = "Sala/Comedor"}, new(){ Nombre = "Cocina"}, new(){ Nombre = "Piscina"}
-                    }
+                    Agente = agentes[0],
+                    Mejoras = new() { mejoras[2], mejoras[3], mejoras[4] }
                 },
                 new()
                 {
                     Codigo = "953782",
-                    Tipo = (int)TipoPropiedad.Apartamento,
+                    TipoPropiedad = tiposPropiedad[1],
                     Imagenes = new() { "/img/Propiedades/Apartamento.jpg" },
-                    TipoVenta = (int)TipoVenta.Venta,
+                    TipoVenta = tiposVenta[2],
                     Valor = 33.99,
                     Baños = 1,
                     Habitaciones = 1,
                     Tamaño = 45,
                     Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
                     " incididunt ut labore et dolore magna aliqua.",
-                    Agente = new()
-                    {
-                        Nombre = "José Antonio",
-                        Apellidos = "Fernandez Ramirez",
-                        Foto = "/img/Agentes/Agente.jpeg",
-                        Celular = "829 254 3687",
-                        Correo = "JoséFernandez@email.com"
-                    },
-                    Mejoras = new()
-                    {
-                        new(){ Nombre = "Balcon"}, new(){ Nombre = "Sala/Comedor"}, new(){ Nombre = "Cocina"}, new(){ Nombre = "Piscina"}
-                    }
+                    Agente = agentes[0],
+                    Mejoras = new() { mejoras[1], mejoras[4] }
                 },
                 new()
                 {
                     Codigo = "775262",
-                    Tipo = (int)TipoPropiedad.Casa,
+                    TipoPropiedad = tiposPropiedad[2],
                     Imagenes = new() { "/img/Propiedades/Apartamento.jpg" },
-                    TipoVenta = (int)TipoVenta.Venta,
+                    TipoVenta = tiposVenta[2],
                     Valor = 89.99,
                     Baños = 2,
                     Habitaciones = 2,
                     Tamaño = 60,
                     Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
                     " incididunt ut labore et dolore magna aliqua.",
-                    Agente = new()
-                    {
-                        Nombre = "José Antonio",
-                        Apellidos = "Fernandez Ramirez",
-                        Foto = "/img/Agentes/Agente.jpeg",
-                        Celular = "829 254 3687",
-                        Correo = "JoséFernandez@email.com"
-                    },
-                    Mejoras = new()
-                    {
-                        new(){ Nombre = "Balcon"}, new(){ Nombre = "Sala/Comedor"}, new(){ Nombre = "Cocina"}, new(){ Nombre = "Piscina"}
-                    }
+                    Agente = agentes[1],
+                    Mejoras = new() { mejoras[1], mejoras[2], mejoras[3], mejoras[4] }
                 }
             };
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            ListaPropiedadViewModel vm= new ListaPropiedadViewModel();
-            vm.propiedades = propiedades.ToList();
-            vm.Cliente = cliente;
+            ListaPropiedadViewModel vm = new ListaPropiedadViewModel();
+            vm.Mantenimiento = id != 0;
+            var prop = propiedades.ToList();
+            if (tipoUsuario == 2 || vm.Mantenimiento)
+            {
+                prop = prop.Where(p => p.Agente.Id == idAgente).ToList();
+            }
+            vm.propiedades = prop;
+            vm.tiposPropiedad = tiposPropiedad.ToList();
+            vm.Cliente = tipoUsuario == 1;
 
             return View(vm);
         }
@@ -132,10 +139,17 @@ namespace RealEstateApp.Controllers
         {
             if (vm != null)
             {
-                vm.propiedades = propiedades.Where(p => (vm.TipoPropiedad == p.Tipo || vm.TipoPropiedad == 0)
+                var prop = propiedades.ToList();
+                if (tipoUsuario == 2 || vm.Mantenimiento)
+                {
+                    prop = prop.Where(p => p.Agente.Id == idAgente).ToList();
+                }
+                vm.propiedades = prop.Where(p => (tiposPropiedad[vm.TipoPropiedad] == p.TipoPropiedad || vm.TipoPropiedad == 0)
                 && (vm.Habitaciones == p.Habitaciones || vm.Habitaciones == 0) && (vm.Baños == p.Baños || vm.Baños == 0)
                 && (vm.PrecioMinimo <= p.Valor || vm.PrecioMinimo == 0) && (vm.PrecioMaximo >= p.Valor || vm.PrecioMaximo == 0)
                 && (vm.Codigo == null || vm.Codigo == "" || p.Codigo.Contains(vm.Codigo))).ToList();
+                vm.tiposPropiedad = tiposPropiedad.ToList();
+                vm.Cliente = tipoUsuario == 1;
                 return View(vm);
             }
             return RedirectToRoute(new { controller = "Propiedad", action = "Index" });
@@ -144,13 +158,27 @@ namespace RealEstateApp.Controllers
         public IActionResult Detalles(string codigo)
         {
             PropiedadViewModel vm = propiedades.FirstOrDefault(p => p.Codigo == codigo);
+            if (vm == null)
+            {
+                return RedirectToRoute(new { controller = "Propiedad", action = "Index" });
+            }
             return View(vm);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        public IActionResult Eliminar(ListaPropiedadViewModel vm)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            Debug.WriteLine("Código de la propiedad a eliminar: " + vm.Codigo);
+            return RedirectToRoute(new { controller = "Propiedad", action = "Index", id="1" });
+        }
+
+        public IActionResult Crear(ListaPropiedadViewModel vm)
+        {
+            if (vm != null && vm.Codigo != null && vm.Codigo != "")
+            {
+                return View(vm);
+            }
+            return RedirectToRoute(new { controller = "Propiedad", action = "Index", id = "1" });
         }
     }
 }

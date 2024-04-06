@@ -9,5 +9,6 @@ namespace RealEstateApp.Core.Application.ViewModels.Mejora
     public class MejoraViewModel
     {
         public string Nombre { get; set; }
+
     }
 }
