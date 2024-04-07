@@ -7,11 +7,9 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
     {
         Task<string> ConfirmEmailAsync(string userId, string token);
         Task<AuthenticationResponse> LoginAsync(LoginViewModel vm);
-        Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin);
-        Task SignOutAsync();
-        //Task<SaveUserViewModel> GetByIdSaveViewModel(string id);
+        Task<RegisterResponse> RegisterClienteAsync(SaveUserViewModel vm, string origin);
+        Task<RegisterResponse> RegisterAgenteAsync(SaveUserViewModel vm, string origin);
 
-        Task<SaveUserViewModel> Add(SaveUserViewModel vm);
-        Task Update(SaveUserViewModel vm, string? id);
+        Task SignOutAsync();
     }
 }

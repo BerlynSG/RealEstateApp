@@ -62,31 +62,39 @@ namespace RealEstateApp.Controllers
 
         [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
-        public async Task<IActionResult> RegisterClienteUser(SaveUserViewModel vm)
+        public async Task<IActionResult> Register(SaveUserViewModel vm)
         {
             if (!ModelState.IsValid)
             {
                 return View(vm);
             }
+
             var origin = Request.Headers["origin"];
-            RegisterResponse response = await _userService.RegisterAsync(vm, origin);
-            if (response.HasError)
+
+                if (vm.Rol == 2)
             {
-                vm.HasError = response.HasError;
-                vm.Error = response.Error;
-                return View(vm);
+                RegisterResponse response = await _userService.RegisterAgenteAsync(vm, origin);
+                if (response.HasError)
+                {
+                    vm.HasError = response.HasError;
+                    vm.Error = response.Error;
+                    return View(vm);
+                }
+            }
+            else
+            {
+                RegisterResponse response = await _userService.RegisterClienteAsync(vm, origin);
+                if (response.HasError)
+                {
+                    vm.HasError = response.HasError;
+                    vm.Error = response.Error;
+                    return View(vm);
+                }
             }
 
-            SaveUserViewModel userVm = await _userService.Add(vm);
-
-            /*if (userVm.Username != null && userVm != null)  
-            {
-                userVm.ImagePath = UploadFile(vm.File, userVm.Username);
-
-                await _userService.Update(userVm, userVm.Username);
-            }*/
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
+
 
         [ServiceFilter(typeof(LoginAuthorize))]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
@@ -112,13 +120,11 @@ namespace RealEstateApp.Controllers
             string basePath = $"/Images/Users/{id}";
             string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");
 
-            //create folder if not exist
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
 
-            //get file extension
             Guid guid = Guid.NewGuid();
             FileInfo fileInfo = new(file.FileName);
             string fileName = guid + fileInfo.Extension;
