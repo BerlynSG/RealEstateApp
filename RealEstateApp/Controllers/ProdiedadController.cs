@@ -172,13 +172,126 @@ namespace RealEstateApp.Controllers
             return RedirectToRoute(new { controller = "Propiedad", action = "Index", id="1" });
         }
 
-        public IActionResult Crear(ListaPropiedadViewModel vm)
+       
+        public IActionResult CrearPropiedad()
         {
-            if (vm != null && vm.Codigo != null && vm.Codigo != "")
+            if (tiposPropiedad.Count == 0 || tiposVenta.Count == 0 || mejoras.Count == 0)
             {
-                return View(vm);
+                TempData["ErrorMessage"] = "No se pueden crear propiedades porque no existen tipos de propiedad, tipos de venta o mejoras.";
+                return RedirectToAction("Index", new { id = 1 });
             }
-            return RedirectToRoute(new { controller = "Propiedad", action = "Index", id = "1" });
+
+            SavePropiedadViewModel vm = new SavePropiedadViewModel
+            {
+                TipoPropiedad = tiposPropiedad.ToList(),
+                TipoVenta = tiposVenta.ToList(),
+                Mejoras = mejoras.ToList()
+            };
+            ViewData["editMode"] = false;
+
+            return View("GuardarPropiedad", vm);
+        }
+
+        [HttpPost]
+        public IActionResult CrearPropiedad(SavePropiedadViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                string codigo = GenerarCodigoUnico();
+
+                PropiedadViewModel nuevaPropiedad = new PropiedadViewModel
+                {
+                    Codigo = codigo,
+                    TipoPropiedad = vm.TipoPropiedad.Select(tp => new TipoPropiedadViewModel { Nombre = tp.Nombre }).ToList(),
+                    TipoVenta = vm.TipoVenta.Select(tv => new TipoVentaViewModel { Nombre = tv.Nombre }).ToList(),
+                    Baños = vm.Baños,
+                    Habitaciones = vm.Habitaciones,
+                    Tamaño = vm.Tamaño,
+                    Descripcion = vm.Descripcion,
+                    Agente = agentes.FirstOrDefault(a => a.Id == idAgente),
+                    Mejoras = vm.Mejoras.Select(m => new MejoraViewModel { Nombre = m.Nombre }).ToList(),
+                    Imagenes = vm.Imagenes
+                };
+
+
+                propiedades.Add(nuevaPropiedad);
+
+                TempData["SuccessMessage"] = "La propiedad se creó correctamente.";
+                return RedirectToAction("Index", new { id = 1 });
+            }
+
+            vm.TipoPropiedad = tiposPropiedad.ToList();
+            vm.TipoVenta = tiposVenta.ToList();
+            vm.Mejoras = mejoras.ToList();
+            return View("GuardarPropiedad", vm);
+        }
+        public IActionResult EditarPropiedad(string codigo)
+        {
+            PropiedadViewModel propiedad = propiedades.FirstOrDefault(p => p.Codigo == codigo);
+
+            if (propiedad == null)
+            {
+                return RedirectToAction("Index", new { id = 1 });
+            }
+
+            SavePropiedadViewModel vm = new SavePropiedadViewModel
+            {
+                Codigo = propiedad.Codigo,
+                TipoPropiedad = propiedad.TipoPropiedad,
+                TipoVenta = propiedad.TipoVenta,
+                Valor = propiedad.Valor,
+                Baños = propiedad.Baños,
+                Habitaciones = propiedad.Habitaciones,
+                Tamaño = propiedad.Tamaño,
+                Descripcion = propiedad.Descripcion,
+                Mejoras = propiedad.Mejoras,
+                Imagenes = propiedad.Imagenes,
+
+            };
+
+            return View("GuardarPropiedad", vm);
+        }
+
+        [HttpPost]
+        public IActionResult EditarPropiedad(SavePropiedadViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                PropiedadViewModel propiedad = propiedades.FirstOrDefault(p => p.Codigo == vm.Codigo);
+
+                if (propiedad == null)
+                {
+                    return RedirectToAction("Index", new { id = 1 });
+                }
+
+                propiedad.TipoPropiedad = tiposPropiedad;
+                propiedad.TipoVenta = tiposVenta;
+                propiedad.Valor = vm.Valor;
+                propiedad.Baños = vm.Baños;
+                propiedad.Habitaciones = vm.Habitaciones;
+                propiedad.Tamaño = vm.Tamaño;
+                propiedad.Descripcion = vm.Descripcion;
+                propiedad.Mejoras = vm.Mejoras;
+                propiedad.Imagenes = vm.Imagenes;
+
+                TempData["SuccessMessage"] = "La propiedad se editó correctamente.";
+                return RedirectToAction("Index", new { id = 1 });
+            }
+
+            vm.TipoPropiedad = tiposPropiedad.ToList();
+            vm.TipoVenta = tiposVenta.ToList();
+            vm.Mejoras = mejoras.ToList();
+            return View("GuardarPropiedad", vm);
+        }
+
+        private string GenerarCodigoUnico()
+        {
+            Random random = new Random();
+            const string chars = "0123456789";
+            return new string(Enumerable.Repeat(chars, 6)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
+
+  

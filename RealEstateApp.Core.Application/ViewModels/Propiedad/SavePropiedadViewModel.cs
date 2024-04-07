@@ -11,12 +11,12 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
         public string Codigo { get; set; }
 
         [Required(ErrorMessage = "Se requiere tener asignado un tipo de propiedad.")]
-        public TipoPropiedadViewModel TipoPropiedad { get; set; }
+        public List<TipoPropiedadViewModel> TipoPropiedad { get; set; }
         public List<string> Imagenes { get; set; }
 
         [Required(ErrorMessage = "Se requiere el nombre personal del usuario.")]
         [DataType(DataType.Text)]
-        public TipoVentaViewModel TipoVenta { get; set; }
+        public List<TipoVentaViewModel> TipoVenta { get; set; }
         public double Valor { get; set; }
         public int Habitaciones { get; set; }
         public int Baños { get; set; }
