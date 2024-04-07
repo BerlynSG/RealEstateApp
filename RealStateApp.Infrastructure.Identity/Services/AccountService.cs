@@ -91,7 +91,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             {
                 Email = request.Email,
                 FirstName = request.FirstName,
-                ImagePath = request.ImagePath,
+                //ImagePath = request.ImagePath,
                 LastName = request.LastName,
                 PhoneNumber = request.Phone,
                 UserName = request.UserName,
@@ -147,8 +147,11 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             {
                 Email = request.Email,
                 FirstName = request.FirstName,
+                //ImagePath = request.ImagePath,
                 LastName = request.LastName,
+                PhoneNumber = request.Phone,
                 UserName = request.UserName,
+                Rol = request.Rol
             };
 
             _userManager.Options.SignIn.RequireConfirmedEmail = false;
@@ -257,7 +260,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return verificationUri;
         }
-        private async Task<string> SendForgotPasswordUri(ApplicationUser user, string origin)
+        /*private async Task<string> SendForgotPasswordUri(ApplicationUser user, string origin)
         {
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -266,6 +269,6 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "token", code);
 
             return verificationUri;
-        }
+        }*/
     }
 }

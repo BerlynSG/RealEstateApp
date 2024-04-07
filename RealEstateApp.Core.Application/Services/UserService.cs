@@ -33,23 +33,13 @@ namespace RealEstateApp.Core.Application.Services
             await _accountService.SignOutAsync();
         }
 
-        public async Task<SaveUserViewModel> Add(SaveUserViewModel vm)
-        {
-            vm.Username = userViewModel.UserName;
-            return await Add(vm);
-        }
-        public async Task Update(SaveUserViewModel vm, string? id)
-        {
-            vm.Username = userViewModel.UserName;
-            await Update(vm, id);
-        }
-        public async Task<RegisterResponse> RegisterAsync(SaveUserViewModel vm, string origin)
+        public async Task<RegisterResponse> RegisterClienteAsync(SaveUserViewModel vm, string origin)
         {
             RegisterRequest registerRequest = _mapper.Map<RegisterRequest>(vm);
             return await _accountService.RegisterClienteUserAsync(registerRequest, origin);
         }
 
-        public async Task<RegisterResponse> RegisterAgenteUserAsync(SaveUserViewModel vm, string origin)
+        public async Task<RegisterResponse> RegisterAgenteAsync(SaveUserViewModel vm, string origin)
         {
             RegisterRequest registerRequest = _mapper.Map<RegisterRequest>(vm);
             return await _accountService.RegisterAgenteUserAsync(registerRequest, origin);

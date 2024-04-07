@@ -1,5 +1,11 @@
-﻿@using RealEstateApp.Core.Application.ViewModels.User
-
+﻿@using Microsoft.AspNetCore.Http
+@using RealEstateApp.Core.Application.Dtos.Account
+@using RealEstateApp.Core.Application.Helpers;
+@using RealEstateApp.Core.Application.ViewModels.User
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,36 +28,84 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="0">Home</a>
+                            </li>
+
+                            <!-- No está cuando eres agente -->
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Agente" asp-action="Index">Agentes</a>
+                            </li>
+
+                            <!-- Esto es para el agente -->
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Usuario" asp-action="MiPerfil">Mi Perfil</a>
+                            </li>
+
+                            <!-- Esto es para el cliente -->
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Favoritos">Mis Propiedades</a>
+                            </li>
+
+                            <!-- Esto es para el agente -->
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="1">Mantenimiento de Propiedades</a>
+                            </li>
+
+                            <li class="nav-item align-content-end">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Cerrar Sesión</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Iniciar Sesión</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
+                            </li>
+                        </ul>
+
+                        
+                        @* @if (User != null)
+                        {
+                        @if (User.Roles != null && User.Roles.Contains("Agente"))
+                        {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="0">Home</a>
+                        <a class="nav-link text-dark" asp-controller="Agente" asp-action="Index">Agentes</a>
                         </li>
-                        <!--No está cuando eres agente-->
+                        }
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Agente" asp-action="Index">Agentes</a>
+                        <a class="nav-link text-dark" asp-controller="Usuario" asp-action="MiPerfil">Mi Perfil</a>
                         </li>
-                        <!--Esto es para el agente-->
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Usuario" asp-action="MiPerfil">Mi Perfil</a>
+                        <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Favoritos">Mis Propiedades</a>
                         </li>
-                        <!--Esto es para el cliente-->
+
+                        @if (User.Roles != null && User.Roles.Contains("Agente"))
+                        {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Favoritos">Mis Propiedades</a>
+                        <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="1">Mantenimiento de Propiedades</a>
                         </li>
-                        <!--Esto es para el agente-->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="1">Mantenimiento de Propiedades</a>
-                        </li>
-                        <!--Esto es para cuando no estás logeado-->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
-                        </li>
-                        <!--Esto es para cuando estás logeado-->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Iniciar Sesión</a>
-                        </li>
+                        }
+
                         <li class="nav-item align-content-end">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Cerrar Sesión</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Cerrar Sesión (@(User.UserName))</a>
                         </li>
+                        }
+                        else
+                        {
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
+                        </li>
+                        }
+                        }*@
                     </ul>
                 </div>
             </div>
