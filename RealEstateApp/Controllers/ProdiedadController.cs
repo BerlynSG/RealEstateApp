@@ -47,11 +47,11 @@ namespace RealEstateApp.Controllers
             };
             tiposPropiedad = new List<TipoPropiedadViewModel>()
             {
-                new(), new(){ Nombre = "Apartamento" }, new(){ Nombre = "Casa" }
+                new(), new(){ Id = 1, Nombre = "Apartamento" }, new(){ Id = 2, Nombre = "Casa" }
             };
             tiposVenta = new List<TipoVentaViewModel>()
             {
-                new(), new(){ Nombre = "Alquiler" }, new(){ Nombre = "Venta" }
+                new(), new(){ Id = 1, Nombre = "Alquiler" }, new(){ Id = 2, Nombre = "Venta" }
             };
             propiedades = new List<PropiedadViewModel>()
             {
@@ -181,15 +181,17 @@ namespace RealEstateApp.Controllers
                 return RedirectToAction("Index", new { id = 1 });
             }
 
+            tiposPropiedad.ToList();
+
             SavePropiedadViewModel vm = new SavePropiedadViewModel
             {
-                TipoPropiedad = tiposPropiedad.ToList(),
-                TipoVenta = tiposVenta.ToList(),
-                Mejoras = mejoras.ToList()
+                ListaTipoPropiedad = tiposPropiedad.ToList(),
+                ListaTipoVenta = tiposVenta.ToList(),
+                ListaMejora = mejoras.ToList()
             };
             ViewData["editMode"] = false;
 
-            return View("GuardarPropiedad", vm);
+            return View("Crear", vm);
         }
 
         [HttpPost]
@@ -202,8 +204,8 @@ namespace RealEstateApp.Controllers
                 PropiedadViewModel nuevaPropiedad = new PropiedadViewModel
                 {
                     Codigo = codigo,
-                    TipoPropiedad = vm.TipoPropiedad.Select(tp => new TipoPropiedadViewModel { Nombre = tp.Nombre }).ToList(),
-                    TipoVenta = vm.TipoVenta.Select(tv => new TipoVentaViewModel { Nombre = tv.Nombre }).ToList(),
+                    TipoPropiedad = tiposPropiedad.Where(v => v.Id == vm.TipoPropiedad).First(),
+                    TipoVenta = tiposVenta.Where(v => v.Id == vm.TipoVenta).First(),
                     Baños = vm.Baños,
                     Habitaciones = vm.Habitaciones,
                     Tamaño = vm.Tamaño,
@@ -220,11 +222,12 @@ namespace RealEstateApp.Controllers
                 return RedirectToAction("Index", new { id = 1 });
             }
 
-            vm.TipoPropiedad = tiposPropiedad.ToList();
-            vm.TipoVenta = tiposVenta.ToList();
-            vm.Mejoras = mejoras.ToList();
-            return View("GuardarPropiedad", vm);
+            vm.ListaTipoPropiedad = tiposPropiedad.ToList();
+            vm.ListaTipoVenta = tiposVenta.ToList();
+            vm.ListaMejora = mejoras.ToList();
+            return View("Crear", vm);
         }
+
         public IActionResult EditarPropiedad(string codigo)
         {
             PropiedadViewModel propiedad = propiedades.FirstOrDefault(p => p.Codigo == codigo);
@@ -237,8 +240,8 @@ namespace RealEstateApp.Controllers
             SavePropiedadViewModel vm = new SavePropiedadViewModel
             {
                 Codigo = propiedad.Codigo,
-                TipoPropiedad = propiedad.TipoPropiedad,
-                TipoVenta = propiedad.TipoVenta,
+                TipoPropiedad = propiedad.TipoPropiedad.Id,
+                TipoVenta = propiedad.TipoVenta.Id,
                 Valor = propiedad.Valor,
                 Baños = propiedad.Baños,
                 Habitaciones = propiedad.Habitaciones,
@@ -249,7 +252,7 @@ namespace RealEstateApp.Controllers
 
             };
 
-            return View("GuardarPropiedad", vm);
+            return View("Crear", vm);
         }
 
         [HttpPost]
@@ -264,8 +267,8 @@ namespace RealEstateApp.Controllers
                     return RedirectToAction("Index", new { id = 1 });
                 }
 
-                propiedad.TipoPropiedad = tiposPropiedad;
-                propiedad.TipoVenta = tiposVenta;
+                propiedad.TipoPropiedad = tiposPropiedad.Where(v => v.Id == vm.TipoPropiedad).First();
+                propiedad.TipoVenta = tiposVenta.Where(v => v.Id == vm.TipoVenta).First();
                 propiedad.Valor = vm.Valor;
                 propiedad.Baños = vm.Baños;
                 propiedad.Habitaciones = vm.Habitaciones;
@@ -278,10 +281,10 @@ namespace RealEstateApp.Controllers
                 return RedirectToAction("Index", new { id = 1 });
             }
 
-            vm.TipoPropiedad = tiposPropiedad.ToList();
-            vm.TipoVenta = tiposVenta.ToList();
-            vm.Mejoras = mejoras.ToList();
-            return View("GuardarPropiedad", vm);
+            vm.ListaTipoPropiedad = tiposPropiedad.ToList();
+            vm.ListaTipoVenta = tiposVenta.ToList();
+            vm.ListaMejora = mejoras.ToList();
+            return View("Crear", vm);
         }
 
         private string GenerarCodigoUnico()

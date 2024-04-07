@@ -11,12 +11,12 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
         public string Codigo { get; set; }
 
         [Required(ErrorMessage = "Se requiere tener asignado un tipo de propiedad.")]
-        public List<TipoPropiedadViewModel> TipoPropiedad { get; set; }
+        public int TipoPropiedad { get; set; }
         public List<string> Imagenes { get; set; }
 
         [Required(ErrorMessage = "Se requiere el nombre personal del usuario.")]
         [DataType(DataType.Text)]
-        public List<TipoVentaViewModel> TipoVenta { get; set; }
+        public int TipoVenta { get; set; }
         public double Valor { get; set; }
         public int Habitaciones { get; set; }
         public int Baños { get; set; }
@@ -24,5 +24,9 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
         public string Descripcion { get; set; }
         public AgenteViewModel Agente { get; set; }
         public List<MejoraViewModel> Mejoras { get; set; }
+
+        public List<TipoPropiedadViewModel>? ListaTipoPropiedad { get; set; }
+        public List<TipoVentaViewModel>? ListaTipoVenta { get; set; }
+        public List<MejoraViewModel>? ListaMejora { get; set; }
     }
 }

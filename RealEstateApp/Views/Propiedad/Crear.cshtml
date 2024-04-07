@@ -1,4 +1,5 @@
-﻿@model SavePropiedadViewModel
+﻿@using RealEstateApp.Core.Application.ViewModels.Propiedad
+@model SavePropiedadViewModel
 @{
     bool editMode = !string.IsNullOrEmpty(Model.Codigo);
     ViewData["Title"] = editMode ? "Editar Propiedad" : "Crear Propiedad";
@@ -13,15 +14,17 @@
                 </div>
                 <div class="card-body">
                     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-                    <form method="post" enctype="multipart/form-data" asp-controller="Propiedad" asp-action="@{
-                        if (editMode) { return "EditarPropiedad"; } else { return "CrearPropiedad"; }
-                    }">
+                    <form method="post" enctype="multipart/form-data" asp-controller="Propiedad"
+                    asp-action="@(editMode ? "EditarPropiedad" : "CrearPropiedad")">
                         <div class="mb-3">
                             <label asp-for="TipoPropiedad" class="form-label">Tipo de Propiedad:</label>
                             <select asp-for="TipoPropiedad" class="form-control">
-                                @foreach (var tipo in Model.TiposPropiedad)
+                                @if (Model.ListaTipoPropiedad != null)
                                 {
-                                    <option value="@tipo.Nombre">@tipo.Nombre</option>
+                                    @foreach (var tipo in Model.ListaTipoPropiedad)
+                                    {
+                                        <option value="@tipo.Nombre">@tipo.Nombre</option>
+                                    }
                                 }
                             </select>
                             <span asp-validation-for="TipoPropiedad" class="text-danger"></span>
@@ -29,17 +32,20 @@
                         <div class="mb-3">
                             <label asp-for="TipoVenta" class="form-label">Tipo de Venta:</label>
                             <select asp-for="TipoVenta" class="form-control">
-                                @foreach (var tipoVenta in Model.TiposVenta)
+                                @if (Model.ListaTipoVenta != null)
                                 {
-                                    <option value="@tipoVenta.Nombre">@tipoVenta.Nombre</option>
+                                    @foreach (var tipoVenta in Model.ListaTipoVenta)
+                                    {
+                                        <option value="@tipoVenta.Nombre">@tipoVenta.Nombre</option>
+                                    }
                                 }
                             </select>
                             <span asp-validation-for="TipoVenta" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="Precio" class="form-label">Precio:</label>
-                            <input asp-for="Precio" class="form-control" />
-                            <span asp-validation-for="Precio" class="text-danger"></span>
+                            <label asp-for="Valor" class="form-label">Precio:</label>
+                            <input asp-for="Valor" class="form-control" />
+                            <span asp-validation-for="Valor" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Descripcion" class="form-label">Descripción:</label>
@@ -64,9 +70,12 @@
                         <div class="mb-3">
                             <label asp-for="Mejoras" class="form-label">Mejoras:</label>
                             <select asp-for="Mejoras" class="form-control" multiple>
-                                @foreach (var mejora in Model.Mejoras)
+                                @if (Model.ListaMejora != null)
                                 {
-                                    <option value="@mejora.Nombre">@mejora.Nombre</option>
+                                    @foreach (var mejora in Model.ListaMejora)
+                                    {
+                                        <option value="@mejora.Nombre">@mejora.Nombre</option>
+                                    }
                                 }
                             </select>
                             <span asp-validation-for="Mejoras" class="text-danger"></span>
@@ -83,9 +92,7 @@
                         }
 
                         <button type="submit" class="btn btn-primary">
-                            @{
-                                if (editMode) { return "Guardar Cambios"; } else { return "Crear Propiedad"; }
-                            }
+                            @(editMode ? "Guardar Cambios" : "Crear Propiedad")
                         </button>
                         <a asp-action="Index" class="btn btn-warning">Volver atrás</a>
                     </form>

@@ -8,9 +8,9 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
     public class PropiedadViewModel
     {
         public string Codigo { get; set; }
-        public List<TipoPropiedadViewModel> TipoPropiedad { get; set; }
+        public TipoPropiedadViewModel TipoPropiedad { get; set; }
         public List<string> Imagenes { get; set; }
-        public List<TipoVentaViewModel> TipoVenta { get; set; }
+        public TipoVentaViewModel TipoVenta { get; set; }
         public double Valor { get; set; }
         public int Habitaciones { get; set; }
         public int Baños { get; set; }
