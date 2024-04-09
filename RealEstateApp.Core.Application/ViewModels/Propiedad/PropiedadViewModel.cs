@@ -7,6 +7,7 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
 {
     public class PropiedadViewModel
     {
+        public int Id { get; set; }
         public string Codigo { get; set; }
         public TipoPropiedadViewModel TipoPropiedad { get; set; }
         public List<string> Imagenes { get; set; }
