@@ -54,119 +54,72 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
                 .HasForeignKey(i => i.PropiedadId).OnDelete(DeleteBehavior.Cascade);
             #endregion
 
-            /*#region "Properties configuration"
-
-            #region "User"
-            modelBuilder.Entity<User>().Property(u => u.UserName)
-                .IsRequired().HasMaxLength(100);
-            modelBuilder.Entity<User>().Property(u => u.Password)
-                .IsRequired();
-            modelBuilder.Entity<User>().Property(u => u.Name)
-                .IsRequired().HasMaxLength(150);
-            modelBuilder.Entity<User>().Property(u => u.LastName)
-                .IsRequired().HasMaxLength(150);
-            modelBuilder.Entity<User>().Property(u => u.Email)
-                .IsRequired();
-            modelBuilder.Entity<User>().Property(u => u.Phone)
-                .IsRequired();
-            #endregion
-
-            #region "Medico"
-            modelBuilder.Entity<Medico>().Property(u => u.Name)
-                .IsRequired().HasMaxLength(150);
-            modelBuilder.Entity<Medico>().Property(u => u.LastName)
-                .IsRequired().HasMaxLength(150);
-            modelBuilder.Entity<Medico>().Property(u => u.Cedula)
-                .IsRequired();
-            modelBuilder.Entity<Medico>().Property(u => u.Email)
-                .IsRequired();
-            modelBuilder.Entity<Medico>().Property(u => u.Phone)
-                .IsRequired();
-            modelBuilder.Entity<Medico>().Property(u => u.Image)
-                .IsRequired();
-            #endregion
-
-            #region "LabTest"
-            modelBuilder.Entity<LabTest>().Property(u => u.Name)
-                .IsRequired().HasMaxLength(150);
-            #endregion
-
-            #region "Patient"
-            modelBuilder.Entity<Patient>().Property(u => u.Name)
-                .IsRequired().HasMaxLength(150);
-            modelBuilder.Entity<Patient>().Property(u => u.LastName)
-                .IsRequired().HasMaxLength(150);
-            modelBuilder.Entity<Patient>().Property(u => u.Phone)
-                .IsRequired();
-            modelBuilder.Entity<Patient>().Property(u => u.Address)
-                .IsRequired();
-            modelBuilder.Entity<Patient>().Property(u => u.Cedula)
-                .IsRequired();
-            modelBuilder.Entity<Patient>().Property(u => u.Birthdate)
-                .IsRequired();
-            modelBuilder.Entity<Patient>().Property(u => u.Image)
-                .IsRequired();
-            #endregion
-
-            #region "LabResult"
-            modelBuilder.Entity<LabResult>().Property(u => u.Result)
-                .IsRequired();
-            modelBuilder.Entity<LabResult>().Property(u => u.CitaId)
-                .IsRequired();
-            #endregion
-
-            #region "Cita"
-            modelBuilder.Entity<Cita>().Property(u => u.Date)
-                .IsRequired();
-            modelBuilder.Entity<Cita>().Property(u => u.Cause)
-                .IsRequired();
-            modelBuilder.Entity<Cita>().Property(u => u.MedicoId)
-                .IsRequired();
-            modelBuilder.Entity<Cita>().Property(u => u.PatientId)
-                .IsRequired();
-            #endregion
-
-            #endregion
-            
-            #region "Tables"
-            modelBuilder.Entity<Serie>().ToTable("Series");
-            modelBuilder.Entity<Productor>().ToTable("Productores");
-            modelBuilder.Entity<Genero>().ToTable("Generos");
-            #endregion
-
-            #region "Primary Keys"
-            modelBuilder.Entity<Serie>().HasKey(s => s.Id);
-            modelBuilder.Entity<Productor>().HasKey(p => p.Id);
-            modelBuilder.Entity<Genero>().HasKey(g => g.Id);
-            #endregion
-
-            #region "Relationships"
-            modelBuilder.Entity<Productor>().HasMany<Serie>(p => p.series).WithOne(s => s.Productor)
-                .HasForeignKey(s => s.IdProductor).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Genero>().HasMany<Serie>(g => g.SeriesP).WithOne(s => s.GeneroPrimario)
-                .HasForeignKey(s => s.IdGeneroPrimario).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Genero>().HasMany<Serie>(g => g.SeriesS).WithOne(s => s.GeneroSecundario)
-                .HasForeignKey(s => s.IdGeneroSecundario).OnDelete(DeleteBehavior.NoAction);
-            #endregion
-
             #region "Properties configuration"
 
-            #region "Series"
-            modelBuilder.Entity<Serie>().Property(s => s.Name)
+            #region "Propiedad"
+            modelBuilder.Entity<Propiedad>().Property(u => u.Codigo)
+                .IsRequired().HasMaxLength(6);
+            modelBuilder.Entity<Propiedad>().Property(u => u.TipoPropiedadId)
+                .IsRequired();
+            modelBuilder.Entity<Propiedad>().Property(u => u.TipoVentaId)
                 .IsRequired().HasMaxLength(150);
+            modelBuilder.Entity<Propiedad>().Property(u => u.Valor)
+                .IsRequired().HasMaxLength(150);
+            modelBuilder.Entity<Propiedad>().Property(u => u.Habitaciones)
+                .IsRequired();
+            modelBuilder.Entity<Propiedad>().Property(u => u.Baños)
+                .IsRequired();
+            modelBuilder.Entity<Propiedad>().Property(u => u.Tamaño)
+                .IsRequired();
+            modelBuilder.Entity<Propiedad>().Property(u => u.Descripcion)
+                .IsRequired();
+            modelBuilder.Entity<Propiedad>().Property(u => u.AgenteId)
+                .IsRequired();
             #endregion
 
-            #region "Productores"
-            modelBuilder.Entity<Productor>().Property(p => p.Name)
+            #region "TipoPropiedad"
+            modelBuilder.Entity<TipoPropiedad>().Property(u => u.Nombre)
                 .IsRequired().HasMaxLength(150);
+            modelBuilder.Entity<TipoPropiedad>().Property(u => u.Descripcion)
+                .IsRequired();
             #endregion
 
-            #region "Generos"
-            modelBuilder.Entity<Genero>().Property(p => p.Name)
+            #region "TipoVenta"
+            modelBuilder.Entity<TipoVenta>().Property(u => u.Nombre)
                 .IsRequired().HasMaxLength(150);
+            modelBuilder.Entity<TipoVenta>().Property(u => u.Descripcion)
+                .IsRequired();
             #endregion
 
-            #endregion*/
+            #region "Mejora"
+            modelBuilder.Entity<Mejora>().Property(u => u.Nombre)
+                .IsRequired().HasMaxLength(150);
+            modelBuilder.Entity<Mejora>().Property(u => u.Descripcion)
+                .IsRequired();
+            #endregion
+
+            #region "MejoraPropiedad"
+            modelBuilder.Entity<MejoraPropiedad>().Property(u => u.MejoraId)
+                .IsRequired();
+            modelBuilder.Entity<MejoraPropiedad>().Property(u => u.PropiedadId)
+                .IsRequired();
+            #endregion
+
+            #region "PropiedadFavorita"
+            modelBuilder.Entity<PropiedadFavorita>().Property(u => u.PropiedadId)
+                .IsRequired();
+            modelBuilder.Entity<PropiedadFavorita>().Property(u => u.ClienteId)
+                .IsRequired();
+            #endregion
+
+            #region "ImagenPropiedad"
+            modelBuilder.Entity<ImagenPropiedad>().Property(u => u.PropiedadId)
+                .IsRequired();
+            modelBuilder.Entity<ImagenPropiedad>().Property(u => u.Path)
+                .IsRequired();
+            #endregion
+
+            #endregion
         }
     }
 }
