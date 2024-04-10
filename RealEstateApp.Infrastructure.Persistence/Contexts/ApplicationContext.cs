@@ -47,7 +47,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
             modelBuilder.Entity<Propiedad>().HasMany<MejoraPropiedad>(p => p.Mejoras).WithOne(m => m.Propiedad)
                 .HasForeignKey(m => m.PropiedadId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Mejora>().HasMany<MejoraPropiedad>(m => m.Propiedades).WithOne(p => p.Mejora)
-                .HasForeignKey(p => p.Mejora).OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(p => p.MejoraId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Propiedad>().HasMany<PropiedadFavorita>(p => p.Favoritos).WithOne(f => f.Propiedad)
                 .HasForeignKey(f => f.PropiedadId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Propiedad>().HasMany<ImagenPropiedad>(p => p.Imagenes).WithOne(i => i.Propiedad)
