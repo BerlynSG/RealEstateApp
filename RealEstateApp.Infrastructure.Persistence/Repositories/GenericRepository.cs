@@ -12,13 +12,14 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
             _dbContext = context;
         }
 
-        public virtual async Task AddAsync(T entity)
+        public virtual async Task<T> AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();
+            return entity;
         }
 
-        public virtual async Task UpdateAsync(T entity)
+        public virtual async Task UpdateAsync(T entity, int id)
         {
             _dbContext.Entry<T>(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();

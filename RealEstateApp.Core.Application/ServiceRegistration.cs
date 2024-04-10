@@ -13,6 +13,10 @@ namespace RealEstateApp.Core.Application
             #region Services
             //services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IPropiedadService, PropiedadService>();
+            services.AddTransient<ITipoPropiedadService, TipoPropiedadService>();
+            services.AddTransient<ITipoVentaService, TipoVentaService>();
+            services.AddTransient<IMejoraService, MejoraService>();
             #endregion
         }
     }
