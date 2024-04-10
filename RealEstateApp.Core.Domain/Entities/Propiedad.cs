@@ -16,6 +16,7 @@
         public TipoPropiedad TipoPropiedad { get; set; }
         public TipoVenta TipoVenta { get; set; }
         public List<ImagenPropiedad> Imagenes { get; set; }
-        public List<Mejora> Mejoras { get; set; }
+        public List<MejoraPropiedad> Mejoras { get; set; }
+        public List<PropiedadFavorita> Favoritos { get; set; }
     }
 }

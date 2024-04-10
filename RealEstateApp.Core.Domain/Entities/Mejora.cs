@@ -6,6 +6,6 @@
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
-        public List<Propiedad> Propiedades { get; set; }
+        public List<MejoraPropiedad> Propiedades { get; set; }
     }
 }

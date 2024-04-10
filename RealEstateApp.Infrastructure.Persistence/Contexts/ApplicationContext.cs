@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RealEstateApp.Core.Domain.Entities;
 
 namespace RealEstateApp.Infrastructure.Persistence.Contexts
 {
@@ -11,47 +7,54 @@ namespace RealEstateApp.Infrastructure.Persistence.Contexts
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
 
-        /*public DbSet<User> Users { get; set; }
-        public DbSet<Medico> Medicos { get; set; }
-        public DbSet<LabTest> LabTests { get; set; }
-        public DbSet<Patient> Patients { get; set; }
-        public DbSet<LabResult> LabResults { get; set; }
-        public DbSet<Cita> Citas { get; set; }*/
+        public DbSet<Propiedad> Propiedades { get; set; }
+        public DbSet<TipoPropiedad> TiposPropiedad { get; set; }
+        public DbSet<TipoVenta> TiposVenta { get; set; }
+        public DbSet<Mejora> Mejoras { get; set; }
+        public DbSet<MejoraPropiedad> MejorasPropiedades { get; set; }
+        public DbSet<PropiedadFavorita> PropiedadesFavoritas { get; set; }
+        public DbSet<ImagenPropiedad> ImagenesPropiedad { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            /*#region "Tables"
-            modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<Medico>().ToTable("Medicos");
-            modelBuilder.Entity<LabTest>().ToTable("LabTests");
-            modelBuilder.Entity<Patient>().ToTable("Patients");
-            modelBuilder.Entity<LabResult>().ToTable("LabResults");
-            modelBuilder.Entity<Cita>().ToTable("Citas");
+            #region "Tables"
+            modelBuilder.Entity<Propiedad>().ToTable("Propiedades");
+            modelBuilder.Entity<TipoPropiedad>().ToTable("TiposPropiedad");
+            modelBuilder.Entity<TipoVenta>().ToTable("TiposVenta");
+            modelBuilder.Entity<Mejora>().ToTable("Mejoras");
+            modelBuilder.Entity<MejoraPropiedad>().ToTable("MejorasPropiedades");
+            modelBuilder.Entity<PropiedadFavorita>().ToTable("PropiedadesFavoritas");
+            modelBuilder.Entity<ImagenPropiedad>().ToTable("ImagenesPropiedad");
             #endregion
 
             #region "Primary Keys"
-            modelBuilder.Entity<User>().HasKey(u => u.Id);
-            modelBuilder.Entity<Medico>().HasKey(m => m.Id);
-            modelBuilder.Entity<LabTest>().HasKey(m => m.Id);
-            modelBuilder.Entity<Patient>().HasKey(m => m.Id);
-            modelBuilder.Entity<LabResult>().HasKey(m => m.Id);
-            modelBuilder.Entity<Cita>().HasKey(m => m.Id);
+            modelBuilder.Entity<Propiedad>().HasKey(p => p.Id);
+            modelBuilder.Entity<TipoPropiedad>().HasKey(t => t.Id);
+            modelBuilder.Entity<TipoVenta>().HasKey(t => t.Id);
+            modelBuilder.Entity<Mejora>().HasKey(m => m.Id);
+            modelBuilder.Entity<MejoraPropiedad>().HasKey(m => m.Id);
+            modelBuilder.Entity<PropiedadFavorita>().HasKey(f => f.Id);
+            modelBuilder.Entity<ImagenPropiedad>().HasKey(i => i.Id);
             #endregion
 
 
             #region "Relationships"
-            modelBuilder.Entity<Patient>().HasMany<Cita>(p => p.Citas).WithOne(c => c.Patient)
-                .HasForeignKey(c => c.PatientId).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Medico>().HasMany<Cita>(m => m.Citas).WithOne(c => c.Medico)
-                .HasForeignKey(c => c.MedicoId).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Cita>().HasMany<LabResult>(c => c.LabResults).WithOne(r => r.Cita)
-                .HasForeignKey(r => r.CitaId).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<LabTest>().HasMany<LabResult>(l => l.LabResults).WithOne(l => l.LabTest)
-                .HasForeignKey(l => l.LabTestId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<TipoPropiedad>().HasMany<Propiedad>(p => p.Propiedades).WithOne(t => t.TipoPropiedad)
+                .HasForeignKey(t => t.TipoPropiedadId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<TipoVenta>().HasMany<Propiedad>(p => p.Propiedades).WithOne(t => t.TipoVenta)
+                .HasForeignKey(t => t.TipoVentaId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Propiedad>().HasMany<MejoraPropiedad>(p => p.Mejoras).WithOne(m => m.Propiedad)
+                .HasForeignKey(m => m.PropiedadId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Mejora>().HasMany<MejoraPropiedad>(m => m.Propiedades).WithOne(p => p.Mejora)
+                .HasForeignKey(p => p.Mejora).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Propiedad>().HasMany<PropiedadFavorita>(p => p.Favoritos).WithOne(f => f.Propiedad)
+                .HasForeignKey(f => f.PropiedadId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Propiedad>().HasMany<ImagenPropiedad>(p => p.Imagenes).WithOne(i => i.Propiedad)
+                .HasForeignKey(i => i.PropiedadId).OnDelete(DeleteBehavior.Cascade);
             #endregion
 
-            #region "Properties configuration"
+            /*#region "Properties configuration"
 
             #region "User"
             modelBuilder.Entity<User>().Property(u => u.UserName)
