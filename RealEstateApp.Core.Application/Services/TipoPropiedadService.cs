@@ -8,9 +8,9 @@ namespace RealEstateApp.Core.Application.Services
 {
     public class TipoPropiedadService : GenericService<SaveTipoPropiedadViewModel, TipoPropiedadViewModel, TipoPropiedad>, ITipoPropiedadService
     {
-        private readonly IGenericRepository<TipoPropiedad> _repository;
+        private readonly ITipoPropiedadRepository _repository;
         private readonly IMapper _mapper;
-        public TipoPropiedadService(IGenericRepository<TipoPropiedad> repository, IMapper mapper) : base(repository, mapper)
+        public TipoPropiedadService(ITipoPropiedadRepository repository, IMapper mapper) : base(repository, mapper)
         {
             _repository = repository;
             _mapper = mapper;

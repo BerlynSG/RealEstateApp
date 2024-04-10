@@ -21,12 +21,12 @@
             <form method="post" asp-controller="Propiedad" asp-action="Index">
                 <div class="row">
                     <div class="col-10 col-lg-8 pe-0">
-                        <input asp-for="Codigo" class="form-control" />
-                        <input type="hidden" asp-for="TipoPropiedad" />
-                        <input type="hidden" asp-for="PrecioMinimo" />
-                        <input type="hidden" asp-for="PrecioMaximo" />
-                        <input type="hidden" asp-for="Habitaciones" />
-                        <input type="hidden" asp-for="Baños" />
+                        <input asp-for="Filtros.Codigo" class="form-control" />
+                        <input type="hidden" asp-for="Filtros.TipoPropiedad" />
+                        <input type="hidden" asp-for="Filtros.PrecioMinimo" />
+                        <input type="hidden" asp-for="Filtros.PrecioMaximo" />
+                        <input type="hidden" asp-for="Filtros.Habitaciones" />
+                        <input type="hidden" asp-for="Filtros.Baños" />
                         <input type="hidden" asp-for="Mantenimiento" />
                     </div>
                     <div class="col-2 col-lg-4 col-sm-2 ps-0 btn-group">
@@ -166,10 +166,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" asp-for="Codigo" />
+                    <input type="hidden" asp-for="Filtros.Codigo" />
                     <div class="mb-3">
-                        <label asp-for="TipoPropiedad" class="form-label">Tipo de propiedad: </label>
-                        <select asp-for="TipoPropiedad" class="form-control">
+                        <label asp-for="Filtros.TipoPropiedad" class="form-label">Tipo de propiedad: </label>
+                        <select asp-for="Filtros.TipoPropiedad" class="form-control">
                             <option value="0">Ninguna</option>
                             @for(int i = 1; i < Model.tiposPropiedad.Count(); i++)
                             {
@@ -178,25 +178,25 @@
                         </select>
                     </div>
                     <div class="mb-3 row">
-                        <label asp-for="PrecioMinimo" class="form-label">Rango de precio: </label>
+                        <label asp-for="Filtros.PrecioMinimo" class="form-label">Rango de precio: </label>
                         <div class="col-6">
-                            <label asp-for="PrecioMinimo" class="form-label">Mínimo: </label>
-                            <input asp-for="PrecioMinimo" class="form-control" />
+                            <label asp-for="Filtros.PrecioMinimo" class="form-label">Mínimo: </label>
+                            <input asp-for="Filtros.PrecioMinimo" class="form-control" />
                         </div>
                         <div class="col-6">
-                            <label asp-for="PrecioMaximo" class="form-label">Máximo: </label>
-                            <input asp-for="PrecioMaximo" class="form-control" />
+                            <label asp-for="Filtros.PrecioMaximo" class="form-label">Máximo: </label>
+                            <input asp-for="Filtros.PrecioMaximo" class="form-control" />
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label asp-for="Habitaciones" class="form-label">Cantidad: </label>
+                        <label asp-for="Filtros.Habitaciones" class="form-label">Cantidad: </label>
                         <div class="col-6">
-                            <label asp-for="Habitaciones" class="form-label">Habitaciones: </label>
-                            <input asp-for="Habitaciones" class="form-control" />
+                            <label asp-for="Filtros.Habitaciones" class="form-label">Habitaciones: </label>
+                            <input asp-for="Filtros.Habitaciones" class="form-control" />
                         </div>
                         <div class="col-6">
-                            <label asp-for="Baños" class="form-label">Baños: </label>
-                            <input asp-for="Baños" class="form-control" />
+                            <label asp-for="Filtros.Baños" class="form-label">Baños: </label>
+                            <input asp-for="Filtros.Baños" class="form-control" />
                         </div>
                         <input type="hidden" asp-for="Mantenimiento" />
                     </div>
@@ -219,7 +219,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input id="EliminarCodigo" asp-for="Codigo" hidden />
+                    <input id="EliminarCodigo" asp-for="Filtros.Codigo" hidden />
                     <p>¿Desea eliminar esta propiedad?</p>
                 </div>
                 <div class="modal-footer">
