@@ -34,10 +34,10 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         [DataType(DataType.Text)]
         public string Phone { get; set; }
         public int Rol { get; set; }
-        public string? ImagePath { get; set; }
 
         [DataType(DataType.Upload)]
-        public IFormFile? File { get; set; }
+        public IFormFile? ProfileImage { get; set; }
+        public string? ImagePath { get; set; }
         public bool HasError { get; set; }
         public string? Error { get; set; }
     }

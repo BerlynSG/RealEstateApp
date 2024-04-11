@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Enums;
@@ -64,18 +65,15 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<RegisterResponse> RegisterClienteUserAsync(RegisterRequest request, string origin)
+        public async Task<RegisterResponse> RegisterClienteUserAsync(RegisterRequest request, string origin, IFormFile profileImage)
         {
-            RegisterResponse response = new()
-            {
-                HasError = false
-            };
+            RegisterResponse response = new RegisterResponse();
 
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
             {
                 response.HasError = true;
-                response.Error = $"Nombre de usuario '{request.UserName}'ya esta tomado.";
+                response.Error = $"Nombre de usuario '{request.UserName}' ya está en uso.";
                 return response;
             }
 
@@ -83,7 +81,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             if (userWithSameEmail != null)
             {
                 response.HasError = true;
-                response.Error = $"Correo '{request.Email}' ya esta registrado.";
+                response.Error = $"Correo electrónico '{request.Email}' ya está registrado.";
                 return response;
             }
 
@@ -91,12 +89,18 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             {
                 Email = request.Email,
                 FirstName = request.FirstName,
-                //ImagePath = request.ImagePath,
                 LastName = request.LastName,
                 PhoneNumber = request.Phone,
                 UserName = request.UserName,
                 Rol = request.Rol
             };
+
+            if (profileImage != null)
+            {
+                // Guardar la imagen en el servidor
+                string imagePath = await SaveProfileImageAsync(profileImage);
+                user.ImagePath = imagePath;  // Asignar la ruta de la imagen al usuario
+            }
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
@@ -106,32 +110,47 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 await _emailService.SendAsync(new Core.Application.Dtos.Email.EmailRequest()
                 {
                     To = user.Email,
-                    Body = $"Porfavor, confirma tu correo ingresando a la siguiente URL: {verificationUri}",
-                    Subject = "Confirmación de correo"
+                    Body = $"Por favor confirme su cuenta visitando la siguiente URL {verificationUri}",
+                    Subject = "Confirmar registro."
                 });
             }
             else
             {
                 response.HasError = true;
-                response.Error = $"Ha ocurrido un error intentando registrar al usuario.";
-                return response;
+                response.Error = "Ha ocurrido un error al registrar al usuario.";
             }
 
             return response;
         }
 
-        public async Task<RegisterResponse> RegisterAgenteUserAsync(RegisterRequest request, string origin)
+        private async Task<string> SaveProfileImageAsync(IFormFile imageFile)
         {
-            RegisterResponse response = new()
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profile");
+            if (!Directory.Exists(uploadsFolder))
             {
-                HasError = false
-            };
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+
+            return Path.Combine("images", "profile", uniqueFileName).Replace("\\", "/");
+        }
+
+        public async Task<RegisterResponse> RegisterAgenteUserAsync(RegisterRequest request, string origin, IFormFile profileImage)
+        {
+            RegisterResponse response = new RegisterResponse { HasError = false };
 
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
             {
                 response.HasError = true;
-                response.Error = $"Nombre de usuario '{request.UserName}' ya esta tomado";
+                response.Error = $"Nombre de usuario '{request.UserName}' ya está tomado";
                 return response;
             }
 
@@ -139,7 +158,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             if (userWithSameEmail != null)
             {
                 response.HasError = true;
-                response.Error = $"Email '{request.Email}' ya esta registrado";
+                response.Error = $"Email '{request.Email}' ya está registrado";
                 return response;
             }
 
@@ -147,7 +166,6 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             {
                 Email = request.Email,
                 FirstName = request.FirstName,
-                //ImagePath = request.ImagePath,
                 LastName = request.LastName,
                 PhoneNumber = request.Phone,
                 UserName = request.UserName,
@@ -159,6 +177,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
+                // Agregar rol de agente
                 await _userManager.AddToRoleAsync(user, Roles.Agente.ToString());
             }
             else

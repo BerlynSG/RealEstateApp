@@ -2,12 +2,14 @@ using RealEstateApp.Infrastructure.Identity;
 using RealEstateApp.Core.Application;
 using RealEstateApp.Infrastructure.Shared;
 using RealEstateApp.Middlewares;
+using RealEstateApp.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddApplicationLayer();
 builder.Services.AddSession();

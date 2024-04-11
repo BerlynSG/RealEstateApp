@@ -23,6 +23,7 @@ namespace RealEstateApp.Infrastructure.Identity
                     await DefaultClientUser.SeedAsync(userManager);
                     await DefaultAgenteUser.SeedAsync(userManager);
                     await DefaultAdministradorUser.SeedAsync(userManager);
+                    await DefaultDesarrolladorUser.SeedAsync(userManager);
                 }
                 catch (Exception ex)
                 {

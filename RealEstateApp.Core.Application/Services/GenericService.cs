@@ -1,4 +1,4 @@
-﻿/*using AutoMapper;
+﻿using AutoMapper;
 using RealEstateApp.Core.Application.Interfaces.Repositories;
 using RealEstateApp.Core.Application.Interfaces.Services;
 
@@ -58,4 +58,3 @@ namespace RealEstateApp.Core.Application.Services
 
     }
 }
-*/
