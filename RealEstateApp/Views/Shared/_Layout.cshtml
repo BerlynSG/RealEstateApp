@@ -35,7 +35,7 @@
                         </li>
                         <!--Esto es para el cliente-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="2">Mis Propiedades</a>
+                            <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="1">Mis Propiedades</a>
                         </li>
                         <!--Esto es para el agente-->
                         <li class="nav-item">
@@ -43,19 +43,35 @@
                         </li>
                         <!--Esto es para el admin-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="User" asp-action="Maintenance">Mantenimiento de usuarios</a>
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="Maintenance">Mantenimiento de Administradores</a>
+                        </li>
+                        <!--Esto es para el admin-->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="Maintenance">Mantenimiento de Desarolladores</a>
+                        </li>
+                        <!--Esto es para el admin-->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="Maintenance">Mantenimiento de Tipos de Propiedades</a>
+                        </li>
+                        <!--Esto es para el admin-->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="Maintenance">Mantenimiento de Tipos de Ventas</a>
+                        </li>
+                        <!--Esto es para el admin-->
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="Maintenance">Mantenimiento de Mejoras</a>
                         </li>
                         <!--Esto es para cuando no estás logeado-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Únete a la app</a>
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="Register">Únete a la app</a>
                         </li>
                         <!--Esto es para cuando no estás logeado-->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Iniciar Sesión</a>
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="Index">Iniciar Sesión</a>
                         </li>
                         <!--Esto es para cuando estás logeado-->
                         <li class="nav-item align-content-end">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Cerrar Sesión</a>
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="LogOut">Cerrar Sesión</a>
                         </li>
                     </ul>
                 </div>

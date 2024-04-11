@@ -8,7 +8,7 @@
     <h1> Propiedades </h1>
     <div class="row mb-3">
         <div class="col-3">
-            @if(Model.Mantenimiento)
+            @if(Model.Filtros.TipoFiltroUsuario == 5)
             {
                 <a asp-controller="Propiedad" asp-action="CrearPropiedad" class="btn btn-success">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
@@ -27,7 +27,7 @@
                         <input type="hidden" asp-for="Filtros.PrecioMaximo" />
                         <input type="hidden" asp-for="Filtros.Habitaciones" />
                         <input type="hidden" asp-for="Filtros.Baños" />
-                        <input type="hidden" asp-for="Mantenimiento" />
+                        <input type="hidden" asp-for="Filtros.TipoFiltroUsuario" />
                     </div>
                     <div class="col-2 col-lg-4 col-sm-2 ps-0 btn-group">
                         <button type="submit" class="btn btn-primary">
@@ -59,7 +59,7 @@
                     <div class="card shadow-sm">
                         <div class="d-flex justify-content-end">
                             <div class="position-absolute" style="right: 16px; top: 16px;">
-                                @if (Model.Cliente)
+                                @if (Model.Filtros.TipoFiltroUsuario == 2 || Model.Filtros.TipoFiltroUsuario == 3)
                                 {
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
@@ -72,7 +72,7 @@
                                         </div>
                                     </div>
                                 }
-                                @if (Model.Mantenimiento)
+                                @if (Model.Filtros.TipoFiltroUsuario == 5)
                                 {
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
@@ -85,7 +85,7 @@
                                         </div>
                                     </div>
                                 }
-                                @if (Model.Mantenimiento)
+                                @if (false)
                                 {
                                     <div class="d-flex justify-content-between aling-items-center">
                                         <div class="btn-group">
@@ -101,7 +101,7 @@
                                 }
                             </div>
                         </div>
-                        <a asp-controller="Propiedad" asp-action="@(Model.Mantenimiento ? "Crear" : "Detalles")" asp-route-codigo="@item.Codigo" class="item-propiedad">
+                        <a asp-controller="Propiedad" asp-action="@(Model.Filtros.TipoFiltroUsuario == 5 ? "EditarPropiedad" : "Detalles")" asp-route-codigo="@item.Codigo" class="item-propiedad">
                             <div class="card-body p-0">
                                 <img class="img-fluid m-0" src="@item.Imagenes[0]" />
                                 <div class="p-3 py-2">
@@ -198,7 +198,7 @@
                             <label asp-for="Filtros.Baños" class="form-label">Baños: </label>
                             <input asp-for="Filtros.Baños" class="form-control" />
                         </div>
-                        <input type="hidden" asp-for="Mantenimiento" />
+                        <input type="hidden" asp-for="Filtros.TipoFiltroUsuario" />
                     </div>
                 </div>
                 <div class="modal-footer">

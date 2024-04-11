@@ -17,7 +17,7 @@ namespace RealEstateApp.Controllers
         private List<MejoraViewModel> mejoras;
         private List<TipoPropiedadViewModel> tiposPropiedad;
         private List<TipoVentaViewModel> tiposVenta;
-        private int tipoUsuario = 0;
+        private int tipoUsuario = 2;
         private int idAgente = 0;
         //los tipos de propiedad y venta serán tablas y no enums
         public PropiedadController(IPropiedadService propiedadRepository)
@@ -124,16 +124,10 @@ namespace RealEstateApp.Controllers
         public async Task<IActionResult> Index(int id)
         {
             ListaPropiedadViewModel vm = new ListaPropiedadViewModel();
-            vm.Mantenimiento = id != 0;
-            List<PropiedadViewModel> prop = propiedades.ToList();
-            //prop = await _propiedadService.GetAllViewModel();
-            if (tipoUsuario == 2 || vm.Mantenimiento)
-            {
-                prop = prop.Where(p => p.Agente.Id == idAgente).ToList();
-            }
-            vm.propiedades = prop;
+            vm.Filtros = new FiltroPropiedadViewModel();
+            vm.Filtros.TipoFiltroUsuario = tipoUsuario * 2 + id;
+            vm.propiedades = GetListaPropiedades(vm.Filtros.TipoFiltroUsuario);
             vm.tiposPropiedad = tiposPropiedad.ToList();
-            vm.Cliente = tipoUsuario == 1;
 
             return View(vm);
         }
@@ -143,18 +137,14 @@ namespace RealEstateApp.Controllers
         {
             if (vm != null)
             {
-                List<PropiedadViewModel> prop = propiedades.ToList();
-                //prop = await _propiedadService.GetAllViewModel();
-                if (tipoUsuario == 2 || vm.Mantenimiento)
-                {
-                    prop = prop.Where(p => p.Agente.Id == idAgente).ToList();
-                }
+                List<PropiedadViewModel> prop = GetListaPropiedades(vm.Filtros.TipoFiltroUsuario);
+
                 vm.propiedades = prop.Where(p => (tiposPropiedad[vm.Filtros.TipoPropiedad] == p.TipoPropiedad || vm.Filtros.TipoPropiedad == 0)
                 && (vm.Filtros.Habitaciones == p.Habitaciones || vm.Filtros.Habitaciones == 0) && (vm.Filtros.Baños == p.Baños || vm.Filtros.Baños == 0)
                 && (vm.Filtros.PrecioMinimo <= p.Valor || vm.Filtros.PrecioMinimo == 0) && (vm.Filtros.PrecioMaximo >= p.Valor || vm.Filtros.PrecioMaximo == 0)
                 && (vm.Filtros.Codigo == null || vm.Filtros.Codigo == "" || p.Codigo.Contains(vm.Filtros.Codigo))).ToList();
                 vm.tiposPropiedad = tiposPropiedad.ToList();
-                vm.Cliente = tipoUsuario == 1;
+
                 return View(vm);
             }
             return RedirectToRoute(new { controller = "Propiedad", action = "Index" });
@@ -257,6 +247,10 @@ namespace RealEstateApp.Controllers
 
             };
 
+            vm.ListaTipoPropiedad = tiposPropiedad.ToList();
+            vm.ListaTipoVenta = tiposVenta.ToList();
+            vm.ListaMejora = mejoras.ToList();
+
             return View("Crear", vm);
         }
 
@@ -298,6 +292,21 @@ namespace RealEstateApp.Controllers
             const string chars = "0123456789";
             return new string(Enumerable.Repeat(chars, 6)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private List<PropiedadViewModel> GetListaPropiedades(int TipoFiltroUsuario)
+        {
+            List<PropiedadViewModel> prop = propiedades.ToList();
+            //prop = await _propiedadService.GetAllViewModel();
+            if (TipoFiltroUsuario == 4 || TipoFiltroUsuario == 5)
+            {
+                prop = prop.Where(p => p.Agente.Id == idAgente).ToList();
+            }
+            else if (TipoFiltroUsuario == 2)
+            {
+                //lista de propiedades favoritas
+            }
+            return prop;
         }
     }
 }

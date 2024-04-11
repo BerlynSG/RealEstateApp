@@ -96,7 +96,7 @@
                         <button type="submit" class="btn btn-primary">
                             @(editMode ? "Guardar Cambios" : "Crear Propiedad")
                         </button>
-                        <a asp-action="Index" class="btn btn-warning">Volver atrás</a>
+                        <a asp-controller="Propiedad" asp-action="Index" asp-route-id="1" class="btn btn-warning">Volver atrás</a>
                     </form>
                 </div>
             </div>
