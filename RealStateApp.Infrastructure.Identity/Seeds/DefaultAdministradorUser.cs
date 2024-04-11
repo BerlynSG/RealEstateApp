@@ -11,7 +11,7 @@ namespace RealEstateApp.Infrastructure.Identity.Seeds
             ApplicationUser adminUser = new()
             {
                 UserName = "Administrador",
-                Email = "administradoruser@email.com",
+                Email = "administradoruser@gmail.com",
                 ImagePath = "",
                 FirstName = "Adminis",
                 LastName = "Trador",
@@ -24,7 +24,7 @@ namespace RealEstateApp.Infrastructure.Identity.Seeds
                 if (user == null)
                 {
                     await userManager.CreateAsync(adminUser, "123Pa$$word!");
-                    await userManager.AddToRoleAsync(adminUser, Roles.Agente.ToString());
+                    await userManager.AddToRoleAsync(adminUser, Roles.Administrador.ToString());
                 }
             }
 

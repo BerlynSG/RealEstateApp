@@ -46,7 +46,6 @@ namespace RealEstateApp.Controllers
                 return View(vm);
             }
         }
-
         public async Task<IActionResult> LogOut()
         {
             await _userService.SignOutAsync();
@@ -71,9 +70,9 @@ namespace RealEstateApp.Controllers
 
             var origin = Request.Headers["origin"];
 
-                if (vm.Rol == 2)
+            if (vm.Rol == 2)
             {
-                RegisterResponse response = await _userService.RegisterAgenteAsync(vm, origin);
+                RegisterResponse response = await _userService.RegisterAgenteAsync(vm, origin, vm.ProfileImage);
                 if (response.HasError)
                 {
                     vm.HasError = response.HasError;
@@ -83,7 +82,7 @@ namespace RealEstateApp.Controllers
             }
             else
             {
-                RegisterResponse response = await _userService.RegisterClienteAsync(vm, origin);
+                RegisterResponse response = await _userService.RegisterClienteAsync(vm, origin, vm.ProfileImage);
                 if (response.HasError)
                 {
                     vm.HasError = response.HasError;
@@ -136,17 +135,6 @@ namespace RealEstateApp.Controllers
                 file.CopyTo(stream);
             }
 
-            if (isEditMode)
-            {
-                string[] oldImagePart = imagePath.Split("/");
-                string oldImagePath = oldImagePart[^1];
-                string completeImageOldPath = Path.Combine(path, oldImagePath);
-
-                if (System.IO.File.Exists(completeImageOldPath))
-                {
-                    System.IO.File.Delete(completeImageOldPath);
-                }
-            }
             return $"{basePath}/{fileName}";
         }
     }
