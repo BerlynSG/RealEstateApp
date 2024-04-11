@@ -17,24 +17,24 @@
                     <form method="post" enctype="multipart/form-data" asp-controller="Propiedad"
                           asp-action="@(editMode ? "EditarPropiedad" : "CrearPropiedad")">
                         <div class="mb-3">
-                            <label asp-for="TipoPropiedad" class="form-label">Tipo de Propiedad:</label>
-                            <select asp-for="TipoPropiedad" class="form-control">
+                            <label asp-for="TipoPropiedadId" class="form-label">Tipo de Propiedad:</label>
+                            <select asp-for="TipoPropiedadId" class="form-control">
                                 @foreach (var tipo in Model.ListaTipoPropiedad)
                                 {
-                                    <option value="@tipo.Nombre">@tipo.Nombre</option>
+                                    <option value="@tipo.Id">@tipo.Nombre</option>
                                 }
                             </select>
-                            <span asp-validation-for="TipoPropiedad" class="text-danger"></span>
+                            <span asp-validation-for="TipoPropiedadId" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="TipoVenta" class="form-label">Tipo de Venta:</label>
-                            <select asp-for="TipoVenta" class="form-control">
+                            <label asp-for="TipoVentaId" class="form-label">Tipo de Venta:</label>
+                            <select asp-for="TipoVentaId" class="form-control">
                                 @foreach (var tipoVenta in Model.ListaTipoVenta)
                                 {
-                                    <option value="@tipoVenta.Nombre">@tipoVenta.Nombre</option>
+                                    <option value="@tipoVenta.Id">@tipoVenta.Nombre</option>
                                 }
                             </select>
-                            <span asp-validation-for="TipoVenta" class="text-danger"></span>
+                            <span asp-validation-for="TipoVentaId" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Valor" class="form-label">Precio:</label>
@@ -62,16 +62,18 @@
                             <span asp-validation-for="Baños" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Mejoras:</label>
+                            <label asp-for="Mejoras" class="form-label">Mejoras: </label>
+                            <input id="mejoras" asp-for="Mejoras" class="form-control" />
                             <div>
                                 @if (Model.ListaMejora != null)
                                 {
                                     @foreach (var mejora in Model.ListaMejora)
                                     {
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="@($"Mejora_{mejora.Nombre}")"
-                                                   name="MejorasSeleccionadas" value="@mejora.Nombre" @(Model.Mejoras != null && Model.Mejoras.Contains(mejora) ? "checked" : "") />
-                                            <label class="form-check-label" for="@($"Mejora_{mejora.Nombre}")">@mejora.Nombre</label>
+                                            <input name="m-@mejora.Id" id="m-@mejora.Id" onchange="añadirMejora(@mejora.Id)"
+                                                class="form-check-input" type="checkbox" @(!string.IsNullOrEmpty(Model.Mejoras)
+                                                && Model.Mejoras.Contains(mejora.Id + ",") ? "checked" : "") />
+                                            <label class="form-check-label" for="m-@mejora.Id">@mejora.Nombre</label>
                                         </div>
                                     }
                                 }

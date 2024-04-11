@@ -46,7 +46,7 @@ namespace RealEstateApp.Controllers
             };
             mejoras = new List<MejoraViewModel>()
             {
-                new(), new(){ Nombre = "Balcon" }, new(){ Nombre = "Sala/Comedor" }, new(){ Nombre = "Cocina" }, new(){ Nombre = "Piscina" }
+                new(), new(){ Id = 1, Nombre = "Balcon" }, new(){ Id = 2, Nombre = "Sala/Comedor" }, new(){ Id = 3, Nombre = "Cocina" }, new(){ Id = 4,Nombre = "Piscina" }
             };
             tiposPropiedad = new List<TipoPropiedadViewModel>()
             {
@@ -199,14 +199,14 @@ namespace RealEstateApp.Controllers
                 PropiedadViewModel nuevaPropiedad = new PropiedadViewModel
                 {
                     Codigo = codigo,
-                    TipoPropiedad = tiposPropiedad.Where(v => v.Id == vm.TipoPropiedad).First(),
-                    TipoVenta = tiposVenta.Where(v => v.Id == vm.TipoVenta).First(),
+                    TipoPropiedad = tiposPropiedad.Where(v => v.Id == vm.TipoPropiedadId).First(),
+                    TipoVenta = tiposVenta.Where(v => v.Id == vm.TipoVentaId).First(),
                     Baños = vm.Baños,
                     Habitaciones = vm.Habitaciones,
                     Tamaño = vm.Tamaño,
                     Descripcion = vm.Descripcion,
                     Agente = agentes.FirstOrDefault(a => a.Id == idAgente),
-                    Mejoras = vm.Mejoras.Select(m => new MejoraViewModel { Nombre = m.Nombre }).ToList(),
+                    Mejoras = vm.Mejoras.Split(",").Select(ms => mejoras.FirstOrDefault(m => m.Id == int.Parse(ms))).ToList(),
                     Imagenes = vm.Imagenes
                 };
 
@@ -235,14 +235,14 @@ namespace RealEstateApp.Controllers
             SavePropiedadViewModel vm = new SavePropiedadViewModel
             {
                 Codigo = propiedad.Codigo,
-                TipoPropiedad = propiedad.TipoPropiedad.Id,
-                TipoVenta = propiedad.TipoVenta.Id,
+                TipoPropiedadId = propiedad.TipoPropiedad.Id,
+                TipoVentaId = propiedad.TipoVenta.Id,
                 Valor = propiedad.Valor,
                 Baños = propiedad.Baños,
                 Habitaciones = propiedad.Habitaciones,
                 Tamaño = propiedad.Tamaño,
                 Descripcion = propiedad.Descripcion,
-                Mejoras = propiedad.Mejoras,
+                Mejoras = string.Join(",", propiedad.Mejoras.Select(m => m.Id)) + ",",
                 Imagenes = propiedad.Imagenes,
 
             };
@@ -266,14 +266,14 @@ namespace RealEstateApp.Controllers
                     return RedirectToAction("Index", new { id = 1 });
                 }
 
-                propiedad.TipoPropiedad = tiposPropiedad.Where(v => v.Id == vm.TipoPropiedad).First();
-                propiedad.TipoVenta = tiposVenta.Where(v => v.Id == vm.TipoVenta).First();
+                propiedad.TipoPropiedad = tiposPropiedad.Where(v => v.Id == vm.TipoPropiedadId).First();
+                propiedad.TipoVenta = tiposVenta.Where(v => v.Id == vm.TipoVentaId).First();
                 propiedad.Valor = vm.Valor;
                 propiedad.Baños = vm.Baños;
                 propiedad.Habitaciones = vm.Habitaciones;
                 propiedad.Tamaño = vm.Tamaño;
                 propiedad.Descripcion = vm.Descripcion;
-                propiedad.Mejoras = vm.Mejoras;
+                propiedad.Mejoras = vm.Mejoras.Split(",").Select(ms => mejoras.FirstOrDefault(m => m.Id == int.Parse(ms))).ToList();
                 propiedad.Imagenes = vm.Imagenes;
 
                 TempData["SuccessMessage"] = "La propiedad se editó correctamente.";

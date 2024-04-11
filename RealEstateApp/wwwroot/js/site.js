@@ -12,3 +12,16 @@ function mostrarEliminar(id) {
     mostrarModal("#eliminarModal");
     document.getElementById('EliminarCodigo').value = id;
 }
+
+function añadirMejora(id) {
+    var mejoras = document.getElementById('mejoras');
+    var check = document.getElementById('m-' + id);
+    var nuevo = id + ",";
+    if (mejoras.value.includes(nuevo)) {
+        mejoras.value = mejoras.value.replace(nuevo, "");
+        check.checked = false;
+    } else {
+        mejoras.value += id + ",";
+        check.checked = true;
+    }
+}

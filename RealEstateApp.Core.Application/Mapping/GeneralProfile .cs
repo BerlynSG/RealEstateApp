@@ -32,19 +32,22 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ReverseMap();*/
 
             CreateMap<Propiedad, PropiedadViewModel>()
+                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path)))
                 .ReverseMap()
                 .ForMember(p => p.Favoritos, opt => opt.Ignore())
                 .ForMember(p => p.AgenteId, opt => opt.Ignore())
                 .ForMember(p => p.TipoVentaId, opt => opt.Ignore())
                 .ForMember(p => p.TipoPropiedadId, opt => opt.Ignore())
-                .ForMember(p => p.Imagenes, opt => opt.Ignore());// Se debe hacer una conversión de los datos
+                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => new ImagenPropiedad() { Path = i })));
 
             /*CreateMap<Propiedad, SavePropiedadViewModel>()
+                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path)))
                 .ReverseMap()
-                .ForMember(p => p.TransaccionesResividas, opt => opt.Ignore())
-                .ForMember(p => p.Transacciones, opt => opt.Ignore())
-                .ForMember(p => p.Beneficiarios, opt => opt.Ignore())
-                .ForMember(p => p.MontoPrincipal, opt => opt.Ignore());
+                .ForMember(p => p.Favoritos, opt => opt.Ignore())
+                .ForMember(p => p.AgenteId, opt => opt.Ignore())
+                .ForMember(p => p.TipoVentaId, opt => opt.Ignore())
+                .ForMember(p => p.TipoPropiedadId, opt => opt.Ignore())
+                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => new ImagenPropiedad() { Path = i })));
 
             CreateMap<TipoPropiedad, TipoPropiedadViewModel>()
                 .ForMember(vm => vm.Entrada, opt => opt.Ignore())
