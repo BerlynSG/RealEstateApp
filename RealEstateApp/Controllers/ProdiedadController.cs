@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Mejora;
@@ -12,6 +13,7 @@ namespace RealEstateApp.Controllers
     public class PropiedadController : Controller
     {
         private readonly IPropiedadService _propiedadService;
+        private readonly IMapper _mapper;
         private List<PropiedadViewModel> propiedades;
         private List<AgenteViewModel> agentes;
         private List<MejoraViewModel> mejoras;
@@ -20,9 +22,10 @@ namespace RealEstateApp.Controllers
         private int tipoUsuario = 2;
         private int idAgente = 0;
         //los tipos de propiedad y venta serán tablas y no enums
-        public PropiedadController(IPropiedadService propiedadRepository)
+        public PropiedadController(IPropiedadService propiedadRepository, IMapper mapper)
         {
             _propiedadService = propiedadRepository;
+            _mapper = mapper;
             agentes = new List<AgenteViewModel>()
             {
                 new()
@@ -232,7 +235,9 @@ namespace RealEstateApp.Controllers
                 return RedirectToAction("Index", new { id = 1 });
             }
 
-            SavePropiedadViewModel vm = new SavePropiedadViewModel
+            SavePropiedadViewModel vm = _propiedadService.convertir(propiedad);
+
+            /*SavePropiedadViewModel vm = new SavePropiedadViewModel
             {
                 Codigo = propiedad.Codigo,
                 TipoPropiedadId = propiedad.TipoPropiedad.Id,
@@ -245,7 +250,7 @@ namespace RealEstateApp.Controllers
                 Mejoras = string.Join(",", propiedad.Mejoras.Select(m => m.Id)),
                 Imagenes = propiedad.Imagenes,
 
-            };
+            };*/
 
             vm.ListaTipoPropiedad = tiposPropiedad.ToList();
             vm.ListaTipoVenta = tiposVenta.ToList();

@@ -26,5 +26,11 @@ namespace RealEstateApp.Core.Application.Services
                 && (filtro.Codigo == null || filtro.Codigo == "" || p.Codigo.Contains(filtro.Codigo))).ToList();
             return null;
         }
+
+        public SavePropiedadViewModel convertir(PropiedadViewModel model)
+        {
+            Propiedad propiedad = _mapper.Map<Propiedad>(model);
+            return _mapper.Map<SavePropiedadViewModel>(propiedad);
+        }
     }
 }
