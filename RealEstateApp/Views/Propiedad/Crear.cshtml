@@ -8,14 +8,14 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-6 offset-3">
-            <div class="card">
-                <div class="card-header bg-dark text-light">
-                    <h4>@ViewData["Title"]</h4>
-                </div>
-                <div class="card-body">
-                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-                    <form method="post" enctype="multipart/form-data" asp-controller="Propiedad"
-                          asp-action="@(editMode ? "EditarPropiedad" : "CrearPropiedad")">
+            <form method="post" enctype="multipart/form-data" asp-controller="Propiedad"
+                  asp-action="@(editMode ? "EditarPropiedad" : "CrearPropiedad")">
+                <div class="card">
+                    <div class="card-header bg-dark text-light">
+                        <h4>@ViewData["Title"]</h4>
+                    </div>
+                    <div class="card-body">
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                         <div class="mb-3">
                             <label asp-for="TipoPropiedadId" class="form-label">Tipo de Propiedad:</label>
                             <select asp-for="TipoPropiedadId" class="form-control">
@@ -43,7 +43,7 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="Descripcion" class="form-label">Descripción:</label>
-                            <input asp-for="Descripcion" class="form-control" />
+                            <textarea asp-for="Descripcion" class="form-control"></textarea>
                             <span asp-validation-for="Descripcion" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
@@ -52,56 +52,46 @@
                             <span asp-validation-for="Tamaño" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="Habitaciones" class="form-label">Habitaciones:</label>
+                            <label asp-for="Habitaciones" class="form-label">Cantidad de Habitaciones:</label>
                             <input asp-for="Habitaciones" class="form-control" />
                             <span asp-validation-for="Habitaciones" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="Baños" class="form-label">Baños:</label>
+                            <label asp-for="Baños" class="form-label">Cantidad de Baños:</label>
                             <input asp-for="Baños" class="form-control" />
                             <span asp-validation-for="Baños" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Mejoras" class="form-label">Mejoras: </label>
-                            <input id="mejoras" asp-for="Mejoras" class="form-control" />
-                            <div>
-                                @if (Model.ListaMejora != null)
+                            <input type="hidden" id="mejoras" asp-for="Mejoras" class="form-control" />
+                            <div class="form-control overflow-auto" style="max-height: 100px;">
+                                @foreach (var mejora in Model.ListaMejora)
                                 {
-                                    @foreach (var mejora in Model.ListaMejora)
-                                    {
-                                        <div class="form-check">
-                                            <input name="m-@mejora.Id" id="m-@mejora.Id" onchange="añadirMejora(@mejora.Id)"
-                                                class="form-check-input" type="checkbox" @(!string.IsNullOrEmpty(Model.Mejoras)
-                                                && Model.Mejoras.Contains(mejora.Id + ",") ? "checked" : "") />
-                                            <label class="form-check-label" for="m-@mejora.Id">@mejora.Nombre</label>
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <p>La lista de mejoras (ListaMejora) es nula en el modelo.</p>
+                                    <div class="form-check">
+                                        <input name="m-@mejora.Id" id="m-@mejora.Id" onchange="añadirMejora(@mejora.Id)"
+                                            class="form-check-input" type="checkbox" @(!string.IsNullOrEmpty(Model.Mejoras)
+                                            && Model.Mejoras.Contains(mejora.Id + ",") ? "checked" : "") />
+                                        <label class="form-check-label" for="m-@mejora.Id">@mejora.Nombre</label>
+                                    </div>
                                 }
                             </div>
                             <span asp-validation-for="Mejoras" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Imagenes" class="form-label">Imágenes (máximo 4):</label>
-                            <input type="file" name="Imagenes" accept="image/*" multiple class="form-control-file" />
+                            <input type="file" asp-for="Imagenes" accept="image/*" multiple class="form-control" />
                             <span asp-validation-for="Imagenes" class="text-danger"></span>
                         </div>
-
-                        @if (editMode)
-                        {
-                            <input type="hidden" asp-for="Codigo" />
-                        }
-
+                        <input type="hidden" asp-for="Codigo" />
+                    </div>
+                    <div class="card-footer">
                         <button type="submit" class="btn btn-primary">
                             @(editMode ? "Guardar Cambios" : "Crear Propiedad")
                         </button>
                         <a asp-controller="Propiedad" asp-action="Index" asp-route-id="1" class="btn btn-warning">Volver atrás</a>
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
