@@ -242,7 +242,7 @@ namespace RealEstateApp.Controllers
                 Habitaciones = propiedad.Habitaciones,
                 Tamaño = propiedad.Tamaño,
                 Descripcion = propiedad.Descripcion,
-                Mejoras = string.Join(",", propiedad.Mejoras.Select(m => m.Id)) + ",",
+                Mejoras = string.Join(",", propiedad.Mejoras.Select(m => m.Id)),
                 Imagenes = propiedad.Imagenes,
 
             };

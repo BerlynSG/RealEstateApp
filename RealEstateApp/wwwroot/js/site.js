@@ -16,12 +16,20 @@ function mostrarEliminar(id) {
 function añadirMejora(id) {
     var mejoras = document.getElementById('mejoras');
     var check = document.getElementById('m-' + id);
-    var nuevo = id + ",";
-    if (mejoras.value.includes(nuevo)) {
-        mejoras.value = mejoras.value.replace(nuevo, "");
+    if (mejoras.value.includes(id)) {
+        if (mejoras.value.indexOf("," + id) != -1) {
+            mejoras.value = mejoras.value.replace("," + id, "");
+        } else if (mejoras.value.indexOf(id + ",") != -1) {
+            mejoras.value = mejoras.value.replace(id + ",", "");
+        } else if (mejoras.value == id + "") {
+            mejoras.value = "";
+        }
         check.checked = false;
     } else {
-        mejoras.value += id + ",";
+        if (mejoras.value != "") {
+            mejoras.value += ",";
+        }
+        mejoras.value += id;
         check.checked = true;
     }
 }

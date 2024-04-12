@@ -3,6 +3,11 @@
 @{
     bool editMode = !string.IsNullOrEmpty(Model.Codigo);
     ViewData["Title"] = editMode ? "Editar Propiedad" : "Crear Propiedad";
+    string[] mejoras;
+    if (!string.IsNullOrEmpty(Model.Mejoras))
+        mejoras = Model.Mejoras.Split(",");
+    else
+        mejoras = new string[0];
 }
 
 <div class="container-fluid">
@@ -69,8 +74,8 @@
                                 {
                                     <div class="form-check">
                                         <input name="m-@mejora.Id" id="m-@mejora.Id" onchange="añadirMejora(@mejora.Id)"
-                                            class="form-check-input" type="checkbox" @(!string.IsNullOrEmpty(Model.Mejoras)
-                                            && Model.Mejoras.Contains(mejora.Id + ",") ? "checked" : "") />
+                                            class="form-check-input" type="checkbox"
+                                            @(mejoras.Contains(mejora.Id + "") ? "checked" : "") />
                                         <label class="form-check-label" for="m-@mejora.Id">@mejora.Nombre</label>
                                     </div>
                                 }

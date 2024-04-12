@@ -7,24 +7,35 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
 {
     public class SavePropiedadViewModel
     {
-        public string Codigo { get; set; }
+        public string? Codigo { get; set; }
 
-        [Required(ErrorMessage = "Se requiere tener asignado un tipo de propiedad.")]
+        [Required(ErrorMessage = "Se requiere tener asignado un Tipo de Propiedad.")]
         public int TipoPropiedadId { get; set; }
+
         public List<string> Imagenes { get; set; }
 
-        [Required(ErrorMessage = "Se requiere el nombre personal del usuario.")]
-        [DataType(DataType.Text)]
+        [Required(ErrorMessage = "Se requiere tener asignado un Tipo de Venta.")]
         public int TipoVentaId { get; set; }
+
+        [Required(ErrorMessage = "Se requiere tener asignado Precio.")]
         public double Valor { get; set; }
+
+        [Required(ErrorMessage = "Se requiere tener asignado una Candidad de Habitaciones.")]
         public int Habitaciones { get; set; }
+
+        [Required(ErrorMessage = "Se requiere tener asignado una Cantidad de Baños.")]
         public int Baños { get; set; }
+
+        [Required(ErrorMessage = "Se requiere tener asignado un Tamaño.")]
         public double Tamaño { get; set; }
+
+        [Required(ErrorMessage = "Se requiere tener asignado una Descripción.")]
         public string Descripcion { get; set; }
+
         public int AgenteId { get; set; }
-        //public List<MejoraViewModel> Mejoras { get; set; } // Esto hay que arreglarlo
+
+        [Required(ErrorMessage = "Se requiere tener asignado al menos una Mejora.")]
         public string Mejoras { get; set; }
-        //Posible solución: un input de texto oculto donde se agrega o se elimina las opciones en forma de texto dividido por comas y una lista de checkbox que hace la anterior función
 
         public List<TipoPropiedadViewModel>? ListaTipoPropiedad { get; set; }
         public List<TipoVentaViewModel>? ListaTipoVenta { get; set; }
