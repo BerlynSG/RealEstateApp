@@ -62,12 +62,12 @@ namespace RealEstateApp.Core.Application.Mapping
                     .Select(m => new MejoraPropiedad() { MejoraId = int.Parse(m) }).ToList()));
 
             CreateMap<TipoPropiedad, TipoPropiedadViewModel>()
+                .ForMember(p => p.CantidadPropiedades, opt => opt.MapFrom(p => p.Propiedades.Count))
                 .ReverseMap()
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
             CreateMap<TipoPropiedad, SaveTipoPropiedadViewModel>()
                 .ReverseMap()
-                .ForMember(p => p.Id, opt => opt.Ignore())
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
             CreateMap<TipoVenta, TipoVentaViewModel>()

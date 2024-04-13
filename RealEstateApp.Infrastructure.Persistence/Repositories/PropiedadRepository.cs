@@ -15,25 +15,40 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
 
         public async Task<List<Propiedad>> GetAllWithInclude()
         {
-            return await _context.Set<Propiedad>().ToListAsync();
+            return await _context.Set<Propiedad>()
+                .Include(p => p.TipoPropiedad)
+                .Include(p => p.TipoVenta)
+                .Include(p => p.Mejoras)
+                .ToListAsync();
         }
 
         public async Task<List<Propiedad>> GetAllByAgente(string agenteId)
         {
-            return await _context.Set<Propiedad>().Where(p => p.AgenteId == agenteId).ToListAsync();
+            return await _context.Set<Propiedad>()
+                .Include(p => p.TipoPropiedad)
+                .Include(p => p.TipoVenta)
+                .Include(p => p.Mejoras)
+                .Where(p => p.AgenteId == agenteId).ToListAsync();
         }
 
         public async Task<List<Propiedad>> GetAllFavoritos(string clienteId)
         {
             List<PropiedadFavorita> favoritos = await _context.Set<PropiedadFavorita>()
                 .Where(f => f.ClienteId == clienteId)
-                .Include(f => f.Propiedad).ToListAsync();
+                .Include(f => f.Propiedad).ThenInclude(p => p.TipoPropiedad)
+                .Include(f => f.Propiedad).ThenInclude(p => p.TipoVenta)
+                .Include(f => f.Propiedad).ThenInclude(p => p.Mejoras)
+                .ToListAsync();
             return favoritos.Select(f => f.Propiedad).ToList();
         }
 
         public async Task<Propiedad?> GetByCodigo(string codigo)
         {
-            Propiedad? propiedad = await _context.Set<Propiedad>().FirstOrDefaultAsync(p => p.Codigo == codigo);
+            Propiedad? propiedad = await _context.Set<Propiedad>()
+                .Include(p => p.TipoPropiedad)
+                .Include(p => p.TipoVenta)
+                .Include(p => p.Mejoras)
+                .FirstOrDefaultAsync(p => p.Codigo == codigo);
             return propiedad;
         }
 
