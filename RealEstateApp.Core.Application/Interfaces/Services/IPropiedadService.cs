@@ -7,5 +7,7 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
     {
         Task<List<PropiedadViewModel>> GetAllFilteredViewModel(FiltroPropiedadViewModel filtro);
         SavePropiedadViewModel convertir(PropiedadViewModel model);
+        Task<PropiedadViewModel> GetByCodigoViewModel(string codigo);
+        Task<SavePropiedadViewModel> GetByCodigoSaveViewModel(string codigo);
     }
 }
