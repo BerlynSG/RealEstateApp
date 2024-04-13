@@ -9,9 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddApplicationLayer();
+builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddSession();
 builder.Services.AddSharedInfrastructure(builder.Configuration);
 builder.Services.AddScoped<LoginAuthorize>();

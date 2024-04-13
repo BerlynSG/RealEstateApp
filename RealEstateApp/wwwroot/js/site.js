@@ -12,3 +12,24 @@ function mostrarEliminar(id) {
     mostrarModal("#eliminarModal");
     document.getElementById('EliminarCodigo').value = id;
 }
+
+function añadirMejora(id) {
+    var mejoras = document.getElementById('mejoras');
+    var check = document.getElementById('m-' + id);
+    if (mejoras.value.includes(id)) {
+        if (mejoras.value.indexOf("," + id) != -1) {
+            mejoras.value = mejoras.value.replace("," + id, "");
+        } else if (mejoras.value.indexOf(id + ",") != -1) {
+            mejoras.value = mejoras.value.replace(id + ",", "");
+        } else if (mejoras.value == id + "") {
+            mejoras.value = "";
+        }
+        check.checked = false;
+    } else {
+        if (mejoras.value != "") {
+            mejoras.value += ",";
+        }
+        mejoras.value += id;
+        check.checked = true;
+    }
+}

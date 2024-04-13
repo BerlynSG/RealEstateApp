@@ -10,8 +10,8 @@ namespace RealEstateApp.Core.Application
         public static void AddApplicationLayer(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             #region Services
-            //services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPropiedadService, PropiedadService>();
             services.AddTransient<ITipoPropiedadService, TipoPropiedadService>();

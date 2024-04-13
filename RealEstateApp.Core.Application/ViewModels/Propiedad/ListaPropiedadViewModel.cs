@@ -7,9 +7,5 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
         public List<PropiedadViewModel> propiedades { get; set; }
         public List<TipoPropiedadViewModel> tiposPropiedad { get; set; }
         public FiltroPropiedadViewModel Filtros { get; set; }
-
-        //de preuba
-        public bool Cliente { get; set; }
-        public bool Mantenimiento { get; set; }
     }
 }

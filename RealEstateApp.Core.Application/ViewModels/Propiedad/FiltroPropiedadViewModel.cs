@@ -2,6 +2,9 @@
 {
     public class FiltroPropiedadViewModel
     {
+        public int TipoFiltroUsuario { get; set; }
+        public string UsuarioId { get; set; }
+
         public int TipoPropiedad { get; set; }
         public double PrecioMinimo { get; set; }
         public double PrecioMaximo { get; set; }

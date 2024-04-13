@@ -32,34 +32,63 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ReverseMap();*/
 
             CreateMap<Propiedad, PropiedadViewModel>()
+                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path).ToList()))
+                .ForMember(p => p.Agente, opt => opt.Ignore())
+                .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras
+                    .Select(m => new MejoraViewModel () { Id = m.MejoraId })))
                 .ReverseMap()
                 .ForMember(p => p.Favoritos, opt => opt.Ignore())
                 .ForMember(p => p.AgenteId, opt => opt.Ignore())
-                .ForMember(p => p.TipoVentaId, opt => opt.Ignore())
-                .ForMember(p => p.TipoPropiedadId, opt => opt.Ignore())
-                .ForMember(p => p.Imagenes, opt => opt.Ignore());// Se debe hacer una conversión de los datos
+                .ForMember(p => p.TipoVentaId, opt => opt.MapFrom(p => p.TipoVenta.Id))
+                .ForMember(p => p.TipoPropiedadId, opt => opt.MapFrom(p => p.TipoPropiedad.Id))
+                .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras
+                    .Select(m => new MejoraPropiedad() { MejoraId = m.Id, PropiedadId = p.Id })))
+                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes
+                    .Select(i => new ImagenPropiedad() { PropiedadId = p.Id, Path = i }).ToList()));
 
-            /*CreateMap<Propiedad, SavePropiedadViewModel>()
+            CreateMap<Propiedad, SavePropiedadViewModel>()
+                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path)))
+                .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => string.Join(",", p.Mejoras.Select(m => m.MejoraId))))
+                .ForMember(p => p.ListaMejora, opt => opt.Ignore())
+                .ForMember(p => p.ListaTipoPropiedad, opt => opt.Ignore())
+                .ForMember(p => p.ListaTipoVenta, opt => opt.Ignore())
                 .ReverseMap()
-                .ForMember(p => p.TransaccionesResividas, opt => opt.Ignore())
-                .ForMember(p => p.Transacciones, opt => opt.Ignore())
-                .ForMember(p => p.Beneficiarios, opt => opt.Ignore())
-                .ForMember(p => p.MontoPrincipal, opt => opt.Ignore());
+                .ForMember(p => p.Id, opt => opt.Ignore())
+                .ForMember(p => p.Favoritos, opt => opt.Ignore())
+                .ForMember(p => p.TipoVenta, opt => opt.Ignore())
+                .ForMember(p => p.TipoPropiedad, opt => opt.Ignore())
+                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => new ImagenPropiedad() { Path = i })))
+                .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras.Split(",", StringSplitOptions.None)
+                    .Select(m => new MejoraPropiedad() { MejoraId = int.Parse(m) }).ToList()));
 
             CreateMap<TipoPropiedad, TipoPropiedadViewModel>()
-                .ForMember(vm => vm.Entrada, opt => opt.Ignore())
-                .ForMember(vm => vm.Salida, opt => opt.Ignore())
+                .ForMember(p => p.CantidadPropiedades, opt => opt.MapFrom(p => p.Propiedades.Count))
                 .ReverseMap()
-                .ForMember(p => p.Fecha, opt => opt.Ignore())
-                .ForMember(p => p.DesdeCuenta, opt => opt.Ignore())
-                .ForMember(p => p.HastaCuenta, opt => opt.Ignore())
-                .ForMember(p => p.DesdeCuentaId, opt => opt.Ignore())
-                .ForMember(p => p.HastaCuentaId, opt => opt.Ignore());
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
             CreateMap<TipoPropiedad, SaveTipoPropiedadViewModel>()
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
+
+            CreateMap<TipoVenta, TipoVentaViewModel>()
+                .ReverseMap()
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
             CreateMap<TipoVenta, SaveTipoVentaViewModel>()
+                .ReverseMap()
+                .ForMember(p => p.Id, opt => opt.Ignore())
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
+
+            CreateMap<Mejora, MejoraViewModel>()
+                .ReverseMap()
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
+
+            CreateMap<Mejora, SaveMejoraViewModel>()
+                .ReverseMap()
+                .ForMember(p => p.Id, opt => opt.Ignore())
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
+
+            /*CreateMap<TipoVenta, SaveTipoVentaViewModel>()
                 .ReverseMap()
                 .ForMember(t => t.Id, opt => opt.Ignore())
                 .ForMember(t => t.HastaCuenta, opt => opt.Ignore())
