@@ -105,6 +105,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
+                //Agregar usuario cliente
                 await _userManager.AddToRoleAsync(user, Roles.Cliente.ToString());
                 var verificationUri = await SendVerificationEmailUri(user, origin);
                 await _emailService.SendAsync(new Core.Application.Dtos.Email.EmailRequest()
@@ -123,24 +124,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             return response;
         }
 
-        private async Task<string> SaveProfileImageAsync(IFormFile imageFile)
-        {
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profile");
-            if (!Directory.Exists(uploadsFolder))
-            {
-                Directory.CreateDirectory(uploadsFolder);
-            }
-
-            var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await imageFile.CopyToAsync(fileStream);
-            }
-
-            return Path.Combine("images", "profile", uniqueFileName).Replace("\\", "/");
-        }
+       
 
         public async Task<RegisterResponse> RegisterAgenteUserAsync(RegisterRequest request, string origin, IFormFile profileImage)
         {
@@ -190,6 +174,121 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             return response;
         }
 
+        public async Task<RegisterResponse> RegisterAdminUserAsync(RegisterRequest request, string origin)
+        {
+            RegisterResponse response = new RegisterResponse { HasError = false };
+
+            var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
+            if (userWithSameUserName != null)
+            {
+                response.HasError = true;
+                response.Error = $"Nombre de usuario '{request.UserName}' ya está tomado";
+                return response;
+            }
+
+            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
+            if (userWithSameEmail != null)
+            {
+                response.HasError = true;
+                response.Error = $"Email '{request.Email}' ya está registrado";
+                return response;
+            }
+
+            var user = new ApplicationUser
+            {                
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Cedula = request.Cedula,
+                Email = request.Email,                
+                UserName = request.UserName,
+                Rol = request.Rol
+            };
+
+            _userManager.Options.SignIn.RequireConfirmedEmail = false;
+
+            var result = await _userManager.CreateAsync(user, request.Password);
+            if (result.Succeeded)
+            {
+                // Agregar rol de adminstrador
+                await _userManager.AddToRoleAsync(user, Roles.Administrador.ToString());
+            }
+            else
+            {
+                response.HasError = true;
+                response.Error = $"Ha ocurrido un error registrando al usuario.";
+                return response;
+            }
+
+            return response;
+        }
+
+        public async Task<RegisterResponse> RegisterDesarrolladorUserAsync(RegisterRequest request, string origin)
+        {
+            RegisterResponse response = new RegisterResponse { HasError = false };
+
+            var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
+            if (userWithSameUserName != null)
+            {
+                response.HasError = true;
+                response.Error = $"Nombre de usuario '{request.UserName}' ya está tomado";
+                return response;
+            }
+
+            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
+            if (userWithSameEmail != null)
+            {
+                response.HasError = true;
+                response.Error = $"Email '{request.Email}' ya está registrado";
+                return response;
+            }
+
+            var user = new ApplicationUser
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Cedula = request.Cedula,
+                Email = request.Email,
+                UserName = request.UserName,
+                Rol = request.Rol
+            };
+
+            _userManager.Options.SignIn.RequireConfirmedEmail = false;
+
+            var result = await _userManager.CreateAsync(user, request.Password);
+            if (result.Succeeded)
+            {
+                // Agregar rol de Desarrollador
+                await _userManager.AddToRoleAsync(user, Roles.Desarrollador.ToString());
+            }
+            else
+            {
+                response.HasError = true;
+                response.Error = $"Ha ocurrido un error registrando al usuario.";
+                return response;
+            }
+
+            return response;
+        }
+
+        private async Task<string> SaveProfileImageAsync(IFormFile imageFile)
+        {
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profile");
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+
+            return Path.Combine("images", "profile", uniqueFileName).Replace("\\", "/");
+        }
+
         public async Task<string> ConfirmAccountAsync(string userId, string token)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -208,6 +307,63 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             {
                 return $"Ocurrió un error al confirmar {user.Email}.";
             }
+        }
+
+        public async Task<UpdateResponse> UpdateUserAsync(UpdateRequest request, string id)
+        {
+            UpdateResponse response = new();
+            response.HasError = false;
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                if (user.Rol == (int)Roles.Agente)
+                {
+                    user.FirstName = request.FirstName;
+                    user.LastName = request.LastName;
+                    user.PhoneNumber = request.PhoneNumber;                    
+                    user.ImagePath = request.ImagePath;
+
+                    var userUpdated = await _userManager.UpdateAsync(user);
+                    if (!userUpdated.Succeeded)
+                    {
+                        response.HasError = true;
+                        response.Error = "Error intentando actualizar al usuario";
+                        return response;
+
+                    }
+                    return response;
+                }
+                else
+                {
+                    if (user.Rol == (int)Roles.Administrador)
+                    {
+                        user.FirstName = request.FirstName;
+                        user.LastName = request.LastName;
+                        user.Cedula = request.Cedula;
+                        user.UserName = request.UserName;
+                        user.Email = request.Email;
+                        user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);
+
+                        var userUpdated = await _userManager.UpdateAsync(user);
+                        if (!userUpdated.Succeeded)
+                        {
+                            response.HasError = true;
+                            response.Error = "Error intentando actualizar al usuario";
+                            return response;
+
+                        }
+                        return response;
+                    }
+                }
+
+            }
+            else
+            {
+                response.HasError = true;
+                response.Error = $"No existen cuentas con el id {id}";
+                return response;
+            }
+            return response;
         }
 
         /*public async Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request, string origin)
