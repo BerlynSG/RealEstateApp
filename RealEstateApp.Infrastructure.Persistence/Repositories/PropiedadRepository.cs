@@ -52,7 +52,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
             return propiedad;
         }
 
-        public override async Task<Propiedad> AddAsync(Propiedad entity)
+        /*public override async Task<Propiedad> AddAsync(Propiedad entity)
         {
             string codigo = GenerarCodigoUnico();
             while (GetByCodigo(codigo) != null)
@@ -74,6 +74,6 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
             const string chars = "0123456789";
             return new string(Enumerable.Repeat(chars, 6)
               .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
+        }*/
     }
 }

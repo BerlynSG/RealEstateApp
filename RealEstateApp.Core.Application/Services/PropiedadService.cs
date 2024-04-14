@@ -16,6 +16,14 @@ namespace RealEstateApp.Core.Application.Services
             _mapper = mapper;
         }
 
+        public override Task<SavePropiedadViewModel> Add(SavePropiedadViewModel vm)
+        {
+            vm.Codigo = GenerarCodigoUnico();
+            vm.Imagenes = null;
+            vm.Mejoras = null;
+            return base.Add(vm);
+        }
+
         public async Task<List<PropiedadViewModel>> GetAllFilteredViewModel(FiltroPropiedadViewModel filtro)
         {
             List<Propiedad> propiedades;
@@ -55,6 +63,14 @@ namespace RealEstateApp.Core.Application.Services
         {
             Propiedad propiedad = _mapper.Map<Propiedad>(model);
             return _mapper.Map<SavePropiedadViewModel>(propiedad);
+        }
+
+        private string GenerarCodigoUnico()
+        {
+            Random random = new Random();
+            const string chars = "0123456789";
+            return new string(Enumerable.Repeat(chars, 6)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

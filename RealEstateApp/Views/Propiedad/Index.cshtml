@@ -103,7 +103,10 @@
                         </div>
                         <a asp-controller="Propiedad" asp-action="@(Model.Filtros.TipoFiltroUsuario == 5 ? "EditarPropiedad" : "Detalles")" asp-route-codigo="@item.Codigo" class="item-propiedad">
                             <div class="card-body p-0">
-                                <img class="img-fluid m-0" src="@item.Imagenes[0]" />
+                                @if(item.Imagenes != null && item.Imagenes.Count > 0)
+                                {
+                                    <img class="img-fluid m-0" src="@item.Imagenes[0]" />
+                                }
                                 <div class="p-3 py-2">
                                     <h4> <b> @item.TipoPropiedad.Nombre </b></h4>
                                     <p class="m-0">

@@ -1,4 +1,5 @@
-﻿using RealEstateApp.Core.Application.ViewModels.Mejora;
+﻿using Microsoft.AspNetCore.Http;
+using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +13,7 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
         [Required(ErrorMessage = "Se requiere tener asignado un Tipo de Propiedad.")]
         public int TipoPropiedadId { get; set; }
 
-        public List<string> Imagenes { get; set; }
+        public List<string>? Imagenes { get; set; }
 
         [Required(ErrorMessage = "Se requiere tener asignado un Tipo de Venta.")]
         public int TipoVentaId { get; set; }
@@ -34,8 +35,10 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
 
         public int AgenteId { get; set; }
 
-        [Required(ErrorMessage = "Se requiere tener asignado al menos una Mejora.")]
-        public string Mejoras { get; set; }
+        //[Required(ErrorMessage = "Se requiere tener asignado al menos una Mejora.")]
+        public string? Mejoras { get; set; }
+
+        public IList<IFormFile>? ImagenesFiles { get; set; }
 
         public List<TipoPropiedadViewModel>? ListaTipoPropiedad { get; set; }
         public List<TipoVentaViewModel>? ListaTipoVenta { get; set; }
