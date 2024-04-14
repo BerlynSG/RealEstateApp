@@ -20,7 +20,7 @@ namespace RealEstateApp.Controllers
         //private List<MejoraViewModel> mejoras;
         //private List<TipoPropiedadViewModel> tiposPropiedad;
         //private List<TipoVentaViewModel> tiposVenta;
-        private int tipoUsuario = 1;
+        private int tipoUsuario = 0;
         private int idAgente = 0;
         //los tipos de propiedad y venta serán tablas y no enums
         public PropiedadController(IPropiedadService propiedadRepository, ITipoPropiedadService tipoPropiedadService,
@@ -135,6 +135,7 @@ namespace RealEstateApp.Controllers
             vm.Filtros.TipoFiltroUsuario = tipoUsuario * 2 + id;
             vm.propiedades = await _propiedadService.GetAllFilteredViewModel(vm.Filtros);
             vm.tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
+            if (vm.Filtros.TipoFiltroUsuario == 1) vm.Filtros.TipoFiltroUsuario = 5;
 
             return View(vm);
         }

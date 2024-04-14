@@ -19,8 +19,6 @@ namespace RealEstateApp.Core.Application.Services
         public override Task<SavePropiedadViewModel> Add(SavePropiedadViewModel vm)
         {
             vm.Codigo = GenerarCodigoUnico();
-            vm.Imagenes = null;
-            vm.Mejoras = null;
             return base.Add(vm);
         }
 

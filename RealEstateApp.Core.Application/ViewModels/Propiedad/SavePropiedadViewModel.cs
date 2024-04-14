@@ -8,6 +8,7 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
 {
     public class SavePropiedadViewModel
     {
+        public int Id { get; set; }
         public string? Codigo { get; set; }
 
         [Required(ErrorMessage = "Se requiere tener asignado un Tipo de Propiedad.")]
