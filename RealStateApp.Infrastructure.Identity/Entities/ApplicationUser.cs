@@ -6,6 +6,7 @@
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string? Cedula { get; set; }
         public int Rol { get; set; }
         public string? ImagePath { get; set; }
     }

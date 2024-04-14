@@ -58,9 +58,21 @@ namespace RealEstateApp.Core.Application.Services
             return await _accountService.RegisterAgenteUserAsync(registerRequest, origin, profileImage);
         }
 
+        public async Task<RegisterResponse> RegisterAdminAsync(SaveUserViewModel vm, string origin)
+        {
+            RegisterRequest request = _mapper.Map<RegisterRequest>(vm);
+            return await _accountService.RegisterAdminUserAsync(request, origin);
+        }
+
+        public async Task<RegisterResponse> RegisterDesarrolladorAsync(SaveUserViewModel vm, string origin)
+        {
+            RegisterRequest request = _mapper.Map<RegisterRequest>(vm);
+            return await _accountService.RegisterDesarrolladorUserAsync(request, origin);
+        }
+
         private async Task<string> SaveProfileImageAsync(IFormFile imageFile)
         {
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profile");
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "Agentes");
             if (!Directory.Exists(uploadsFolder))
             {
                 Directory.CreateDirectory(uploadsFolder);
@@ -74,12 +86,26 @@ namespace RealEstateApp.Core.Application.Services
                 await imageFile.CopyToAsync(fileStream);
             }
 
-            return Path.Combine("images", "profile", uniqueFileName).Replace("\\", "/");
+            return Path.Combine("img", "Agentes", uniqueFileName).Replace("\\", "/");
+        }
+
+        public async Task<UpdateResponse> UpdateUserAsync(SaveUserViewModel vm, string id)
+        {
+            UpdateRequest req = _mapper.Map<UpdateRequest>(vm);
+            return await _accountService.UpdateUserAsync(req, id);
         }
 
         public async Task<string> ConfirmEmailAsync(string userId, string token)
         {
             return await _accountService.ConfirmAccountAsync(userId, token);
         }
+
+        /*public async Task<List<SaveUserViewModel>> GetAllViewModel()
+        {
+            var users = await this.GetAllUsers();
+            var usersVm = _mapper.Map<List<SaveUserViewModel>>(users);
+
+            return usersVm;
+        }*/
     }
 }
