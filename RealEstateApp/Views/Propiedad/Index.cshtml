@@ -5,7 +5,7 @@
 }
 
 <div class="container-fluid">
-    <h1> Propiedades </h1>
+    <h1> @(Model.Filtros.TipoFiltroUsuario == 5 ? "Mantenimiento de" : "") Propiedades </h1>
     <div class="row mb-3">
         <div class="col-3">
             @if(Model.Filtros.TipoFiltroUsuario == 5)

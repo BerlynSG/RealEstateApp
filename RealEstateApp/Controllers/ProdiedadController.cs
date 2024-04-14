@@ -5,7 +5,6 @@ using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
-using System.Diagnostics;
 
 namespace RealEstateApp.Controllers
 {
@@ -202,5 +201,3 @@ namespace RealEstateApp.Controllers
         }
     }
 }
-
-  

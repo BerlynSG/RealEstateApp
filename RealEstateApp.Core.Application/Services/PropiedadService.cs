@@ -16,10 +16,15 @@ namespace RealEstateApp.Core.Application.Services
             _mapper = mapper;
         }
 
-        public override Task<SavePropiedadViewModel> Add(SavePropiedadViewModel vm)
+        public override async Task<SavePropiedadViewModel> Add(SavePropiedadViewModel vm)
         {
             vm.Codigo = GenerarCodigoUnico();
-            return base.Add(vm);
+            return await base.Add(vm);
+        }
+
+        public async Task DeleteAllByAgenteId(string agenteId)
+        {
+            await _repository.DeleteAllByAgenteIdAsync(agenteId);
         }
 
         public async Task<List<PropiedadViewModel>> GetAllFilteredViewModel(FiltroPropiedadViewModel filtro)

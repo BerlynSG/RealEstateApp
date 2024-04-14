@@ -9,5 +9,6 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         SavePropiedadViewModel convertir(PropiedadViewModel model);
         Task<PropiedadViewModel> GetByCodigoViewModel(string codigo);
         Task<SavePropiedadViewModel> GetByCodigoSaveViewModel(string codigo);
+        Task DeleteAllByAgenteId(string agenteId);
     }
 }

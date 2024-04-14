@@ -2,8 +2,6 @@
 using RealEstateApp.Infrastructure.Persistence.Contexts;
 using RealEstateApp.Core.Application.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.Xml.Linq;
 
 namespace RealEstateApp.Infrastructure.Persistence.Repositories
 {
@@ -68,6 +66,14 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
             await _context.Set<ImagenPropiedad>().AddRangeAsync(entity.Imagenes);
             await _context.SaveChangesAsync();
             await base.UpdateAsync(entity, id);
+        }
+
+        public async Task DeleteAllByAgenteIdAsync(string agenteId)
+        {
+            List<Propiedad> propiedades = await _context.Set<Propiedad>()
+                .Where(p => p.AgenteId == agenteId).ToListAsync();
+            _context.Set<Propiedad>().RemoveRange(propiedades);
+            await _context.SaveChangesAsync();
         }
     }
 }
