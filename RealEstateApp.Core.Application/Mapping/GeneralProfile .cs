@@ -72,21 +72,21 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
             CreateMap<TipoVenta, TipoVentaViewModel>()
+                .ForMember(p => p.CantidadPropiedades, opt => opt.MapFrom(p => p.Propiedades.Count))
                 .ReverseMap()
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
             CreateMap<TipoVenta, SaveTipoVentaViewModel>()
                 .ReverseMap()
-                .ForMember(p => p.Id, opt => opt.Ignore())
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
             CreateMap<Mejora, MejoraViewModel>()
+                .ForMember(p => p.CantidadPropiedades, opt => opt.MapFrom(m => m.Propiedades.Count))
                 .ReverseMap()
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
             CreateMap<Mejora, SaveMejoraViewModel>()
                 .ReverseMap()
-                .ForMember(p => p.Id, opt => opt.Ignore())
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
             /*CreateMap<TipoVenta, SaveTipoVentaViewModel>()

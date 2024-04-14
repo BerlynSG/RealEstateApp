@@ -35,11 +35,11 @@ namespace RealEstateApp.Controllers
             if (ModelState.IsValid)
             {
                 await _mejoraService.Add(vm);
-                TempData["SuccessMessage"] = "La propiedad se creó correctamente.";
+                TempData["SuccessMessage"] = "La Mejora se creó correctamente.";
 
                 return RedirectToAction("Index", new {
                     messageType = 1,
-                    message = "Se ha creado el tipo de Venta correctamente."
+                    message = "Se ha creado la mejora correctamente."
                 });
             }
             return View(vm);
@@ -52,7 +52,7 @@ namespace RealEstateApp.Controllers
             {
                 return RedirectToAction("Index", new {
                     messageType = 1,
-                    message = "Se ha eliminado el tipo de Venta correctamente."
+                    message = "Se ha eliminado la mejora correctamente."
                 });
             }
 
@@ -76,7 +76,7 @@ namespace RealEstateApp.Controllers
 
                 return RedirectToAction("Index", new {
                     messageType = 1,
-                    message = "Se ha editado el tipo de Venta correctamente."
+                    message = "Se ha editado la mejora correctamente."
                 });
             }
 
@@ -89,7 +89,7 @@ namespace RealEstateApp.Controllers
         {
             await _mejoraService.Delete(vm.IdDelete);
             return RedirectToAction("Index", new { messageType = 1,
-                message = "Se ha eliminado el tipo de Venta correctamente."
+                message = "Se ha eliminado la mejora correctamente."
             });
         }
     }

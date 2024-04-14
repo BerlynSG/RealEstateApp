@@ -17,7 +17,7 @@
                     <div class="card-body">
                         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                         <div class="mb-3">
-                            <label asp-for="Nombre" class="form-label">Precio:</label>
+                            <label asp-for="Nombre" class="form-label">Nombre:</label>
                             <input asp-for="Nombre" class="form-control" />
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>

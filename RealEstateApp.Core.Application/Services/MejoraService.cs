@@ -15,5 +15,12 @@ namespace RealEstateApp.Core.Application.Services
             _repository = repository;
             _mapper = mapper;
         }
+
+        public override async Task<List<MejoraViewModel>> GetAllViewModel()
+        {
+            var entityList = await _repository.GetAllWithIncludeAsync();
+
+            return _mapper.Map<List<MejoraViewModel>>(entityList);
+        }
     }
 }

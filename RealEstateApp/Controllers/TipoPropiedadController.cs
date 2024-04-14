@@ -38,7 +38,7 @@ namespace RealEstateApp.Controllers
             if (ModelState.IsValid)
             {
                 await _tipoPropiedadService.Add(vm);
-                TempData["SuccessMessage"] = "La propiedad se creó correctamente.";
+                TempData["SuccessMessage"] = "El tipo de propiedad se creó correctamente.";
 
                 return RedirectToAction("Index", new {
                     messageType = 1,

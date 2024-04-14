@@ -4,6 +4,6 @@ namespace RealEstateApp.Core.Application.Interfaces.Repositories
 {
     public interface ITipoPropiedadRepository : IGenericRepository<TipoPropiedad>
     {
-
+        Task<List<TipoPropiedad>> GetAllWithIncludeAsync();
     }
 }
