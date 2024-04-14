@@ -18,13 +18,37 @@ namespace RealEstateApp.Core.Application.Services
 
         public async Task<List<PropiedadViewModel>> GetAllFilteredViewModel(FiltroPropiedadViewModel filtro)
         {
-            List<Propiedad> propiedades = await _repository.GetAllAsync();
+            List<Propiedad> propiedades;
+            //prop = await _propiedadService.GetAllViewModel();
+            if (filtro.TipoFiltroUsuario == 4 || filtro.TipoFiltroUsuario == 5)
+            {
+                propiedades = await _repository.GetAllByAgente(filtro.UsuarioId);
+            }
+            else if (filtro.TipoFiltroUsuario == 3)
+            {
+                propiedades = await _repository.GetAllFavoritos(filtro.UsuarioId);
+            }
+            else
+            {
+                propiedades = await _repository.GetAllWithInclude();
+            }
 
-            propiedades.Where(p => (filtro.TipoPropiedad == p.TipoPropiedadId || filtro.TipoPropiedad == 0)
+            propiedades = propiedades.Where(p => (filtro.TipoPropiedad == p.TipoPropiedadId || filtro.TipoPropiedad == 0)
                 && (filtro.Habitaciones == p.Habitaciones || filtro.Habitaciones == 0) && (filtro.Baños == p.Baños || filtro.Baños == 0)
                 && (filtro.PrecioMinimo <= p.Valor || filtro.PrecioMinimo == 0) && (filtro.PrecioMaximo >= p.Valor || filtro.PrecioMaximo == 0)
                 && (filtro.Codigo == null || filtro.Codigo == "" || p.Codigo.Contains(filtro.Codigo))).ToList();
-            return null;
+            
+            return _mapper.Map<List<PropiedadViewModel>>(propiedades);
+        }
+
+        public async Task<PropiedadViewModel> GetByCodigoViewModel(string codigo)
+        {
+            return _mapper.Map<PropiedadViewModel>(await _repository.GetByCodigo(codigo));
+        }
+
+        public async Task<SavePropiedadViewModel> GetByCodigoSaveViewModel(string codigo)
+        {
+            return _mapper.Map<SavePropiedadViewModel>(await _repository.GetByCodigo(codigo));
         }
 
         public SavePropiedadViewModel convertir(PropiedadViewModel model)

@@ -21,7 +21,8 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
 
         public virtual async Task UpdateAsync(T entity, int id)
         {
-            _dbContext.Entry<T>(entity).State = EntityState.Modified;
+            var entry = await _dbContext.Set<T>().FindAsync(id);
+            _dbContext.Entry<T>(entry).CurrentValues.SetValues(entity);
             await _dbContext.SaveChangesAsync();
         }
 
