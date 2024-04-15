@@ -15,14 +15,10 @@ namespace RealEstateApp.Controllers
         private readonly ITipoPropiedadService _tipoPropiedadService;
         private readonly ITipoVentaService _tipoVentaService;
         private readonly IMejoraService _mejoraService;
-        //private List<PropiedadViewModel> propiedades;
         private List<AgenteViewModel> agentes;
-        //private List<MejoraViewModel> mejoras;
-        //private List<TipoPropiedadViewModel> tiposPropiedad;
-        //private List<TipoVentaViewModel> tiposVenta;
         private int tipoUsuario = 0;
         private int idAgente = 0;
-        //los tipos de propiedad y venta serán tablas y no enums
+
         public PropiedadController(IPropiedadService propiedadRepository, ITipoPropiedadService tipoPropiedadService,
             ITipoVentaService tipoVentaService, IMejoraService mejoraService)
         {

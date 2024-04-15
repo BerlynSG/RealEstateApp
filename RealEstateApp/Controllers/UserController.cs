@@ -24,7 +24,7 @@ namespace RealEstateApp.Controllers
             return View(new LoginViewModel());
         }
 
-    [ServiceFilter(typeof(LoginAuthorize))]
+        [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel vm)
         {
@@ -46,6 +46,7 @@ namespace RealEstateApp.Controllers
                 return View(vm);
             }
         }
+
         public async Task<IActionResult> LogOut()
         {
             await _userService.SignOutAsync();
@@ -93,7 +94,6 @@ namespace RealEstateApp.Controllers
 
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
-
 
         [ServiceFilter(typeof(LoginAuthorize))]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)

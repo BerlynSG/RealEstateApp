@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Interfaces.Services;
+using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.User;
 using System.IO;
 using System.Threading.Tasks;
@@ -108,5 +109,13 @@ namespace RealEstateApp.Core.Application.Services
 
             return usersVm;
         }*/
+        public async Task<SaveUserViewModel> GetUserById(string id)
+        {
+            AuthenticationResponse user = await _accountService.GetUserById(id);
+            SaveUserViewModel userMap = _mapper.Map<SaveUserViewModel>(user);
+            return userMap;
+        }
+        
+
     }
 }
