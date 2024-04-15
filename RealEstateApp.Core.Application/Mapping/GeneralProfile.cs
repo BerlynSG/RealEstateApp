@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
@@ -12,24 +13,23 @@ namespace RealEstateApp.Core.Application.Mapping
     {
         public GeneralProfile()
         {
-            /*CreateMap<AuthenticationRequest, LoginViewModel>()
-                .ForMember(d => d.Error, o => o.Ignore())
-                .ForMember(d => d.HasError, o => o.Ignore())
+            #region UserProfile
+            CreateMap<AuthenticationRequest, LoginViewModel>()
+                .ForMember(x => x.HasError, opt => opt.Ignore())
+                .ForMember(x => x.Error, opt => opt.Ignore())
                 .ReverseMap();
+
+            CreateMap<RegisterAdminsRequest, SaveAdminsViewModel>()
+               .ForMember(x => x.HasError, opt => opt.Ignore())
+               .ForMember(x => x.Error, opt => opt.Ignore())
+               .ReverseMap();
 
             CreateMap<RegisterRequest, SaveUserViewModel>()
-                .ForMember(d => d.Error, o => o.Ignore())
-                .ForMember(d => d.HasError, o => o.Ignore())
-                .ForMember(d => d.MontoInicial, o => o.Ignore())
+                .ForMember(x => x.HasError, opt => opt.Ignore())
+                .ForMember(x => x.Error, opt => opt.Ignore())
                 .ReverseMap();
 
-            CreateMap<UpdateRequest, UpdateUserViewModel>()
-                .ForMember(d => d.Error, o => o.Ignore())
-                .ForMember(d => d.HasError, o => o.Ignore())
-                .ReverseMap();
-
-            CreateMap<DataResponse, UserViewModel>()
-                .ReverseMap();*/
+            #endregion
 
             CreateMap<Propiedad, PropiedadViewModel>()
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path).ToList()))
@@ -87,19 +87,6 @@ namespace RealEstateApp.Core.Application.Mapping
             CreateMap<Mejora, SaveMejoraViewModel>()
                 .ReverseMap()
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
-
-            /*CreateMap<TipoVenta, SaveTipoVentaViewModel>()
-                .ReverseMap()
-                .ForMember(t => t.Id, opt => opt.Ignore())
-                .ForMember(t => t.HastaCuenta, opt => opt.Ignore())
-                .ForMember(t => t.DesdeCuenta, opt => opt.Ignore());
-
-            CreateMap<Mejora, MejoraViewModel>()
-                .ReverseMap();
-
-            CreateMap<Mejora, SaveMejoraViewModel>()
-                .ReverseMap()
-                .ForMember(b => b.Cuenta, opt => opt.Ignore());*/
         }
     }
 }
