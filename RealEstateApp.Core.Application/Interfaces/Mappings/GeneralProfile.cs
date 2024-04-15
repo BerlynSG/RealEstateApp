@@ -17,6 +17,11 @@ namespace RealEstateApp.Core.Application.Mappings
                 .ForMember(x => x.Error, opt => opt.Ignore())
                 .ReverseMap();
 
+            CreateMap<RegisterAdminsRequest, SaveAdminsViewModel>()
+               .ForMember(x => x.HasError, opt => opt.Ignore())
+               .ForMember(x => x.Error, opt => opt.Ignore())
+               .ReverseMap();
+
             CreateMap<RegisterRequest, SaveUserViewModel>()
                 .ForMember(x => x.HasError, opt => opt.Ignore())
                 .ForMember(x => x.Error, opt => opt.Ignore())
@@ -35,6 +40,7 @@ namespace RealEstateApp.Core.Application.Mappings
                     .ReverseMap()
                     .ForMember(x => x.Id, opt => opt.Ignore());
             #endregion
+
             #region MejoraPropiedad
 
             CreateMap<MejoraPropiedad, MejoraViewModel>()
@@ -68,7 +74,7 @@ namespace RealEstateApp.Core.Application.Mappings
 
 
             CreateMap<Propiedad, SavePropiedadViewModel>()
-                    .ForMember(dest => dest.Agente, opt => opt.Ignore())
+                    //.ForMember(dest => dest.Agente, opt => opt.Ignore())
                     .ForMember(dest => dest.ListaMejora, opt => opt.Ignore())
                     .ForMember(dest => dest.ListaTipoPropiedad, opt => opt.Ignore())
                     .ForMember(dest => dest.ListaTipoVenta, opt => opt.Ignore())

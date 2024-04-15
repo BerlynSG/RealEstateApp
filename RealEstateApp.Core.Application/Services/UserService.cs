@@ -58,15 +58,16 @@ namespace RealEstateApp.Core.Application.Services
             return await _accountService.RegisterAgenteUserAsync(registerRequest, origin, profileImage);
         }
 
-        public async Task<RegisterResponse> RegisterAdminAsync(SaveUserViewModel vm, string origin)
+        public async Task<RegisterAdminsResponse> RegisterAdminAsync(SaveAdminsViewModel vm, string origin)
         {
-            RegisterRequest request = _mapper.Map<RegisterRequest>(vm);
+            RegisterAdminsRequest request = _mapper.Map<RegisterAdminsRequest>(vm);
             return await _accountService.RegisterAdminUserAsync(request, origin);
+            
         }
 
-        public async Task<RegisterResponse> RegisterDesarrolladorAsync(SaveUserViewModel vm, string origin)
+        public async Task<RegisterAdminsResponse> RegisterDesarrolladorAsync(SaveAdminsViewModel vm, string origin)
         {
-            RegisterRequest request = _mapper.Map<RegisterRequest>(vm);
+            RegisterAdminsRequest request = _mapper.Map<RegisterAdminsRequest>(vm);
             return await _accountService.RegisterDesarrolladorUserAsync(request, origin);
         }
 

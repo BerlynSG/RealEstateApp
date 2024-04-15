@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RealEstateApp.Core.Application.ViewModels.User
 {
-    public class SaveUserViewModel
+    public class SaveAdminsViewModel
     {
         [Required(ErrorMessage = "Debe colocar el nombre del usuario")]
         [DataType(DataType.Text)]
@@ -12,6 +12,14 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         [Required(ErrorMessage = "Debe colocar el apellido del usuario")]
         [DataType(DataType.Text)]
         public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Debe colocar una cedula")]
+        [DataType(DataType.Text)]
+        public string? Cedula { get; set; }
+
+        [Required(ErrorMessage = "Debe colocar un correo")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
 
         [Required(ErrorMessage = "Debe colocar un nombre de usuario")]
         [DataType(DataType.Text)]
@@ -22,23 +30,11 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         public string Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "Las contraseñas no coiciden")]
-        [Required(ErrorMessage = "Debe colocar una contraseña")]
+        [Required(ErrorMessage = "Debe colocar la contraseña")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
-
-        [Required(ErrorMessage = "Debe colocar un correo")]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-
-        [DataType(DataType.Text)]
-        public string Phone { get; set; }
-
         public int Rol { get; set; }
 
-        [DataType(DataType.Upload)]
-        public IFormFile? ProfileImage { get; set; }
-        public string? ImagePath { get; set; }
-        public bool? EmailConfirmed { get; set; }        
         public bool HasError { get; set; }
         public string? Error { get; set; }
     }

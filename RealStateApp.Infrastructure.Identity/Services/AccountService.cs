@@ -44,7 +44,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             if (!user.EmailConfirmed)
             {
                 response.HasError = true;
-                response.Error = $"Cuenta no confirmada para {request.Email}";
+                response.Error = $"Cuenta no activada para {request.Email}";
                 return response;
             }
 
@@ -122,9 +122,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             }
 
             return response;
-        }
-
-       
+        }      
 
         public async Task<RegisterResponse> RegisterAgenteUserAsync(RegisterRequest request, string origin, IFormFile profileImage)
         {
@@ -153,10 +151,15 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 LastName = request.LastName,
                 PhoneNumber = request.Phone,
                 UserName = request.UserName,
-                Rol = request.Rol
+                Rol = request.Rol,
             };
 
-            _userManager.Options.SignIn.RequireConfirmedEmail = false;
+            if (profileImage != null)
+            {
+                // Guardar la imagen en el servidor
+                string imagePath = await SaveProfileImageAsync(profileImage);
+                user.ImagePath = imagePath;  // Asignar la ruta de la imagen al usuario
+            }
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
@@ -174,9 +177,9 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             return response;
         }
 
-        public async Task<RegisterResponse> RegisterAdminUserAsync(RegisterRequest request, string origin)
+        public async Task<RegisterAdminsResponse> RegisterAdminUserAsync(RegisterAdminsRequest request, string origin)
         {
-            RegisterResponse response = new RegisterResponse { HasError = false };
+            RegisterAdminsResponse response = new RegisterAdminsResponse() ;
 
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
@@ -193,7 +196,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 response.Error = $"Email '{request.Email}' ya está registrado";
                 return response;
             }
-
+            
             var user = new ApplicationUser
             {                
                 FirstName = request.FirstName,
@@ -201,7 +204,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 Cedula = request.Cedula,
                 Email = request.Email,                
                 UserName = request.UserName,
-                Rol = request.Rol
+                Rol = request.Rol = 3
             };
 
             _userManager.Options.SignIn.RequireConfirmedEmail = false;
@@ -222,9 +225,9 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             return response;
         }
 
-        public async Task<RegisterResponse> RegisterDesarrolladorUserAsync(RegisterRequest request, string origin)
+        public async Task<RegisterAdminsResponse> RegisterDesarrolladorUserAsync(RegisterAdminsRequest request, string origin)
         {
-            RegisterResponse response = new RegisterResponse { HasError = false };
+            RegisterAdminsResponse response = new RegisterAdminsResponse ();
 
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
@@ -249,7 +252,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 Cedula = request.Cedula,
                 Email = request.Email,
                 UserName = request.UserName,
-                Rol = request.Rol
+                Rol = request.Rol = 4
             };
 
             _userManager.Options.SignIn.RequireConfirmedEmail = false;
@@ -272,7 +275,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
         private async Task<string> SaveProfileImageAsync(IFormFile imageFile)
         {
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profile");
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "Clientes");
             if (!Directory.Exists(uploadsFolder))
             {
                 Directory.CreateDirectory(uploadsFolder);
@@ -286,7 +289,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 await imageFile.CopyToAsync(fileStream);
             }
 
-            return Path.Combine("images", "profile", uniqueFileName).Replace("\\", "/");
+            return Path.Combine("img", "Clientes", uniqueFileName).Replace("\\", "/");
         }
 
         public async Task<string> ConfirmAccountAsync(string userId, string token)
@@ -333,29 +336,25 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                     }
                     return response;
                 }
-                else
+                else if (user.Rol == (int)Roles.Administrador)
                 {
-                    if (user.Rol == (int)Roles.Administrador)
+                    user.FirstName = request.FirstName;
+                    user.LastName = request.LastName;
+                    user.Cedula = request.Cedula;
+                    user.UserName = request.UserName;
+                    user.Email = request.Email;
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);
+
+                    var userUpdated = await _userManager.UpdateAsync(user);
+                    if (!userUpdated.Succeeded)
                     {
-                        user.FirstName = request.FirstName;
-                        user.LastName = request.LastName;
-                        user.Cedula = request.Cedula;
-                        user.UserName = request.UserName;
-                        user.Email = request.Email;
-                        user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);
-
-                        var userUpdated = await _userManager.UpdateAsync(user);
-                        if (!userUpdated.Succeeded)
-                        {
-                            response.HasError = true;
-                            response.Error = "Error intentando actualizar al usuario";
-                            return response;
-
-                        }
+                        response.HasError = true;
+                        response.Error = "Error intentando actualizar al usuario";
                         return response;
-                    }
-                }
 
+                    }
+                    return response;
+                }
             }
             else
             {
@@ -365,64 +364,6 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             }
             return response;
         }
-
-        /*public async Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request, string origin)
-        {
-            ForgotPasswordResponse response = new()
-            {
-                HasError = false
-            };
-
-            var user = await _userManager.FindByEmailAsync(request.Email);
-
-            if (user == null)
-            {
-                response.HasError = true;
-                response.Error = $"Ninguna cuenta registrada con el correo {request.Email}";
-                return response;
-            }
-
-            var verificationUri = await SendForgotPasswordUri(user, origin);
-
-            await _emailService.SendAsync(new Core.Application.Dtos.Email.EmailRequest()
-            {
-                To = user.Email,
-                Body = $"Por favor, restablece tu contraseña visitando esta URL {verificationUri}",
-                Subject = "Restablecer contraseña"
-            });
-
-
-            return response;
-        }
-
-        public async Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request)
-        {
-            ResetPasswordResponse response = new()
-            {
-                HasError = false
-            };
-
-            var user = await _userManager.FindByEmailAsync(request.Email);
-
-            if (user == null)
-            {
-                response.HasError = true;
-                response.Error = $"Ninguna cuenta registrada con el correo {request.Email}";
-                return response;
-            }
-
-            request.Token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.Token));
-            var result = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);
-
-            if (!result.Succeeded)
-            {
-                response.HasError = true;
-                response.Error = $"Ocurrió un error al restablecer la contraseña";
-                return response;
-            }
-
-            return response;
-        }*/
 
         private async Task<string> SendVerificationEmailUri(ApplicationUser user, string origin)
         {
@@ -435,15 +376,5 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return verificationUri;
         }
-        /*private async Task<string> SendForgotPasswordUri(ApplicationUser user, string origin)
-        {
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var route = "User/ResetPassword";
-            var Uri = new Uri(string.Concat($"{origin}/", route));
-            var verificationUri = QueryHelpers.AddQueryString(Uri.ToString(), "token", code);
-
-            return verificationUri;
-        }*/
     }
 }

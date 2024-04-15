@@ -80,20 +80,7 @@
                             <span asp-validation-for="ProfileImage" class="text-danger"></span>
                         </div>
 
-                        <input type="hidden" asp-for="EmailConfirmed" value="true" />
 
-                        @*if (Model.Rol == 2)
-                        {
-                            <div class="mb-3">
-                                <label asp-for="EmailConfirmed" class="form-label">EmailConfirmed: </label>
-                                <div class="form-check">
-                                    <input asp-for="EmailConfirmed" class="form-check-input" type="checkbox" />
-                                    <label class="form-check-label" for="EmailConfirmed">Confirmado</label>
-                                </div>
-                                <span asp-validation-for="EmailConfirmed" class="text-danger"></span>
-                            </div>
-                        }*@
-                                                                        
                         <button type="submit" class="btn btn-primary">Guardar</button>
                         <a asp-controller="User" asp-action="Index" class="btn btn-warning">Volver atras</a>
 

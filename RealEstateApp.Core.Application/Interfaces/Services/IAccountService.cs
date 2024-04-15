@@ -10,8 +10,8 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<string> ConfirmAccountAsync(string userId, string token);
         Task<RegisterResponse> RegisterClienteUserAsync(RegisterRequest request, string origin, IFormFile profileImage);
         Task<RegisterResponse> RegisterAgenteUserAsync(RegisterRequest request, string origin, IFormFile profileImage);
-        Task<RegisterResponse> RegisterAdminUserAsync(RegisterRequest request, string origin);
-        Task<RegisterResponse> RegisterDesarrolladorUserAsync(RegisterRequest request, string origin);
+        Task<RegisterAdminsResponse> RegisterAdminUserAsync(RegisterAdminsRequest request, string origin);
+        Task<RegisterAdminsResponse> RegisterDesarrolladorUserAsync(RegisterAdminsRequest request, string origin);
         Task<UpdateResponse> UpdateUserAsync(UpdateRequest request, string id);
 
         Task SignOutAsync();

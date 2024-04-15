@@ -16,7 +16,8 @@ namespace RealEstateApp.Infrastructure.Identity.Seeds
                 FirstName = "Adminis",
                 LastName = "Trador",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
+                Rol = 3
             };
             if (userManager.Users.All(u => u.Id != adminUser.Id))
             {

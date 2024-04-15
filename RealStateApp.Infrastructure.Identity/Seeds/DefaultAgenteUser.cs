@@ -16,7 +16,8 @@ namespace RealEstateApp.Infrastructure.Identity.Seeds
                 FirstName = "Age",
                 LastName = "Nte",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
+                Rol = 2
             };
             if (userManager.Users.All(u => u.Id != agenteUser.Id))
             {

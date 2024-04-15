@@ -5,7 +5,7 @@ namespace RealEstateApp.Core.Application.Enums
     {
         Cliente = 1,
         Agente = 2,
-        Administrador,
-        Desarrollador,
+        Administrador = 3,
+        Desarrollador = 4,
     }
 }
