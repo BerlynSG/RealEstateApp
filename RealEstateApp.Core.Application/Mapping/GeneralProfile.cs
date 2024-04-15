@@ -34,15 +34,14 @@ namespace RealEstateApp.Core.Application.Mapping
             CreateMap<Propiedad, PropiedadViewModel>()
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path).ToList()))
                 .ForMember(p => p.Agente, opt => opt.Ignore())
-                .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras
-                    .Select(m => m.Mejora )))
+                .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras.Select(m => m.Mejora ).ToList()))
                 .ReverseMap()
                 .ForMember(p => p.Favoritos, opt => opt.Ignore())
                 .ForMember(p => p.AgenteId, opt => opt.Ignore())
                 .ForMember(p => p.TipoVentaId, opt => opt.MapFrom(p => p.TipoVenta.Id))
                 .ForMember(p => p.TipoPropiedadId, opt => opt.MapFrom(p => p.TipoPropiedad.Id))
                 .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras
-                    .Select(m => new MejoraPropiedad() { MejoraId = m.Id, PropiedadId = p.Id })))
+                    .Select(m => new MejoraPropiedad() { MejoraId = m.Id, PropiedadId = p.Id }).ToList()))
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes
                     .Select(i => new ImagenPropiedad() { PropiedadId = p.Id, Path = i }).ToList()));
 
@@ -57,10 +56,10 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(p => p.Favoritos, opt => opt.Ignore())
                 .ForMember(p => p.TipoVenta, opt => opt.Ignore())
                 .ForMember(p => p.TipoPropiedad, opt => opt.Ignore())
-                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes
-                    .Select(i => new ImagenPropiedad() { PropiedadId = p.Id, Path = i }).ToList()))
                 .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras.Split(",", StringSplitOptions.None)
-                    .Select(m => new MejoraPropiedad() { PropiedadId = p.Id, MejoraId = int.Parse(m) }).ToList()));
+                    .Select(m => new MejoraPropiedad() { PropiedadId = p.Id, MejoraId = int.Parse(m) }).ToList()))
+                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes
+                    .Select(i => new ImagenPropiedad() { PropiedadId = p.Id, Path = i }).ToList()));
 
             CreateMap<TipoPropiedad, TipoPropiedadViewModel>()
                 .ForMember(p => p.CantidadPropiedades, opt => opt.MapFrom(p => p.Propiedades.Count))
