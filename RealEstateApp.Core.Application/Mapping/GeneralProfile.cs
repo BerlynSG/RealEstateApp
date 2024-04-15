@@ -39,6 +39,12 @@ namespace RealEstateApp.Core.Application.Mapping
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Celular))
             .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.ProfileImage))
             .ReverseMap();
+            CreateMap<UpdateRequest, AgenteViewModel>()
+            .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.FirstName))
+            .ForMember(dest => dest.Apellidos, opt => opt.MapFrom(src => src.LastName))
+            .ForMember(dest => dest.Celular, opt => opt.MapFrom(src => src.PhoneNumber))
+            .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.ProfileImage, opt => opt.Ignore());
 
             CreateMap<AuthenticationResponse, SaveUserViewModel>()
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.UserName)) 
