@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Mejora;
 
@@ -13,6 +14,7 @@ namespace RealEstateApp.Controllers
             _mejoraService = mejoraService;
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> Index(int messageType, string message)
         {
             ListaMejoraViewModel vm = new();
@@ -22,12 +24,14 @@ namespace RealEstateApp.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "Administrador")]
         public ActionResult Crear()
         {
             SaveMejoraViewModel vm = new();
             return View(vm);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Crear(SaveMejoraViewModel vm)
@@ -45,6 +49,7 @@ namespace RealEstateApp.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> Editar(int id)
         {
             SaveMejoraViewModel vm = await _mejoraService.GetByIdSaveViewModel(id);
@@ -59,6 +64,7 @@ namespace RealEstateApp.Controllers
             return View("Crear", vm);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Editar(SaveMejoraViewModel vm)
@@ -83,6 +89,7 @@ namespace RealEstateApp.Controllers
             return View("Crear", vm);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Eliminar(ListaMejoraViewModel vm)

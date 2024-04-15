@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 
@@ -13,7 +14,7 @@ namespace RealEstateApp.Controllers
             _tipoPropiedadService = tipoPropiedadService;
         }
 
-        // GET: TipoPropiedadController
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> Index(int messageType, string message)
         {
             ListaTipoPropiedadViewModel vm = new();
@@ -23,14 +24,14 @@ namespace RealEstateApp.Controllers
             return View(vm);
         }
 
-        // GET: TipoPropiedadController/Create
+        [Authorize(Roles = "Administrador")]
         public ActionResult Crear()
         {
             SaveTipoPropiedadViewModel vm = new();
             return View(vm);
         }
 
-        // POST: TipoPropiedadController/Create
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Crear(SaveTipoPropiedadViewModel vm)
@@ -48,7 +49,7 @@ namespace RealEstateApp.Controllers
             return View(vm);
         }
 
-        // GET: TipoPropiedadController/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> Editar(int id)
         {
             SaveTipoPropiedadViewModel vm = await _tipoPropiedadService.GetByIdSaveViewModel(id);
@@ -63,7 +64,7 @@ namespace RealEstateApp.Controllers
             return View("Crear", vm);
         }
 
-        // POST: TipoPropiedadController/Edit/5
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Editar(SaveTipoPropiedadViewModel vm)
@@ -88,7 +89,7 @@ namespace RealEstateApp.Controllers
             return View("Crear", vm);
         }
 
-        // POST: TipoPropiedadController/Delete/5
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Eliminar(ListaTipoPropiedadViewModel vm)
