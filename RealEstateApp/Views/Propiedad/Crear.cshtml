@@ -22,49 +22,55 @@
                     <div class="card-body">
                         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                         <div class="mb-3">
-                            <label asp-for="TipoPropiedadId" class="form-label">Tipo de Propiedad:</label>
-                            <select asp-for="TipoPropiedadId" class="form-control">
-                                @foreach (var tipo in Model.ListaTipoPropiedad)
-                                {
-                                    <option value="@tipo.Id">@tipo.Nombre</option>
-                                }
-                            </select>
-                            <span asp-validation-for="TipoPropiedadId" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="TipoVentaId" class="form-label">Tipo de Venta:</label>
-                            <select asp-for="TipoVentaId" class="form-control">
-                                @foreach (var tipoVenta in Model.ListaTipoVenta)
-                                {
-                                    <option value="@tipoVenta.Id">@tipoVenta.Nombre</option>
-                                }
-                            </select>
-                            <span asp-validation-for="TipoVentaId" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Valor" class="form-label">Precio:</label>
-                            <input asp-for="Valor" class="form-control" />
-                            <span asp-validation-for="Valor" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
                             <label asp-for="Descripcion" class="form-label">Descripción:</label>
                             <textarea asp-for="Descripcion" class="form-control"></textarea>
                             <span asp-validation-for="Descripcion" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="Tamaño" class="form-label">Tamaño (metros):</label>
-                            <input asp-for="Tamaño" class="form-control" />
-                            <span asp-validation-for="Tamaño" class="text-danger"></span>
+                        <div class="mb-3 row">
+                            <div class="col-6">
+                                <label asp-for="TipoPropiedadId" class="form-label">Tipo de Propiedad:</label>
+                                <select asp-for="TipoPropiedadId" class="form-control">
+                                    @foreach (var tipo in Model.ListaTipoPropiedad)
+                                    {
+                                        <option value="@tipo.Id">@tipo.Nombre</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="TipoPropiedadId" class="text-danger"></span>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="TipoVentaId" class="form-label">Tipo de Venta:</label>
+                                <select asp-for="TipoVentaId" class="form-control">
+                                    @foreach (var tipoVenta in Model.ListaTipoVenta)
+                                    {
+                                        <option value="@tipoVenta.Id">@tipoVenta.Nombre</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="TipoVentaId" class="text-danger"></span>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="Habitaciones" class="form-label">Cantidad de Habitaciones:</label>
-                            <input asp-for="Habitaciones" class="form-control" />
-                            <span asp-validation-for="Habitaciones" class="text-danger"></span>
+                        <div class="mb-3 row">
+                            <div class="col-6">
+                                <label asp-for="Valor" class="form-label">Precio:</label>
+                                <input asp-for="Valor" class="form-control" />
+                                <span asp-validation-for="Valor" class="text-danger"></span>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="Tamaño" class="form-label">Tamaño (metros):</label>
+                                <input asp-for="Tamaño" class="form-control" />
+                                <span asp-validation-for="Tamaño" class="text-danger"></span>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="Baños" class="form-label">Cantidad de Baños:</label>
-                            <input asp-for="Baños" class="form-control" />
-                            <span asp-validation-for="Baños" class="text-danger"></span>
+                        <div class="mb-3 row">
+                            <div class="col-6">
+                                <label asp-for="Habitaciones" class="form-label">Cantidad de Habitaciones:</label>
+                                <input asp-for="Habitaciones" class="form-control" />
+                                <span asp-validation-for="Habitaciones" class="text-danger"></span>
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="Baños" class="form-label">Cantidad de Baños:</label>
+                                <input asp-for="Baños" class="form-control" />
+                                <span asp-validation-for="Baños" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Mejoras" class="form-label">Mejoras: </label>
