@@ -1,4 +1,4 @@
-﻿@using RealEstateApp.Core.Application.ViewModels.User
+﻿@*@using RealEstateApp.Core.Application.ViewModels.User
 @using Microsoft.AspNetCore.Http
 @using RealEstateApp.Core.Application.Dtos.Account
 @using RealEstateApp.Core.Application.Helpers;
@@ -7,7 +7,7 @@
     var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
 }
 
-@model SaveUserViewModel
+@model SaveAdminsViewModel
 @{
     ViewData["Title"] = "Registro";
 }
@@ -15,7 +15,8 @@
 <div class="container-fluid">
     <div class="row mb-3">
         <div class="col-3 offset-9">
-            <a asp-controller="User" asp-action="Register" class="btn btn-outline-success">Registrar administrador</a>
+            <a asp-controller="Admins" asp-action="RegisterDesarrollador" class="btn btn-outline-success">Registrar desarrollador</a>
         </div>
     </div>
 </div>
+*@

@@ -51,11 +51,11 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             response.Id = user.Id;
             response.Email = user.Email;
             response.UserName = user.UserName;
+            response.Rol = user.Rol;
 
             var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
 
             response.Roles = rolesList.ToList();
-            response.IsVerified = user.EmailConfirmed;
 
             return response;
         }
@@ -204,7 +204,8 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 Cedula = request.Cedula,
                 Email = request.Email,                
                 UserName = request.UserName,
-                Rol = request.Rol = 3
+                Rol = request.Rol = 3,
+                EmailConfirmed = request.EmailConfirmed
             };
 
             _userManager.Options.SignIn.RequireConfirmedEmail = false;
@@ -252,7 +253,8 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 Cedula = request.Cedula,
                 Email = request.Email,
                 UserName = request.UserName,
-                Rol = request.Rol = 4
+                Rol = request.Rol = 4,
+                EmailConfirmed = request.EmailConfirmed
             };
 
             _userManager.Options.SignIn.RequireConfirmedEmail = false;
