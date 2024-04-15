@@ -27,11 +27,6 @@ namespace RealEstateApp.Core.Application.Mappings
                 .ForMember(x => x.Error, opt => opt.Ignore())
                 .ReverseMap();
 
-            CreateMap<RegisterAdminsRequest, SaveAdminsViewModel>()
-                .ForMember(x => x.HasError, opt => opt.Ignore())
-                .ForMember(x => x.Error, opt => opt.Ignore())
-                .ReverseMap();
-
             #endregion
             #region Mejora
 
