@@ -275,7 +275,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
         private async Task<string> SaveProfileImageAsync(IFormFile imageFile)
         {
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "Clientes");
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "Agentes");
             if (!Directory.Exists(uploadsFolder))
             {
                 Directory.CreateDirectory(uploadsFolder);
@@ -289,7 +289,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 await imageFile.CopyToAsync(fileStream);
             }
 
-            return Path.Combine("img", "Clientes", uniqueFileName).Replace("\\", "/");
+            return Path.Combine("img", "Agentes", uniqueFileName).Replace("\\", "/");
         }
 
         public async Task<string> ConfirmAccountAsync(string userId, string token)

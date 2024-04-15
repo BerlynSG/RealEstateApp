@@ -19,6 +19,8 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Include(p => p.TipoPropiedad)
                 .Include(p => p.TipoVenta)
                 .Include(p => p.Mejoras)
+                    .ThenInclude(m => m.Mejora)
+                .Include(p => p.Imagenes)
                 .ToListAsync();
         }
 
@@ -28,6 +30,8 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Include(p => p.TipoPropiedad)
                 .Include(p => p.TipoVenta)
                 .Include(p => p.Mejoras)
+                    .ThenInclude(m => m.Mejora)
+                .Include(p => p.Imagenes)
                 .Where(p => p.AgenteId == agenteId).ToListAsync();
         }
 
@@ -37,7 +41,9 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Where(f => f.ClienteId == clienteId)
                 .Include(f => f.Propiedad).ThenInclude(p => p.TipoPropiedad)
                 .Include(f => f.Propiedad).ThenInclude(p => p.TipoVenta)
+                .Include(f => f.Propiedad).ThenInclude(p => p.Imagenes)
                 .Include(f => f.Propiedad).ThenInclude(p => p.Mejoras)
+                    .ThenInclude(m => m.Mejora)
                 .ToListAsync();
             return favoritos.Select(f => f.Propiedad).ToList();
         }
@@ -48,32 +54,43 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Include(p => p.TipoPropiedad)
                 .Include(p => p.TipoVenta)
                 .Include(p => p.Mejoras)
+                    .ThenInclude(m => m.Mejora)
+                .Include(p => p.Imagenes)
                 .FirstOrDefaultAsync(p => p.Codigo == codigo);
             return propiedad;
         }
 
-        public override async Task<Propiedad> AddAsync(Propiedad entity)
+        public override async Task UpdateAsync(Propiedad entity, int id)
         {
-            string codigo = GenerarCodigoUnico();
-            while (GetByCodigo(codigo) != null)
-            {
-                codigo = GenerarCodigoUnico();
-            }
-            await _context.Set<Propiedad>().AddAsync(entity);
-            await _context.Set<ImagenPropiedad>().AddRangeAsync(entity.Imagenes.Select(
-                i => new ImagenPropiedad() { PropiedadId = entity.Id, Path = i.Path }).ToList());
-            await _context.Set<MejoraPropiedad>().AddRangeAsync(entity.Mejoras.Select(
-                i => new MejoraPropiedad() { PropiedadId = entity.Id, MejoraId = i.MejoraId }).ToList());
+            List<MejoraPropiedad> mejoras = await _context.Set<MejoraPropiedad>().Where(p => p.PropiedadId == id).ToListAsync();
+            _context.Set<MejoraPropiedad>().RemoveRange(mejoras);
+            await _context.Set<MejoraPropiedad>().AddRangeAsync(entity.Mejoras);
+            List<ImagenPropiedad> imagenes = await _context.Set<ImagenPropiedad>().Where(p => p.PropiedadId == id).ToListAsync();
+            _context.Set<ImagenPropiedad>().RemoveRange(imagenes);
+            await _context.Set<ImagenPropiedad>().AddRangeAsync(entity.Imagenes);
             await _context.SaveChangesAsync();
-            return entity;
+            await base.UpdateAsync(entity, id);
         }
 
-        private string GenerarCodigoUnico()
+        public async Task DeleteAllByAgenteIdAsync(string agenteId)
         {
-            Random random = new Random();
-            const string chars = "0123456789";
-            return new string(Enumerable.Repeat(chars, 6)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+            List<Propiedad> propiedades = await _context.Set<Propiedad>()
+                .Where(p => p.AgenteId == agenteId).ToListAsync();
+            _context.Set<Propiedad>().RemoveRange(propiedades);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddImages(List<ImagenPropiedad> imagenes)
+        {
+            if (imagenes != null && imagenes.Count > 0)
+            {
+                List<ImagenPropiedad> eliminar = await _context.Set<ImagenPropiedad>()
+                    .Where(i => i.PropiedadId == imagenes[0].PropiedadId).ToListAsync();
+                if (eliminar != null && eliminar.Count > 0)
+                    _context.Set<ImagenPropiedad>().RemoveRange(eliminar);
+                await _context.Set<ImagenPropiedad>().AddRangeAsync(imagenes);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

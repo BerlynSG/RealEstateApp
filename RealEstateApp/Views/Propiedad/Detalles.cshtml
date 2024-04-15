@@ -32,18 +32,21 @@
                     </div>
                 </div>
                 <div class="card shadow-sm">
-                    <a asp-controller="Agente" asp-action="Detalles" asp-route-id="@Model.Agente.Id" class="item-propiedad">
-                        <div class="card-body row">
-                            <div class="col-lg-3 col-md-3 col-2">
-                                <img class="img-fluid rounded-circle m-0" height="150px" width="auto" src="@Model.Agente.Foto" />
+                    @if (Model.Agente != null)
+                    {
+                        <a asp-controller="Agente" asp-action="Detalles" asp-route-id="@Model.Agente.Id" class="item-propiedad">
+                            <div class="card-body row">
+                                <div class="col-lg-3 col-md-3 col-2">
+                                    <img class="img-fluid rounded-circle m-0" height="150px" width="auto" src="@Model.Agente.Foto" />
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-10">
+                                    <h6> <b> @Model.Agente.Nombre @Model.Agente.Apellidos </b></h6>
+                                    <p> @Model.Agente.Correo
+                                    <br /> @Model.Agente.Celular </p>
+                                </div>
                             </div>
-                            <div class="col-lg-9 col-md-9 col-10">
-                                <h6> <b> @Model.Agente.Nombre @Model.Agente.Apellidos </b></h6>
-                                <p> @Model.Agente.Correo
-                                <br /> @Model.Agente.Celular </p>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
+                    }
                 </div>
             </div>
             <div class="row-cols-lg-4 row-cols-md-4 row-cols-2 d-flex flex-column flex-lg-row flex-md-row">

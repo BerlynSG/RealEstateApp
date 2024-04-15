@@ -63,18 +63,17 @@ namespace RealEstateApp.Core.Application.Mappings
 
             #endregion
 
+
             #region Propiedad
 
             CreateMap<Propiedad, PropiedadViewModel>()
-                    .ForMember(dest => dest.Agente, opt => opt.Ignore())
-                    .ReverseMap()
-                    .ForMember(dest => dest.TipoVentaId, opt => opt.Ignore())
-                    .ForMember(dest => dest.AgenteId, opt => opt.Ignore())
-                    .ForMember(dest => dest.TipoPropiedadId, opt => opt.Ignore());
+                .ReverseMap()
+                .ForMember(dest => dest.TipoVentaId, opt => opt.Ignore())
+                .ForMember(dest => dest.AgenteId, opt => opt.Ignore())
+                .ForMember(dest => dest.TipoPropiedadId, opt => opt.Ignore());
 
 
             CreateMap<Propiedad, SavePropiedadViewModel>()
-                    //.ForMember(dest => dest.Agente, opt => opt.Ignore())
                     .ForMember(dest => dest.ListaMejora, opt => opt.Ignore())
                     .ForMember(dest => dest.ListaTipoPropiedad, opt => opt.Ignore())
                     .ForMember(dest => dest.ListaTipoVenta, opt => opt.Ignore())
@@ -107,7 +106,6 @@ namespace RealEstateApp.Core.Application.Mappings
 
 
             #endregion
-
         }
     }
 }

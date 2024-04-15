@@ -8,5 +8,7 @@ namespace RealEstateApp.Core.Application.Interfaces.Repositories
         Task<List<Propiedad>> GetAllByAgente(string agenteId);
         Task<List<Propiedad>> GetAllFavoritos(string clienteId);
         Task<Propiedad?> GetByCodigo(string codigo);
+        Task DeleteAllByAgenteIdAsync(string agenteId);
+        Task AddImages(List<ImagenPropiedad> imagenes);
     }
 }

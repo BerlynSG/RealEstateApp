@@ -5,7 +5,7 @@ using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
-using System.Diagnostics;
+using RealEstateApp.Core.Domain.Entities;
 
 namespace RealEstateApp.Controllers
 {
@@ -20,7 +20,7 @@ namespace RealEstateApp.Controllers
         //private List<MejoraViewModel> mejoras;
         //private List<TipoPropiedadViewModel> tiposPropiedad;
         //private List<TipoVentaViewModel> tiposVenta;
-        private int tipoUsuario = 2;
+        private int tipoUsuario = 0;
         private int idAgente = 0;
         //los tipos de propiedad y venta serán tablas y no enums
         public PropiedadController(IPropiedadService propiedadRepository, ITipoPropiedadService tipoPropiedadService,
@@ -51,90 +51,18 @@ namespace RealEstateApp.Controllers
                         Correo = "JoséFernandez@email.com"
                     }
             };
-            /*mejoras = new List<MejoraViewModel>()
-            {
-                new(), new(){ Id = 1, Nombre = "Balcon" }, new(){ Id = 2, Nombre = "Sala/Comedor" }, new(){ Id = 3, Nombre = "Cocina" }, new(){ Id = 4,Nombre = "Piscina" }
-            };
-            tiposPropiedad = new List<TipoPropiedadViewModel>()
-            {
-                new(), new(){ Id = 1, Nombre = "Apartamento" }, new(){ Id = 2, Nombre = "Casa" }
-            };
-            tiposVenta = new List<TipoVentaViewModel>()
-            {
-                new(), new(){ Id = 1, Nombre = "Alquiler" }, new(){ Id = 2, Nombre = "Venta" }
-            };*/
-            /*propiedades = new List<PropiedadViewModel>()
-            {
-                new()
-                {
-                    Codigo = "153843",
-                    TipoPropiedad = tiposPropiedad[1],
-                    Imagenes = new() { "/img/Propiedades/Apartamento.jpg", "/img/Propiedades/Apartamento.jpg", "/img/Propiedades/Apartamento.jpg" },
-                    TipoVenta = tiposVenta[1],
-                    Valor = 59.99,
-                    Baños = 0,
-                    Habitaciones = 2,
-                    Tamaño = 50,
-                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
-                    " incididunt ut labore et dolore magna aliqua.",
-                    Agente = agentes[1],
-                    Mejoras = new() { mejoras[1], mejoras[3] }
-                },
-                new()
-                {
-                    Codigo = "157832",
-                    TipoPropiedad = tiposPropiedad[2],
-                    Imagenes = new() { "/img/Propiedades/Apartamento.jpg" },
-                    TipoVenta = tiposVenta[1],
-                    Valor = 129.99,
-                    Baños = 3,
-                    Habitaciones = 4,
-                    Tamaño = 100,
-                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
-                    " incididunt ut labore et dolore magna aliqua.",
-                    Agente = agentes[0],
-                    Mejoras = new() { mejoras[2], mejoras[3], mejoras[4] }
-                },
-                new()
-                {
-                    Codigo = "953782",
-                    TipoPropiedad = tiposPropiedad[1],
-                    Imagenes = new() { "/img/Propiedades/Apartamento.jpg" },
-                    TipoVenta = tiposVenta[2],
-                    Valor = 33.99,
-                    Baños = 1,
-                    Habitaciones = 1,
-                    Tamaño = 45,
-                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
-                    " incididunt ut labore et dolore magna aliqua.",
-                    Agente = agentes[0],
-                    Mejoras = new() { mejoras[1], mejoras[4] }
-                },
-                new()
-                {
-                    Codigo = "775262",
-                    TipoPropiedad = tiposPropiedad[2],
-                    Imagenes = new() { "/img/Propiedades/Apartamento.jpg" },
-                    TipoVenta = tiposVenta[2],
-                    Valor = 89.99,
-                    Baños = 2,
-                    Habitaciones = 2,
-                    Tamaño = 60,
-                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" +
-                    " incididunt ut labore et dolore magna aliqua.",
-                    Agente = agentes[1],
-                    Mejoras = new() { mejoras[1], mejoras[2], mejoras[3], mejoras[4] }
-                }
-            };*/
         }
 
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(int id, int messageType, string message)
         {
             ListaPropiedadViewModel vm = new ListaPropiedadViewModel();
             vm.Filtros = new FiltroPropiedadViewModel();
             vm.Filtros.TipoFiltroUsuario = tipoUsuario * 2 + id;
             vm.propiedades = await _propiedadService.GetAllFilteredViewModel(vm.Filtros);
             vm.tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
+            vm.MessageType = messageType;
+            vm.Message = message;
+            if (vm.Filtros.TipoFiltroUsuario == 1) vm.Filtros.TipoFiltroUsuario = 5;
 
             return View(vm);
         }
@@ -144,7 +72,10 @@ namespace RealEstateApp.Controllers
         {
             if (vm != null)
             {
+                int tt = vm.Filtros.TipoFiltroUsuario;
+                vm.Filtros.TipoFiltroUsuario = 0;
                 vm.propiedades = await _propiedadService.GetAllFilteredViewModel(vm.Filtros);
+                vm.Filtros.TipoFiltroUsuario = tt;
                 vm.tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
 
                 return View(vm);
@@ -162,14 +93,6 @@ namespace RealEstateApp.Controllers
             return View(vm);
         }
 
-        [HttpPost]
-        public IActionResult Eliminar(ListaPropiedadViewModel vm)
-        {
-            Debug.WriteLine("Código de la propiedad a eliminar: " + vm.Filtros.Codigo);
-            return RedirectToRoute(new { controller = "Propiedad", action = "Index", id="1" });
-        }
-
-       
         public async Task<IActionResult> CrearPropiedad()
         {
             List<TipoPropiedadViewModel> tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
@@ -178,7 +101,10 @@ namespace RealEstateApp.Controllers
             if (tiposPropiedad.Count == 0 || tiposVenta.Count == 0 || mejoras.Count == 0)
             {
                 TempData["ErrorMessage"] = "No se pueden crear propiedades porque no existen tipos de propiedad, tipos de venta o mejoras.";
-                return RedirectToAction("Index", new { id = 1 });
+                return RedirectToAction("Index", new { id = 1,
+                    messageType = 2,
+                    message = "No se puede crear una propiedad porque no hay mejoras, tipos de propiedad y de venta."
+                });
             }
 
             SavePropiedadViewModel vm = new SavePropiedadViewModel
@@ -195,12 +121,22 @@ namespace RealEstateApp.Controllers
         [HttpPost]
         public async Task<IActionResult> CrearPropiedad(SavePropiedadViewModel vm)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && vm.ImagenesFiles != null && vm.ImagenesFiles.Count > 0)
             {
-                await _propiedadService.Add(vm);
+                SavePropiedadViewModel svm = await _propiedadService.Add(vm);
+                if (vm.ImagenesFiles != null && svm != null && svm.Id != 0)
+                {
+                    List<ImagenPropiedad> imagenes = vm.ImagenesFiles
+                        .Select(i => new ImagenPropiedad() { Path = UploadFile(i, svm.Id), PropiedadId = svm.Id })
+                        .ToList();
+                    await _propiedadService.AddImages(imagenes);
+                }
 
                 TempData["SuccessMessage"] = "La propiedad se creó correctamente.";
-                return RedirectToAction("Index", new { id = 1 });
+                return RedirectToAction("Index", new { id = 1,
+                    messageType = 1,
+                    message = "Se ha creado la propiedad correctamente."
+                });
             }
 
             vm.ListaTipoPropiedad = await _tipoPropiedadService.GetAllViewModel();
@@ -215,7 +151,10 @@ namespace RealEstateApp.Controllers
 
             if (vm == null)
             {
-                return RedirectToAction("Index", new { id = 1 });
+                return RedirectToAction("Index", new { id = 1,
+                    messageType = 2,
+                    message = "No se ha encontrado la propiedad para editarla."
+                });
             }
 
             vm.ListaTipoPropiedad = await _tipoPropiedadService.GetAllViewModel();
@@ -234,23 +173,26 @@ namespace RealEstateApp.Controllers
 
                 if (propiedad == null)
                 {
-                    return RedirectToAction("Index", new { id = 1 });
+                    return RedirectToAction("Index", new { id = 1,
+                        messageType = 2,
+                        message = "No se ha encontrado la propiedad para editarla."
+                    });
                 }
 
                 await _propiedadService.Update(vm, propiedad.Id);
-
-                /*propiedad.TipoPropiedad = tiposPropiedad.Where(v => v.Id == vm.TipoPropiedadId).First();
-                propiedad.TipoVenta = tiposVenta.Where(v => v.Id == vm.TipoVentaId).First();
-                propiedad.Valor = vm.Valor;
-                propiedad.Baños = vm.Baños;
-                propiedad.Habitaciones = vm.Habitaciones;
-                propiedad.Tamaño = vm.Tamaño;
-                propiedad.Descripcion = vm.Descripcion;
-                propiedad.Mejoras = vm.Mejoras.Split(",").Select(ms => mejoras.FirstOrDefault(m => m.Id == int.Parse(ms))).ToList();
-                propiedad.Imagenes = vm.Imagenes;*/
+                if (vm.ImagenesFiles != null)
+                {
+                    List<ImagenPropiedad> imagenes = vm.ImagenesFiles
+                        .Select(i => new ImagenPropiedad() { Path = UploadFile(i, propiedad.Id), PropiedadId = propiedad.Id })
+                        .ToList();
+                    await _propiedadService.AddImages(imagenes);
+                }
 
                 TempData["SuccessMessage"] = "La propiedad se editó correctamente.";
-                return RedirectToAction("Index", new { id = 1 });
+                return RedirectToAction("Index", new { id = 1,
+                    messageType = 1,
+                    message = "Se ha editado la propiedad correctamente."
+                });
             }
 
             vm.ListaTipoPropiedad = await _tipoPropiedadService.GetAllViewModel();
@@ -258,7 +200,54 @@ namespace RealEstateApp.Controllers
             vm.ListaMejora = await _mejoraService.GetAllViewModel();
             return View("Crear", vm);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Eliminar(ListaPropiedadViewModel vm)
+        {
+            await _propiedadService.Delete(vm.EliminarId);
+            vm.MessageType = 1;
+            vm.Message = "Se ha eliminado la propiedad correctamente.";
+            int tt = vm.Filtros.TipoFiltroUsuario;
+            vm.Filtros.TipoFiltroUsuario = 0;
+            vm.propiedades = await _propiedadService.GetAllFilteredViewModel(vm.Filtros);
+            vm.Filtros.TipoFiltroUsuario = tt;
+            vm.tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
+            return View("Index", vm);
+        }
+
+        public string UploadFile(IFormFile file, int id, bool isEditing = false, string photoUrl = "")
+        {
+            if (isEditing && file == null)
+            {
+                return photoUrl;
+            }
+            //get directory path
+            string basePath = $"/img/Propiedades/{id}";
+            string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");
+            //create directory path
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            //generade file name
+            FileInfo fileInfo = new FileInfo(file.FileName);
+            string filename = Guid.NewGuid() + fileInfo.Extension;
+            //get final path
+            string finalfilePath = Path.Combine(path, filename);
+            //copy the uploaded file
+            using (var stream = new FileStream(finalfilePath, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+            if (isEditing)
+            {
+                string[] oldImagePart = photoUrl.Split('/');
+                string oldFileName = oldImagePart[^1];
+                string oldFilePath = Path.Combine(path, oldFileName);
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
+            }
+            return $"{basePath}/{filename}";
+        }
     }
 }
-
-  

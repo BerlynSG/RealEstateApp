@@ -5,7 +5,7 @@
 }
 
 <div class="container-fluid">
-    <h1> Mantenimiento de Tipos de Propiedades </h1>
+    <h1> Mantenimiento de Mejoras </h1>
     <div class="row mb-3">
         <div class="col-3">
             <a asp-controller="Mejora" asp-action="Crear" class="btn btn-success">
@@ -26,7 +26,7 @@
 
         @if (Model == null || Model.Mejoras.Count == 0)
         {
-            <h2>No hay Tipos de propiedades</h2>
+            <h2>No hay Mejoras</h2>
         }
         else
         {
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a asp-controller="TipoPropiedad" asp-action="Editar" asp-route-id="@item.Id" class="item-propiedad">
+                        <a asp-controller="Mejora" asp-action="Editar" asp-route-id="@item.Id" class="item-propiedad">
                             <div class="card-body p-0">
                                 <div class="p-3 py-2">
                                     <h4> <b> @item.Nombre </b></h4>
@@ -71,7 +71,7 @@
 <div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" asp-controller="TipoPropiedad" asp-action="Eliminar">
+            <form method="post" asp-controller="Mejora" asp-action="Eliminar">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="eliminarModalLabel">Eliminar</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
