@@ -9,7 +9,7 @@
 @if (Model != null)
 {
     <div class="row">
-        <div class="col-md-6">
+        @*<div class="col-md-6">
             <form asp-controller="Agente" asp-action="MiPerfil" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="Nombre">Nombre</label>
@@ -35,5 +35,6 @@
             <!-- Mostrar la foto actual del agente -->
             <img src="@Model.Foto" class="img-fluid" alt="Foto de @Model.Nombre @Model.Apellidos">
         </div>
+        *@
     </div>
 }

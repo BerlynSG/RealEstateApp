@@ -34,7 +34,7 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
         [Required(ErrorMessage = "Se requiere tener asignado una Descripción.")]
         public string Descripcion { get; set; }
 
-        public int AgenteId { get; set; }
+        public string? AgenteId { get; set; }
 
         //[Required(ErrorMessage = "Se requiere tener asignado al menos una Mejora.")]
         public string? Mejoras { get; set; }
