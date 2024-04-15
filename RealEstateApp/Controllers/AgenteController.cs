@@ -1,13 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
+using RealEstateApp.Core.Application.ViewModels.User;
+using System.Security.Claims;
 
 namespace RealEstateApp.Controllers
 {
     public class AgenteController : Controller
     {
+        private readonly IUserService _userService;
         private List<TipoPropiedadViewModel> tiposPropiedad = new()
         {
             new(), new(){ Nombre = "Apartamento" }, new(){ Nombre = "Casa" }, new(){ Nombre = "Terreno" }
@@ -18,8 +22,9 @@ namespace RealEstateApp.Controllers
         };
         private static List<AgenteViewModel> _agentes;
 
-        public AgenteController()
+        public AgenteController(IUserService userService)
         {
+            _userService = userService;
             _agentes = new List<AgenteViewModel>
             {
                 new AgenteViewModel { Id = 1, Nombre = "Juan", Apellidos = "Perez", Foto = "/img/Agentes/Agente.jpeg", Propiedades = new List<PropiedadViewModel>
@@ -89,5 +94,49 @@ namespace RealEstateApp.Controllers
 
             return View(agente.Propiedades);
         }
+        public async Task<IActionResult> MiPerfil()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
+            var agente = await _userService.GetUserById(userId); 
+
+            if (agente == null)
+            {
+                return NotFound(); 
+            }
+
+            var vm = new SaveUserViewModel
+            {
+                Id = agente.Id,
+                FirstName = agente.FirstName,
+                LastName = agente.LastName,
+                Phone = agente.Phone,
+                ProfileImage = agente.ProfileImage 
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MiPerfil(SaveUserViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm); 
+            }
+
+            var agente = new AgenteViewModel
+            {
+                Id = vm.Id,
+                Nombre = vm.FirstName,
+                Apellidos = vm.LastName,
+                Celular = vm.Phone,
+                ProfileImage = vm.ProfileImage 
+            };
+
+            await _userService.UpdateUserAsync(vm, vm.Id.ToString());
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

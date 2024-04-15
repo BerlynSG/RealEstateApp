@@ -41,5 +41,6 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         public bool? EmailConfirmed { get; set; }        
         public bool HasError { get; set; }
         public string? Error { get; set; }
+        public int Id { get; set; }
     }
 }

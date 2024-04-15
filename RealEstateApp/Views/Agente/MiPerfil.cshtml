@@ -1,0 +1,39 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.User;
+@model SaveUserViewModel;
+@{
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<h1>Mi Perfil</h1>
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-controller="Agente" asp-action="MiPerfil" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="Nombre">Nombre</label>
+                    <input type="text" class="form-control" id="Nombre" name="Nombre" value="@Model.Nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="Apellidos">Apellidos</label>
+                    <input type="text" class="form-control" id="Apellidos" name="Apellidos" value="@Model.Apellidos" required>
+                </div>
+                <div class="form-group">
+                    <label for="Celular">Teléfono</label>
+                    <input type="text" class="form-control" id="Celular" name="Celular" value="@Model.Celular" required>
+                </div>
+                <div class="form-group">
+                    <label for="Foto">Foto de Usuario</label>
+                    <input type="file" class="form-control-file" id="Foto" name="ProfileImage">
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <!-- Mostrar la foto actual del agente -->
+            <img src="@Model.Foto" class="img-fluid" alt="Foto de @Model.Nombre @Model.Apellidos">
+        </div>
+    </div>
+}

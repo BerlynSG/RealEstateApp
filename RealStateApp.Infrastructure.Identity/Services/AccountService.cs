@@ -376,5 +376,30 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return verificationUri;
         }
+        public async Task<AuthenticationResponse> GetUserById(string id)
+        {
+            AuthenticationResponse response = new();
+            ApplicationUser user = new();
+            user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                response.Id = user.Id;
+                response.UserName = user.UserName;
+                response.Email = user.Email;
+                response.FirstName = user.FirstName;
+                response.LastName = user.LastName;
+                response.UserName = user.UserName;
+                response.PhoneNumber = user.PhoneNumber;
+                response.IsVerified = user.IsVerified;
+                response.ImagePath = user.ImagePath;
+
+                return response;
+            }
+
+            response.HasError = true;
+            response.Error = $"Not user exists with this id: {id}";
+            return response;
+        }
     }
 }
