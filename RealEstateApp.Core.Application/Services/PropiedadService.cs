@@ -19,7 +19,13 @@ namespace RealEstateApp.Core.Application.Services
         public override async Task<SavePropiedadViewModel> Add(SavePropiedadViewModel vm)
         {
             vm.Codigo = GenerarCodigoUnico();
+            vm.Imagenes = null;
             return await base.Add(vm);
+        }
+
+        public async Task AddImages(List<ImagenPropiedad> imagenes)
+        {
+            await _repository.AddImages(imagenes);
         }
 
         public async Task DeleteAllByAgenteId(string agenteId)

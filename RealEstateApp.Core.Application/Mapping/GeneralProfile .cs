@@ -47,7 +47,7 @@ namespace RealEstateApp.Core.Application.Mapping
                     .Select(i => new ImagenPropiedad() { PropiedadId = p.Id, Path = i }).ToList()));
 
             CreateMap<Propiedad, SavePropiedadViewModel>()
-                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path)))
+                .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path).ToList()))
                 .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => string.Join(",", p.Mejoras.Select(m => m.MejoraId))))
                 .ForMember(p => p.ListaMejora, opt => opt.Ignore())
                 .ForMember(p => p.ListaTipoPropiedad, opt => opt.Ignore())
@@ -58,7 +58,7 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(p => p.TipoVenta, opt => opt.Ignore())
                 .ForMember(p => p.TipoPropiedad, opt => opt.Ignore())
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes
-                    .Select(i => new ImagenPropiedad() { PropiedadId = p.Id, Path = i })))
+                    .Select(i => new ImagenPropiedad() { PropiedadId = p.Id, Path = i }).ToList()))
                 .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras.Split(",", StringSplitOptions.None)
                     .Select(m => new MejoraPropiedad() { PropiedadId = p.Id, MejoraId = int.Parse(m) }).ToList()));
 

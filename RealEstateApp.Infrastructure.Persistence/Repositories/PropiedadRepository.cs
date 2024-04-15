@@ -20,6 +20,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Include(p => p.TipoVenta)
                 .Include(p => p.Mejoras)
                     .ThenInclude(m => m.Mejora)
+                .Include(p => p.Imagenes)
                 .ToListAsync();
         }
 
@@ -30,6 +31,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Include(p => p.TipoVenta)
                 .Include(p => p.Mejoras)
                     .ThenInclude(m => m.Mejora)
+                .Include(p => p.Imagenes)
                 .Where(p => p.AgenteId == agenteId).ToListAsync();
         }
 
@@ -39,6 +41,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Where(f => f.ClienteId == clienteId)
                 .Include(f => f.Propiedad).ThenInclude(p => p.TipoPropiedad)
                 .Include(f => f.Propiedad).ThenInclude(p => p.TipoVenta)
+                .Include(f => f.Propiedad).ThenInclude(p => p.Imagenes)
                 .Include(f => f.Propiedad).ThenInclude(p => p.Mejoras)
                     .ThenInclude(m => m.Mejora)
                 .ToListAsync();
@@ -52,6 +55,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Include(p => p.TipoVenta)
                 .Include(p => p.Mejoras)
                     .ThenInclude(m => m.Mejora)
+                .Include(p => p.Imagenes)
                 .FirstOrDefaultAsync(p => p.Codigo == codigo);
             return propiedad;
         }
@@ -74,6 +78,19 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Where(p => p.AgenteId == agenteId).ToListAsync();
             _context.Set<Propiedad>().RemoveRange(propiedades);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task AddImages(List<ImagenPropiedad> imagenes)
+        {
+            if (imagenes != null && imagenes.Count > 0)
+            {
+                List<ImagenPropiedad> eliminar = await _context.Set<ImagenPropiedad>()
+                    .Where(i => i.PropiedadId == imagenes[0].PropiedadId).ToListAsync();
+                if (eliminar != null && eliminar.Count > 0)
+                    _context.Set<ImagenPropiedad>().RemoveRange(eliminar);
+                await _context.Set<ImagenPropiedad>().AddRangeAsync(imagenes);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

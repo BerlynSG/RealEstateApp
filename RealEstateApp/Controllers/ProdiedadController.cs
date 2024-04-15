@@ -5,6 +5,7 @@ using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
+using RealEstateApp.Core.Domain.Entities;
 
 namespace RealEstateApp.Controllers
 {
@@ -120,9 +121,16 @@ namespace RealEstateApp.Controllers
         [HttpPost]
         public async Task<IActionResult> CrearPropiedad(SavePropiedadViewModel vm)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && vm.ImagenesFiles != null && vm.ImagenesFiles.Count > 0)
             {
-                await _propiedadService.Add(vm);
+                SavePropiedadViewModel svm = await _propiedadService.Add(vm);
+                if (vm.ImagenesFiles != null && svm != null && svm.Id != 0)
+                {
+                    List<ImagenPropiedad> imagenes = vm.ImagenesFiles
+                        .Select(i => new ImagenPropiedad() { Path = UploadFile(i, svm.Id), PropiedadId = svm.Id })
+                        .ToList();
+                    await _propiedadService.AddImages(imagenes);
+                }
 
                 TempData["SuccessMessage"] = "La propiedad se creó correctamente.";
                 return RedirectToAction("Index", new { id = 1,
@@ -172,6 +180,13 @@ namespace RealEstateApp.Controllers
                 }
 
                 await _propiedadService.Update(vm, propiedad.Id);
+                if (vm.ImagenesFiles != null)
+                {
+                    List<ImagenPropiedad> imagenes = vm.ImagenesFiles
+                        .Select(i => new ImagenPropiedad() { Path = UploadFile(i, propiedad.Id), PropiedadId = propiedad.Id })
+                        .ToList();
+                    await _propiedadService.AddImages(imagenes);
+                }
 
                 TempData["SuccessMessage"] = "La propiedad se editó correctamente.";
                 return RedirectToAction("Index", new { id = 1,
@@ -198,6 +213,41 @@ namespace RealEstateApp.Controllers
             vm.Filtros.TipoFiltroUsuario = tt;
             vm.tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
             return View("Index", vm);
+        }
+
+        public string UploadFile(IFormFile file, int id, bool isEditing = false, string photoUrl = "")
+        {
+            if (isEditing && file == null)
+            {
+                return photoUrl;
+            }
+            //get directory path
+            string basePath = $"/img/Propiedades/{id}";
+            string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");
+            //create directory path
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            //generade file name
+            FileInfo fileInfo = new FileInfo(file.FileName);
+            string filename = Guid.NewGuid() + fileInfo.Extension;
+            //get final path
+            string finalfilePath = Path.Combine(path, filename);
+            //copy the uploaded file
+            using (var stream = new FileStream(finalfilePath, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+            if (isEditing)
+            {
+                string[] oldImagePart = photoUrl.Split('/');
+                string oldFileName = oldImagePart[^1];
+                string oldFilePath = Path.Combine(path, oldFileName);
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
+            }
+            return $"{basePath}/{filename}";
         }
     }
 }

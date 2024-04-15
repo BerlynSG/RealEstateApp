@@ -10,5 +10,6 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<PropiedadViewModel> GetByCodigoViewModel(string codigo);
         Task<SavePropiedadViewModel> GetByCodigoSaveViewModel(string codigo);
         Task DeleteAllByAgenteId(string agenteId);
+        Task AddImages(List<ImagenPropiedad> imagenes);
     }
 }
