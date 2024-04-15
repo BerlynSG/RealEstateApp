@@ -34,7 +34,7 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
         public int Rol { get; set; }
-
+        public bool EmailConfirmed { get; set; }
         public bool HasError { get; set; }
         public string? Error { get; set; }
     }

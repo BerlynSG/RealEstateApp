@@ -1,8 +1,22 @@
-﻿@{
+﻿@using RealEstateApp.Core.Application.ViewModels.User
+@using Microsoft.AspNetCore.Http
+@using RealEstateApp.Core.Application.Dtos.Account
+@using RealEstateApp.Core.Application.Helpers;
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+}
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+    @if (User != null)
+    {
+        <p class="display-4">@User.UserName</p>
+        <p class="display-4">@User.Email</p>
+        <p class="display-4">@User.Rol</p>
+    }    
     <p>hola mundo <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

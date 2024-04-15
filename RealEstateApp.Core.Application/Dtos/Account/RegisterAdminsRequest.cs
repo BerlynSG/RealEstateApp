@@ -13,6 +13,6 @@ namespace RealEstateApp.Core.Application.Dtos.Account
 
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
-        public bool? EmailConfirmed { get; set; }
+        public bool EmailConfirmed { get; set; }
     }
 }

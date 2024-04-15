@@ -24,6 +24,10 @@ namespace RealEstateApp.Controllers
         {
             return View();
         }
+        public IActionResult DesarrolladorIndex()
+        {
+            return View();
+        }
 
         public IActionResult RegisterAdmin()
         {
@@ -61,5 +65,29 @@ namespace RealEstateApp.Controllers
 
             return RedirectToRoute(new { controller = "Admins", action = "Index" });
         }
+
+        /*public IActionResult RegisterDesarrollador()
+        {
+            var vm = new SaveAdminsViewModel(); // Modelo para el registro de un nuevo administrador
+            return View(vm); // Devuelve la vista de registro para administradores
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterDesarrollador(SaveAdminsViewModel vm)
+        {
+            // Lógica para registrar un nuevo administrador utilizando _userService.RegisterAdminAsync(vm, origin);
+
+            var origin = Request.Headers["origin"];
+
+                 RegisterAdminsResponse response = await _userService.RegisterDesarrolladorAsync(vm, origin);
+                 if (response.HasError)
+                 {
+                     vm.HasError = response.HasError;
+                     vm.Error = response.Error;
+                     return View(vm);
+                 }
+
+            return RedirectToRoute(new { controller = "Admins", action = "Index" });
+        }*/
     }
 }

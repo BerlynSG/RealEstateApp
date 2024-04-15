@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Mejora;
@@ -6,6 +8,7 @@ using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
 using RealEstateApp.Core.Domain.Entities;
+using System.Security.Claims;
 
 namespace RealEstateApp.Controllers
 {
@@ -15,9 +18,9 @@ namespace RealEstateApp.Controllers
         private readonly ITipoPropiedadService _tipoPropiedadService;
         private readonly ITipoVentaService _tipoVentaService;
         private readonly IMejoraService _mejoraService;
-        private List<AgenteViewModel> agentes;
-        private int tipoUsuario = 0;
-        private int idAgente = 0;
+        //private List<AgenteViewModel> agentes;
+        //private int tipoUsuario = 1;
+        //private int idAgente = 0;
 
         public PropiedadController(IPropiedadService propiedadRepository, ITipoPropiedadService tipoPropiedadService,
             ITipoVentaService tipoVentaService, IMejoraService mejoraService)
@@ -26,7 +29,7 @@ namespace RealEstateApp.Controllers
             _tipoPropiedadService = tipoPropiedadService;
             _tipoVentaService = tipoVentaService;
             _mejoraService = mejoraService;
-            agentes = new List<AgenteViewModel>()
+            /*agentes = new List<AgenteViewModel>()
             {
                 new()
                     {
@@ -46,19 +49,33 @@ namespace RealEstateApp.Controllers
                         Celular = "829 254 3687",
                         Correo = "JoséFernandez@email.com"
                     }
-            };
+            };*/
         }
 
         public async Task<IActionResult> Index(int id, int messageType, string message)
         {
             ListaPropiedadViewModel vm = new ListaPropiedadViewModel();
             vm.Filtros = new FiltroPropiedadViewModel();
-            vm.Filtros.TipoFiltroUsuario = tipoUsuario * 2 + id;
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole(Roles.Cliente.ToString()))
+                {
+                    vm.Modo = 1;
+                    vm.Filtros.TipoFiltroUsuario = id == 0 ? 0 : 1;
+                }
+                else if (User.IsInRole(Roles.Agente.ToString()))
+                {
+                    vm.Modo = id == 0 ? 0 : 2;
+                    vm.Filtros.TipoFiltroUsuario = 2;
+                }
+                //vm.Filtros.TipoFiltroUsuario = tipoUsuario;
+                //vm.Modo = id;
+            }
+            
             vm.propiedades = await _propiedadService.GetAllFilteredViewModel(vm.Filtros);
             vm.tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
             vm.MessageType = messageType;
             vm.Message = message;
-            if (vm.Filtros.TipoFiltroUsuario == 1) vm.Filtros.TipoFiltroUsuario = 5;
 
             return View(vm);
         }
@@ -68,10 +85,7 @@ namespace RealEstateApp.Controllers
         {
             if (vm != null)
             {
-                int tt = vm.Filtros.TipoFiltroUsuario;
-                vm.Filtros.TipoFiltroUsuario = 0;
                 vm.propiedades = await _propiedadService.GetAllFilteredViewModel(vm.Filtros);
-                vm.Filtros.TipoFiltroUsuario = tt;
                 vm.tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
 
                 return View(vm);
@@ -89,6 +103,7 @@ namespace RealEstateApp.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "Agente")]
         public async Task<IActionResult> CrearPropiedad()
         {
             List<TipoPropiedadViewModel> tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
@@ -114,11 +129,13 @@ namespace RealEstateApp.Controllers
             return View("Crear", vm);
         }
 
+        [Authorize(Roles = "Agente")]
         [HttpPost]
         public async Task<IActionResult> CrearPropiedad(SavePropiedadViewModel vm)
         {
             if (ModelState.IsValid && vm.ImagenesFiles != null && vm.ImagenesFiles.Count > 0)
             {
+                vm.AgenteId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 SavePropiedadViewModel svm = await _propiedadService.Add(vm);
                 if (vm.ImagenesFiles != null && svm != null && svm.Id != 0)
                 {
@@ -141,6 +158,7 @@ namespace RealEstateApp.Controllers
             return View("Crear", vm);
         }
 
+        [Authorize(Roles = "Agente")]
         public async Task<IActionResult> EditarPropiedad(string codigo)
         {
             SavePropiedadViewModel vm = await _propiedadService.GetByCodigoSaveViewModel(codigo);
@@ -160,6 +178,7 @@ namespace RealEstateApp.Controllers
             return View("Crear", vm);
         }
 
+        [Authorize(Roles = "Agente")]
         [HttpPost]
         public async Task<IActionResult> EditarPropiedad(SavePropiedadViewModel vm)
         {
@@ -197,16 +216,14 @@ namespace RealEstateApp.Controllers
             return View("Crear", vm);
         }
 
+        [Authorize(Roles = "Agente")]
         [HttpPost]
         public async Task<IActionResult> Eliminar(ListaPropiedadViewModel vm)
         {
             await _propiedadService.Delete(vm.EliminarId);
             vm.MessageType = 1;
             vm.Message = "Se ha eliminado la propiedad correctamente.";
-            int tt = vm.Filtros.TipoFiltroUsuario;
-            vm.Filtros.TipoFiltroUsuario = 0;
             vm.propiedades = await _propiedadService.GetAllFilteredViewModel(vm.Filtros);
-            vm.Filtros.TipoFiltroUsuario = tt;
             vm.tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
             return View("Index", vm);
         }

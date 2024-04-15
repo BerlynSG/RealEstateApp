@@ -9,11 +9,13 @@ namespace RealEstateApp.Core.Application.Services
     public class PropiedadService : GenericService<SavePropiedadViewModel, PropiedadViewModel, Propiedad>, IPropiedadService
     {
         private readonly IPropiedadRepository _repository;
+        private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
-        public PropiedadService(IPropiedadRepository repository, IMapper mapper) : base(repository, mapper)
+        public PropiedadService(IPropiedadRepository repository, IMapper mapper, IAccountService accountService) : base(repository, mapper)
         {
             _repository = repository;
             _mapper = mapper;
+            _accountService = accountService;
         }
 
         public override async Task<SavePropiedadViewModel> Add(SavePropiedadViewModel vm)
@@ -37,11 +39,11 @@ namespace RealEstateApp.Core.Application.Services
         {
             List<Propiedad> propiedades;
             //prop = await _propiedadService.GetAllViewModel();
-            if (filtro.TipoFiltroUsuario == 4 || filtro.TipoFiltroUsuario == 5)
+            if (filtro.TipoFiltroUsuario == 2)
             {
                 propiedades = await _repository.GetAllByAgente(filtro.UsuarioId);
             }
-            else if (filtro.TipoFiltroUsuario == 3)
+            else if (filtro.TipoFiltroUsuario == 1)
             {
                 propiedades = await _repository.GetAllFavoritos(filtro.UsuarioId);
             }
@@ -60,7 +62,8 @@ namespace RealEstateApp.Core.Application.Services
 
         public async Task<PropiedadViewModel> GetByCodigoViewModel(string codigo)
         {
-            return _mapper.Map<PropiedadViewModel>(await _repository.GetByCodigo(codigo));
+            PropiedadViewModel propiedad = _mapper.Map<PropiedadViewModel>(await _repository.GetByCodigo(codigo));
+            return propiedad;
         }
 
         public async Task<SavePropiedadViewModel> GetByCodigoSaveViewModel(string codigo)

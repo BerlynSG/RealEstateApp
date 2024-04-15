@@ -8,7 +8,7 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
         public List<TipoPropiedadViewModel> tiposPropiedad { get; set; }
         public FiltroPropiedadViewModel Filtros { get; set; }
 
-        public int Opciones { get; set; }
+        public int Modo { get; set; }
 
         public int EliminarId { get; set; }
 
