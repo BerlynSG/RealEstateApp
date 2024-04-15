@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
@@ -12,7 +13,13 @@ namespace RealEstateApp.Core.Application.Mapping
     {
         public GeneralProfile()
         {
-            /*CreateMap<AuthenticationRequest, LoginViewModel>()
+            #region UserProfile
+            CreateMap<AuthenticationRequest, LoginViewModel>()
+                .ForMember(d => d.Error, o => o.Ignore())
+                .ForMember(d => d.HasError, o => o.Ignore())
+                .ReverseMap();
+
+            CreateMap<RegisterAdminsRequest, SaveAdminsViewModel>()
                 .ForMember(d => d.Error, o => o.Ignore())
                 .ForMember(d => d.HasError, o => o.Ignore())
                 .ReverseMap();
@@ -20,16 +27,13 @@ namespace RealEstateApp.Core.Application.Mapping
             CreateMap<RegisterRequest, SaveUserViewModel>()
                 .ForMember(d => d.Error, o => o.Ignore())
                 .ForMember(d => d.HasError, o => o.Ignore())
-                .ForMember(d => d.MontoInicial, o => o.Ignore())
                 .ReverseMap();
 
-            CreateMap<UpdateRequest, UpdateUserViewModel>()
+            CreateMap<RegisterAdminsRequest, SaveAdminsViewModel>()
                 .ForMember(d => d.Error, o => o.Ignore())
                 .ForMember(d => d.HasError, o => o.Ignore())
                 .ReverseMap();
-
-            CreateMap<DataResponse, UserViewModel>()
-                .ReverseMap();*/
+            #endregion
 
             CreateMap<Propiedad, PropiedadViewModel>()
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path).ToList()))
