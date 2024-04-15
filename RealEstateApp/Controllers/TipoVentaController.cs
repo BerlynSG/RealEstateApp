@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
 
@@ -13,6 +14,7 @@ namespace RealEstateApp.Controllers
             _tipoVentaService = tipoVentaService;
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> Index(int messageType, string message)
         {
             ListaTipoVentaViewModel vm = new();
@@ -22,12 +24,14 @@ namespace RealEstateApp.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "Administrador")]
         public ActionResult Crear()
         {
             SaveTipoVentaViewModel vm = new();
             return View(vm);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Crear(SaveTipoVentaViewModel vm)
@@ -45,6 +49,7 @@ namespace RealEstateApp.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "Administrador")]
         public async Task<ActionResult> Editar(int id)
         {
             SaveTipoVentaViewModel vm = await _tipoVentaService.GetByIdSaveViewModel(id);
@@ -59,6 +64,7 @@ namespace RealEstateApp.Controllers
             return View("Crear", vm);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Editar(SaveTipoVentaViewModel vm)
@@ -83,6 +89,7 @@ namespace RealEstateApp.Controllers
             return View("Crear", vm);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Eliminar(ListaTipoVentaViewModel vm)

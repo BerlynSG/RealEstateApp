@@ -28,7 +28,6 @@ namespace RealEstateApp.Infrastructure.Identity.Seeds
                     await userManager.AddToRoleAsync(clientUser, Roles.Cliente.ToString());
                 }
             }
-
         }
     }
 }
