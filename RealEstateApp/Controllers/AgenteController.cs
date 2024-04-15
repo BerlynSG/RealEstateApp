@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
@@ -12,6 +13,7 @@ namespace RealEstateApp.Controllers
     public class AgenteController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
         private List<TipoPropiedadViewModel> tiposPropiedad = new()
         {
             new(), new(){ Nombre = "Apartamento" }, new(){ Nombre = "Casa" }, new(){ Nombre = "Terreno" }
@@ -22,8 +24,9 @@ namespace RealEstateApp.Controllers
         };
         private static List<AgenteViewModel> _agentes;
 
-        public AgenteController(IUserService userService)
+        public AgenteController(IUserService userService, IMapper mapper)
         {
+            _mapper = mapper;
             _userService = userService;
             _agentes = new List<AgenteViewModel>
             {
@@ -96,44 +99,30 @@ namespace RealEstateApp.Controllers
         }
         public async Task<IActionResult> MiPerfil()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
-            var agente = await _userService.GetUserById(userId); 
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var agente = await _userService.GetUserById(userId);
 
             if (agente == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
-            var vm = new SaveUserViewModel
-            {
-                Id = agente.Id,
-                FirstName = agente.FirstName,
-                LastName = agente.LastName,
-                Phone = agente.Phone,
-                ProfileImage = agente.ProfileImage 
-            };
+            var vm = _mapper.Map<AgenteViewModel>(agente);
 
             return View(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> MiPerfil(SaveUserViewModel vm)
+        public async Task<IActionResult> MiPerfil(AgenteViewModel vm)
         {
             if (!ModelState.IsValid)
             {
-                return View(vm); 
+                return View(vm);
             }
 
-            var agente = new AgenteViewModel
-            {
-                Id = vm.Id,
-                Nombre = vm.FirstName,
-                Apellidos = vm.LastName,
-                Celular = vm.Phone,
-                ProfileImage = vm.ProfileImage 
-            };
+            var agente = _mapper.Map<AgenteViewModel>(vm);
 
-            await _userService.UpdateUserAsync(vm, vm.Id.ToString());
+            await _userService.UpdateUserAsync( vm,  vm.Id.ToString());
 
             return RedirectToAction("Index", "Home");
         }

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
@@ -30,6 +32,18 @@ namespace RealEstateApp.Core.Application.Mapping
 
             CreateMap<DataResponse, UserViewModel>()
                 .ReverseMap();*/
+
+            CreateMap<AgenteViewModel, SaveUserViewModel>()
+            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Nombre))
+            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Apellidos))
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Celular))
+            .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.ProfileImage))
+            .ReverseMap();
+
+            CreateMap<AuthenticationResponse, SaveUserViewModel>()
+            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.UserName)) 
+            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName));
+
 
             CreateMap<Propiedad, PropiedadViewModel>()
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path).ToList()))

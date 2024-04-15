@@ -2,6 +2,7 @@
 using RealEstateApp.Core.Application.ViewModels.User;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using RealEstateApp.Core.Application.ViewModels.Agente;
 
 namespace RealEstateApp.Core.Application.Interfaces.Services
 {
@@ -15,6 +16,7 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<RegisterAdminsResponse> RegisterDesarrolladorAsync(SaveAdminsViewModel vm, string origin);
         Task<SaveUserViewModel> GetUserById(string id);
         Task SignOutAsync();
+        Task<UpdateResponse> UpdateUserAsync(AgenteViewModel vm, string id);
         Task<UpdateResponse> UpdateUserAsync(SaveUserViewModel vm, string id);
     }
 }
