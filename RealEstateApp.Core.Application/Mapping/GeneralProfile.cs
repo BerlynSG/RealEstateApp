@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
@@ -34,6 +35,24 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(d => d.HasError, o => o.Ignore())
                 .ReverseMap();
             #endregion
+
+            CreateMap<AgenteViewModel, SaveUserViewModel>()
+            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Nombre))
+            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Apellidos))
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Celular))
+            .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.ProfileImage))
+            .ReverseMap();
+            CreateMap<UpdateRequest, AgenteViewModel>()
+            .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.FirstName))
+            .ForMember(dest => dest.Apellidos, opt => opt.MapFrom(src => src.LastName))
+            .ForMember(dest => dest.Celular, opt => opt.MapFrom(src => src.PhoneNumber))
+            .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.ProfileImage, opt => opt.Ignore());
+
+            CreateMap<AuthenticationResponse, SaveUserViewModel>()
+            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.UserName)) 
+            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName));
+
 
             CreateMap<Propiedad, PropiedadViewModel>()
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path).ToList()))

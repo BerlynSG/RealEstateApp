@@ -1,5 +1,5 @@
-﻿@using RealEstateApp.Core.Application.ViewModels.User;
-@model SaveUserViewModel;
+﻿@using RealEstateApp.Core.Application.ViewModels.Agente;
+@model AgenteViewModel;
 @{
     ViewData["Title"] = "Mi Perfil";
 }
@@ -13,27 +13,47 @@
             <form asp-controller="Agente" asp-action="MiPerfil" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="Nombre">Nombre</label>
-                    <input type="text" class="form-control" id="Nombre" name="Nombre" value="@Model.Nombre" required>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="Nombre" name="Nombre" value="@Model.Nombre" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="Apellidos">Apellidos</label>
-                    <input type="text" class="form-control" id="Apellidos" name="Apellidos" value="@Model.Apellidos" required>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="Apellidos" name="Apellidos" value="@Model.Apellidos" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="Celular">Teléfono</label>
-                    <input type="text" class="form-control" id="Celular" name="Celular" value="@Model.Celular" required>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="Celular" name="Celular" value="@Model.Celular" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="Foto">Foto de Usuario</label>
-                    <input type="file" class="form-control-file" id="Foto" name="ProfileImage">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="Foto" name="ProfileImage">
+                        <label class="custom-file-label" for="Foto">Seleccionar archivo...</label>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Guardar</button>
-                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary"><i class="bi bi-house"></i> Volver</a>
             </form>
         </div>
         <div class="col-md-6">
             <!-- Mostrar la foto actual del agente -->
-            <img src="@Model.Foto" class="img-fluid" alt="Foto de @Model.Nombre @Model.Apellidos">
+            <div class="text-center">
+                <img src="@Model.Foto" class="img-fluid rounded-circle" alt="Foto de @Model.Nombre @Model.Apellidos">
+            </div>
         </div>
         *@
     </div>

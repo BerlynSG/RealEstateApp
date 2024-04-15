@@ -90,6 +90,11 @@ namespace RealEstateApp.Core.Application.Services
 
             return Path.Combine("img", "Agentes", uniqueFileName).Replace("\\", "/");
         }
+        public async Task<UpdateResponse> UpdateUserAsync(AgenteViewModel vm, string id)
+        {
+            UpdateRequest req = _mapper.Map<UpdateRequest>(vm);
+            return await _accountService.UpdateUserAsync(req, id);
+        }
 
         public async Task<UpdateResponse> UpdateUserAsync(SaveUserViewModel vm, string id)
         {
