@@ -114,13 +114,12 @@ namespace RealEstateApp.Core.Application.Services
 
             return usersVm;
         }*/
+
         public async Task<SaveUserViewModel> GetUserById(string id)
         {
             AuthenticationResponse user = await _accountService.GetUserById(id);
             SaveUserViewModel userMap = _mapper.Map<SaveUserViewModel>(user);
             return userMap;
         }
-        
-
     }
 }

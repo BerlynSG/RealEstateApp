@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RealEstateApp.Core.Application.Interfaces.Repositories;
 using RealEstateApp.Core.Application.Interfaces.Services;
+using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Domain.Entities;
 
@@ -9,13 +10,13 @@ namespace RealEstateApp.Core.Application.Services
     public class PropiedadService : GenericService<SavePropiedadViewModel, PropiedadViewModel, Propiedad>, IPropiedadService
     {
         private readonly IPropiedadRepository _repository;
-        private readonly IAccountService _accountService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        public PropiedadService(IPropiedadRepository repository, IMapper mapper, IAccountService accountService) : base(repository, mapper)
+        public PropiedadService(IPropiedadRepository repository, IMapper mapper, IUserService userService) : base(repository, mapper)
         {
             _repository = repository;
             _mapper = mapper;
-            _accountService = accountService;
+            _userService = userService;
         }
 
         public override async Task<SavePropiedadViewModel> Add(SavePropiedadViewModel vm)
@@ -66,8 +67,10 @@ namespace RealEstateApp.Core.Application.Services
 
         public async Task<PropiedadViewModel> GetByCodigoViewModel(string codigo)
         {
-            PropiedadViewModel propiedad = _mapper.Map<PropiedadViewModel>(await _repository.GetByCodigo(codigo));
-            return propiedad;
+            Propiedad propiedad = await _repository.GetByCodigo(codigo);
+            PropiedadViewModel vm = _mapper.Map<PropiedadViewModel>(propiedad);
+            vm.Agente = _mapper.Map<AgenteViewModel>(await _userService.GetUserById(propiedad.AgenteId));
+            return vm;
         }
 
         public async Task<SavePropiedadViewModel> GetByCodigoSaveViewModel(string codigo)
