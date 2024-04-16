@@ -58,6 +58,7 @@ namespace RealEstateApp.Controllers
             vm.Filtros = new FiltroPropiedadViewModel();
             if (User.Identity.IsAuthenticated)
             {
+                vm.Filtros.UsuarioId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (User.IsInRole(Roles.Cliente.ToString()))
                 {
                     vm.Modo = 1;
@@ -112,7 +113,7 @@ namespace RealEstateApp.Controllers
             if (tiposPropiedad.Count == 0 || tiposVenta.Count == 0 || mejoras.Count == 0)
             {
                 TempData["ErrorMessage"] = "No se pueden crear propiedades porque no existen tipos de propiedad, tipos de venta o mejoras.";
-                return RedirectToAction("Index", new { id = 1,
+                return RedirectToAction("Index", new { id = 2,
                     messageType = 2,
                     message = "No se puede crear una propiedad porque no hay mejoras, tipos de propiedad y de venta."
                 });
@@ -146,7 +147,7 @@ namespace RealEstateApp.Controllers
                 }
 
                 TempData["SuccessMessage"] = "La propiedad se creó correctamente.";
-                return RedirectToAction("Index", new { id = 1,
+                return RedirectToAction("Index", new { id = 2,
                     messageType = 1,
                     message = "Se ha creado la propiedad correctamente."
                 });
@@ -165,7 +166,7 @@ namespace RealEstateApp.Controllers
 
             if (vm == null)
             {
-                return RedirectToAction("Index", new { id = 1,
+                return RedirectToAction("Index", new { id = 2,
                     messageType = 2,
                     message = "No se ha encontrado la propiedad para editarla."
                 });
@@ -188,7 +189,7 @@ namespace RealEstateApp.Controllers
 
                 if (propiedad == null)
                 {
-                    return RedirectToAction("Index", new { id = 1,
+                    return RedirectToAction("Index", new { id = 2,
                         messageType = 2,
                         message = "No se ha encontrado la propiedad para editarla."
                     });
@@ -204,7 +205,7 @@ namespace RealEstateApp.Controllers
                 }
 
                 TempData["SuccessMessage"] = "La propiedad se editó correctamente.";
-                return RedirectToAction("Index", new { id = 1,
+                return RedirectToAction("Index", new { id = 2,
                     messageType = 1,
                     message = "Se ha editado la propiedad correctamente."
                 });
@@ -226,6 +227,31 @@ namespace RealEstateApp.Controllers
             vm.propiedades = await _propiedadService.GetAllFilteredViewModel(vm.Filtros);
             vm.tiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
             return View("Index", vm);
+        }
+
+        [Authorize(Roles = "Cliente")]
+        public async Task<IActionResult> Favorito(string codigo, int modo)
+        {
+            int result = await _propiedadService.AddFavorito(codigo, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            string message = "";
+            switch (result)
+            {
+                case 0:
+                    message = "Ha habido un error al intentar añadir la propiedad a favoritos.";
+                    break;
+                case 1:
+                    message = "La propiedad se ha eliminado de favoritos correctamente.";
+                    break;
+                case 2:
+                    message = "La propiedad se ha añadido a favoritos correctamente.";
+                    break;
+            }
+            return RedirectToAction("Index", new
+            {
+                id = modo,
+                messageType = result == 0 ? 2 : 1,
+                message = message
+            });
         }
 
         public string UploadFile(IFormFile file, int id, bool isEditing = false, string photoUrl = "")

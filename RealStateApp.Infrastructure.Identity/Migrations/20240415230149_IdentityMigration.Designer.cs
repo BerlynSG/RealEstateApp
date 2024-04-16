@@ -12,8 +12,8 @@ using RealEstateApp.Infrastructure.Identity.Contexts;
 namespace RealStateApp.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240415024902_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240415230149_IdentityMigration")]
+    partial class IdentityMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -187,6 +187,9 @@ namespace RealStateApp.Infrastructure.Identity.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()

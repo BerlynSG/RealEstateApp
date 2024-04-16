@@ -56,8 +56,12 @@ namespace RealEstateApp.Core.Application.Services
                 && (filtro.Habitaciones == p.Habitaciones || filtro.Habitaciones == 0) && (filtro.Baños == p.Baños || filtro.Baños == 0)
                 && (filtro.PrecioMinimo <= p.Valor || filtro.PrecioMinimo == 0) && (filtro.PrecioMaximo >= p.Valor || filtro.PrecioMaximo == 0)
                 && (filtro.Codigo == null || filtro.Codigo == "" || p.Codigo.Contains(filtro.Codigo))).ToList();
-            
-            return _mapper.Map<List<PropiedadViewModel>>(propiedades);
+
+            List<PropiedadViewModel> result = _mapper.Map<List<PropiedadViewModel>>(propiedades);
+            result.ForEach(p => p.Favorito = propiedades.FirstOrDefault(p2 => p2.Id == p.Id)
+                .Favoritos.FirstOrDefault(f => f.ClienteId == filtro.UsuarioId) != null);
+
+            return result;
         }
 
         public async Task<PropiedadViewModel> GetByCodigoViewModel(string codigo)
@@ -69,6 +73,11 @@ namespace RealEstateApp.Core.Application.Services
         public async Task<SavePropiedadViewModel> GetByCodigoSaveViewModel(string codigo)
         {
             return _mapper.Map<SavePropiedadViewModel>(await _repository.GetByCodigo(codigo));
+        }
+
+        public async Task<int> AddFavorito(string codigo, string clientId)
+        {
+            return await _repository.AddFavorito(codigo, clientId);
         }
 
         public SavePropiedadViewModel convertir(PropiedadViewModel model)

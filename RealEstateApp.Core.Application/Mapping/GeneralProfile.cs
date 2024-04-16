@@ -34,7 +34,6 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(d => d.Error, o => o.Ignore())
                 .ForMember(d => d.HasError, o => o.Ignore())
                 .ReverseMap();
-            #endregion
 
             CreateMap<AgenteViewModel, SaveUserViewModel>()
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Nombre))
@@ -53,11 +52,13 @@ namespace RealEstateApp.Core.Application.Mapping
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.UserName)) 
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName));
 
+            #endregion
 
             CreateMap<Propiedad, PropiedadViewModel>()
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path).ToList()))
                 .ForMember(p => p.Agente, opt => opt.Ignore())
                 .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras.Select(m => m.Mejora ).ToList()))
+                .ForMember(p => p.Favorito, opt => opt.Ignore())
                 .ReverseMap()
                 .ForMember(p => p.Favoritos, opt => opt.Ignore())
                 .ForMember(p => p.AgenteId, opt => opt.Ignore())
