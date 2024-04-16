@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using RealEstateApp.Core.Application.Interfaces.Repositories;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Agente;
@@ -88,7 +89,11 @@ namespace RealEstateApp.Core.Application.Services
             Propiedad propiedad = _mapper.Map<Propiedad>(model);
             return _mapper.Map<SavePropiedadViewModel>(propiedad);
         }
+        public async Task<int> GetTotalPropertiesCountAsync()
+        {
+            return await _repository.GetTotalPropertiesCountAsync();
 
+        }
         private string GenerarCodigoUnico()
         {
             Random random = new Random();

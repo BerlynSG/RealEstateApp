@@ -11,5 +11,7 @@ namespace RealEstateApp.Core.Application.Interfaces.Repositories
         Task DeleteAllByAgenteIdAsync(string agenteId);
         Task AddImages(List<ImagenPropiedad> imagenes);
         Task<int> AddFavorito(string codigo, string clientId);
+        Task<int> GetTotalPropertiesCountAsync();
+
     }
 }

@@ -19,10 +19,25 @@ namespace RealEstateApp.Controllers
         {
             _userService = userService;
         }
+        public async Task<IActionResult> Home()
+        {
+            var dashboardData = await _userService.GetAdminDashboardData();
+
+            ViewBag.TotalPropertiesCount = dashboardData["TotalPropertiesCount"];
+            ViewBag.ActiveAgentsCount = dashboardData["ActiveAgentsCount"];
+            ViewBag.InactiveAgentsCount = dashboardData["InactiveAgentsCount"];
+            ViewBag.ActiveClientsCount = dashboardData["ActiveClientsCount"];
+            ViewBag.InactiveClientsCount = dashboardData["InactiveClientsCount"];
+            ViewBag.ActiveDevelopersCount = dashboardData["ActiveDevelopersCount"];
+            ViewBag.InactiveDevelopersCount = dashboardData["InactiveDevelopersCount"];
+
+            return View(); 
+        }
 
         public async Task<IActionResult> Index()
         {
             ViewBag.Users = await _userService.GetAllUsers();
+
             return View();
         }
         public async Task<IActionResult> DesarrolladorIndex()

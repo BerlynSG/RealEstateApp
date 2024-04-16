@@ -24,5 +24,6 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<UpdateResponse> ActivateUserAsync(string id);
         Task<List<SaveUserViewModel>> GetAllViewModel();
         Task<List<AuthenticationResponse>> GetAllUsers();
+        Task<Dictionary<string, int>> GetAdminDashboardData();
     }
 }
