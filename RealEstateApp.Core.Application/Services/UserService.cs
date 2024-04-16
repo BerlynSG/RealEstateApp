@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.Interfaces.Repositories;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.User;
+using RealEstateApp.Core.Domain.Entities;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -14,12 +16,14 @@ namespace RealEstateApp.Core.Application.Services
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPropiedadRepository _propiedadRepository;
 
-        public UserService(IAccountService accountService, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public UserService(IAccountService accountService, IMapper mapper, IHttpContextAccessor httpContextAccessor, IPropiedadRepository propiedadRepository)
         {
             _accountService = accountService;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _propiedadRepository = propiedadRepository;
         }
 
         public async Task<AuthenticationResponse> LoginAsync(LoginViewModel vm)
@@ -135,6 +139,34 @@ namespace RealEstateApp.Core.Application.Services
         public async Task<UpdateResponse> ActivateUserAsync(string id)
         {
             return await _accountService.ActivateUserAsync(id);
+        }
+          public async Task<Dictionary<string, int>> GetAdminDashboardData()
+        {
+            Dictionary<string, int> dashboardData = new Dictionary<string, int>();
+
+            // Obtener la cantidad de propiedades registradas
+            int totalPropertiesCount = await _propiedadRepository.GetTotalPropertiesCountAsync();
+            dashboardData.Add("TotalPropertiesCount", totalPropertiesCount);
+
+            // Obtener la cantidad de agentes activos e inactivos
+            int activeAgentsCount = await _accountService.GetActiveAgentsCount();
+            int inactiveAgentsCount = await _accountService.GetInactiveAgentsCount();
+            dashboardData.Add("ActiveAgentsCount", activeAgentsCount);
+            dashboardData.Add("InactiveAgentsCount", inactiveAgentsCount);
+
+            // Obtener la cantidad de clientes activos e inactivos
+            int activeClientsCount = await _accountService.GetActiveClientsCount();
+            int inactiveClientsCount = await _accountService.GetInactiveClientsCount();
+            dashboardData.Add("ActiveClientsCount", activeClientsCount);
+            dashboardData.Add("InactiveClientsCount", inactiveClientsCount);
+
+            // Obtener la cantidad de desarrolladores activos e inactivos
+            int activeDevelopersCount = await _accountService.GetActiveDevelopersCount();
+            int inactiveDevelopersCount = await _accountService.GetInactiveDevelopersCount();
+            dashboardData.Add("ActiveDevelopersCount", activeDevelopersCount);
+            dashboardData.Add("InactiveDevelopersCount", inactiveDevelopersCount);
+
+            return dashboardData;
         }
 
     }

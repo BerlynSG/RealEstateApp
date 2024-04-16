@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
+using RealEstateApp.Core.Domain.Entities;
+using RealEstateApp.Infrastructure.Identity.Contexts;
 using RealEstateApp.Infrastructure.Identity.Entities;
 using System.Text;
 
@@ -495,6 +497,55 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             };
 
             return response;
+        }
+    
+
+        public async Task<int> GetActiveAgentsCount()
+        {
+            // Obtener agentes activos
+            var activeAgentsCount = await _userManager.Users.CountAsync(u => u.Rol == (int)Roles.Agente && u.EmailConfirmed);
+
+            return activeAgentsCount;
+        }
+
+        public async Task<int> GetInactiveAgentsCount()
+        {
+            // Obtener agentes inactivos
+            var inactiveAgentsCount = await _userManager.Users.CountAsync(u => u.Rol == (int)Roles.Agente && !u.EmailConfirmed);
+
+            return inactiveAgentsCount;
+        }
+
+        public async Task<int> GetActiveClientsCount()
+        {
+            // Obtener clientes activos
+            var activeClientsCount = await _userManager.Users.CountAsync(u => u.Rol == (int)Roles.Cliente && u.EmailConfirmed);
+
+            return activeClientsCount;
+        }
+
+        public async Task<int> GetInactiveClientsCount()
+        {
+            // Obtener  clientes inactivos
+            var inactiveClientsCount = await _userManager.Users.CountAsync(u => u.Rol == (int)Roles.Cliente && !u.EmailConfirmed);
+
+            return inactiveClientsCount;
+        }
+
+        public async Task<int> GetActiveDevelopersCount()
+        {
+            // Obtener desarrolladores activos
+            var activeDevelopersCount = await _userManager.Users.CountAsync(u => u.Rol == (int)Roles.Desarrollador && u.EmailConfirmed);
+
+            return activeDevelopersCount;
+        }
+
+        public async Task<int> GetInactiveDevelopersCount()
+        {
+            // Obtener  desarrolladores inactivos
+            var inactiveDevelopersCount = await _userManager.Users.CountAsync(u => u.Rol == (int)Roles.Desarrollador && !u.EmailConfirmed);
+
+            return inactiveDevelopersCount;
         }
     }
 }

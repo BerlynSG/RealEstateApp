@@ -119,5 +119,12 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
             }
             return 0;
         }
+        public async Task<int> GetTotalPropertiesCountAsync()
+        {
+            // Obtener el total de propiedades registradas en el sistema
+            int totalPropertiesCount = await _context.Propiedades.CountAsync();
+
+            return totalPropertiesCount;
+        }
     }
 }
