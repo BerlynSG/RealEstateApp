@@ -5,9 +5,12 @@ using RealEstateApp.Core.Application.ViewModels.Propiedad;
 
 namespace RealEstateApp.Core.Application.Features.Propiedades.Queries.GetAllPropiedades
 {
+    /// <summary>
+    /// Parámetros para obtener todas las propiedades
+    /// </summary>
     public class GetAllPropiedadesQuery : IRequest<IList<PropiedadViewModel>>
     {
-        //public int? CategoryId { get; set; }
+
     }
 
     public class GetAllPropiedadesQueryHandler : IRequestHandler<GetAllPropiedadesQuery, IList<PropiedadViewModel>>

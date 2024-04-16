@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+	
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
@@ -15,6 +19,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.17" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,9 +34,6 @@
 	<Folder Include="Features\Mejoras\Commands\UpdateMejora\" />
 	<Folder Include="Features\Mejoras\Queries\GetMejoraById\" />
 	<Folder Include="Features\Mejoras\Queries\GetAllMejoras\" />
-	<Folder Include="Features\Propiedades\Commands\CreatePropiedad\" />
-	<Folder Include="Features\Propiedades\Commands\DeletePropiedadById\" />
-	<Folder Include="Features\Propiedades\Commands\UpdatePropiedad\" />
 	<Folder Include="Features\TiposVenta\Commands\CreateTipoVenta\" />
 	<Folder Include="Features\TiposVenta\Commands\DeleteTipoVentaById\" />
 	<Folder Include="Features\TiposVenta\Commands\UpdateTipoVenta\" />
