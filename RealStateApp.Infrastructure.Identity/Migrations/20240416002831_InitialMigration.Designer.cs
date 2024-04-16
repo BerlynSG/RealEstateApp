@@ -12,7 +12,7 @@ using RealEstateApp.Infrastructure.Identity.Contexts;
 namespace RealStateApp.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240415024902_InitialMigration")]
+    [Migration("20240416002831_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -187,6 +187,9 @@ namespace RealStateApp.Infrastructure.Identity.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()

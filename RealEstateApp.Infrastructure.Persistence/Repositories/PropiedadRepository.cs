@@ -21,6 +21,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Include(p => p.Mejoras)
                     .ThenInclude(m => m.Mejora)
                 .Include(p => p.Imagenes)
+                .Include(p => p.Favoritos)
                 .ToListAsync();
         }
 
@@ -32,6 +33,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Include(p => p.Mejoras)
                     .ThenInclude(m => m.Mejora)
                 .Include(p => p.Imagenes)
+                .Include(p => p.Favoritos)
                 .Where(p => p.AgenteId == agenteId).ToListAsync();
         }
 
@@ -44,6 +46,7 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 .Include(f => f.Propiedad).ThenInclude(p => p.Imagenes)
                 .Include(f => f.Propiedad).ThenInclude(p => p.Mejoras)
                     .ThenInclude(m => m.Mejora)
+                .Include(f => f.Propiedad).ThenInclude(p => p.Favoritos)
                 .ToListAsync();
             return favoritos.Select(f => f.Propiedad).ToList();
         }
@@ -91,6 +94,30 @@ namespace RealEstateApp.Infrastructure.Persistence.Repositories
                 await _context.Set<ImagenPropiedad>().AddRangeAsync(imagenes);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<int> AddFavorito(string codigo, string clientId)
+        {
+            Propiedad? propiedad = await _context.Set<Propiedad>().FirstOrDefaultAsync(p => p.Codigo == codigo);
+            if (propiedad != null)
+            {
+                List<PropiedadFavorita> favoritas = await _context.Set<PropiedadFavorita>()
+                    .Where(f => f.PropiedadId == propiedad.Id && f.ClienteId == clientId).ToListAsync();
+                if (favoritas == null || favoritas.Count == 0)
+                {
+                    await _context.Set<PropiedadFavorita>()
+                        .AddAsync(new PropiedadFavorita() { ClienteId = clientId, PropiedadId = propiedad.Id });
+                    await _context.SaveChangesAsync();
+                    return 2;
+                }
+                else
+                {
+                    _context.Set<PropiedadFavorita>().RemoveRange(favoritas);
+                    await _context.SaveChangesAsync();
+                    return 1;
+                }
+            }
+            return 0;
         }
     }
 }

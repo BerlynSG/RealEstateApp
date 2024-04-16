@@ -34,7 +34,7 @@
                 <div class="card shadow-sm">
                     @if (Model.Agente != null)
                     {
-                        <a asp-controller="Agente" asp-action="Detalles" asp-route-id="@Model.Agente.Id" class="item-propiedad">
+                        <a asp-controller="Agente" asp-action="Detalles" asp-route-codigo="@Model.Agente.Id" class="item-propiedad">
                             <div class="card-body row">
                                 <div class="col-lg-3 col-md-3 col-2">
                                     <img class="img-fluid rounded-circle m-0" height="150px" width="auto" src="@Model.Agente.Foto" />

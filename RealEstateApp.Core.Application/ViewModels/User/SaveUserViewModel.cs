@@ -5,7 +5,7 @@ namespace RealEstateApp.Core.Application.ViewModels.User
 {
     public class SaveUserViewModel
     {
-        [Required(ErrorMessage = "Debe colocar el nombre")]
+        [Required(ErrorMessage = "Debe colocar el nombre del usuario")]
         [DataType(DataType.Text)]
         public string FirstName { get; set; }
 
@@ -41,6 +41,5 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         public bool? EmailConfirmed { get; set; }        
         public bool HasError { get; set; }
         public string? Error { get; set; }
-        public int Id { get; set; }
     }
 }

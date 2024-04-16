@@ -34,30 +34,50 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(d => d.Error, o => o.Ignore())
                 .ForMember(d => d.HasError, o => o.Ignore())
                 .ReverseMap();
-            #endregion
 
             CreateMap<AgenteViewModel, SaveUserViewModel>()
-            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Nombre))
-            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Apellidos))
-            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Celular))
-            .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.ProfileImage))
-            .ReverseMap();
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Nombre))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Apellidos))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Celular))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Correo))
+                .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.ProfileImage))
+                .ReverseMap()
+                .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.Apellidos, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.Celular, opt => opt.MapFrom(src => src.Phone))
+                .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.ProfileImage));
+
             CreateMap<UpdateRequest, AgenteViewModel>()
-            .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.FirstName))
-            .ForMember(dest => dest.Apellidos, opt => opt.MapFrom(src => src.LastName))
-            .ForMember(dest => dest.Celular, opt => opt.MapFrom(src => src.PhoneNumber))
-            .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.Email))
-            .ForMember(dest => dest.ProfileImage, opt => opt.Ignore());
+                .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.Apellidos, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.Celular, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.ProfileImage, opt => opt.Ignore());
 
             CreateMap<AuthenticationResponse, SaveUserViewModel>()
-            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.UserName)) 
-            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName));
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Password, opt => opt.Ignore()) 
+                .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore()) 
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest => dest.Rol, opt => opt.MapFrom(src => src.Rol))
+                .ForMember(dest => dest.ProfileImage, opt => opt.Ignore()) 
+                .ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => src.ImagePath))
+                .ForMember(dest => dest.EmailConfirmed, opt => opt.MapFrom(src => src.IsVerified))
+                .ForMember(dest => dest.HasError, opt => opt.MapFrom(src => src.HasError))
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => src.Error))
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
+            #endregion
 
             CreateMap<Propiedad, PropiedadViewModel>()
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path).ToList()))
                 .ForMember(p => p.Agente, opt => opt.Ignore())
                 .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras.Select(m => m.Mejora ).ToList()))
+                .ForMember(p => p.Favorito, opt => opt.Ignore())
                 .ReverseMap()
                 .ForMember(p => p.Favoritos, opt => opt.Ignore())
                 .ForMember(p => p.AgenteId, opt => opt.Ignore())
