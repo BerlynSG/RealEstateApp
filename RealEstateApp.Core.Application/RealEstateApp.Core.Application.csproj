@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
@@ -18,6 +19,29 @@
 
   <ItemGroup>
 	<Folder Include="Enums\" />
+	<Folder Include="Features\Agentes\Commands\CreateAgente\" />
+	<Folder Include="Features\Agentes\Commands\DeleteAgenteById\" />
+	<Folder Include="Features\Agentes\Commands\UpdateAgente\" />
+	<Folder Include="Features\Agentes\Queries\GetAgenteById\" />
+	<Folder Include="Features\Agentes\Queries\GetAllAgentes\" />
+	<Folder Include="Features\Mejoras\Commands\CreateMejora\" />
+	<Folder Include="Features\Mejoras\Commands\DeleteMejoraById\" />
+	<Folder Include="Features\Mejoras\Commands\UpdateMejora\" />
+	<Folder Include="Features\Mejoras\Queries\GetMejoraById\" />
+	<Folder Include="Features\Mejoras\Queries\GetAllMejoras\" />
+	<Folder Include="Features\Propiedades\Commands\CreatePropiedad\" />
+	<Folder Include="Features\Propiedades\Commands\DeletePropiedadById\" />
+	<Folder Include="Features\Propiedades\Commands\UpdatePropiedad\" />
+	<Folder Include="Features\TiposVenta\Commands\CreateTipoVenta\" />
+	<Folder Include="Features\TiposVenta\Commands\DeleteTipoVentaById\" />
+	<Folder Include="Features\TiposVenta\Commands\UpdateTipoVenta\" />
+	<Folder Include="Features\TiposVenta\Queries\GetTipoVentaById\" />
+	<Folder Include="Features\TiposVenta\Queries\GetAllTiposVenta\" />
+	<Folder Include="Features\TiposPropiedad\Commands\CreateTipoPropiedad\" />
+	<Folder Include="Features\TiposPropiedad\Commands\DeleteTipoPropiedadById\" />
+	<Folder Include="Features\TiposPropiedad\Commands\UpdateTipoPropiedad\" />
+	<Folder Include="Features\TiposPropiedad\Queries\GetTipoPropiedadById\" />
+	<Folder Include="Features\TiposPropiedad\Queries\GetAllTiposPropiedad\" />
   </ItemGroup>
 
   <ItemGroup>
