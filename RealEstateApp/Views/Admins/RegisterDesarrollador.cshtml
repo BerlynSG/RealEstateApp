@@ -1,4 +1,4 @@
-﻿@*@using RealEstateApp.Core.Application.ViewModels.User
+﻿@using RealEstateApp.Core.Application.ViewModels.User
 @using Microsoft.AspNetCore.Http
 @using RealEstateApp.Core.Application.Dtos.Account
 @using RealEstateApp.Core.Application.Helpers;
@@ -9,7 +9,7 @@
 
 @model SaveAdminsViewModel
 @{
-    ViewData["Title"] = "Registro";
+    ViewData["Title"] = "Registro de desarrollador";
 }
 
 <div class="container-fluid">
@@ -29,7 +29,8 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     }
-                    @if (User != null && User.Roles != null)
+
+                    @if (User != null)
                     {
                         <form method="post" asp-controller="Admins" asp-action="RegisterDesarrollador" enctype="multipart/form-data">
 
@@ -77,15 +78,15 @@
                             </div>
 
                             <input type="hidden" asp-for="EmailConfirmed" value="true" />
+                            <input type="hidden" asp-for="Rol" value="4" />
 
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a asp-controller="Admins" asp-action="Index" class="btn btn-warning">Volver atrás</a>
+                            <a asp-controller="Admins" asp-action="DesarrolladorIndex" class="btn btn-warning">Volver atrás</a>
 
                         </form>
-                    }                                 
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
-*@

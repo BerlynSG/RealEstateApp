@@ -29,6 +29,14 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(d => d.Error, o => o.Ignore())
                 .ForMember(d => d.HasError, o => o.Ignore())
                 .ReverseMap();
+            CreateMap<AuthenticationResponse, SaveAdminsViewModel>()
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Cedula, opt => opt.MapFrom(src => src.Cedula))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Rol, opt => opt.MapFrom(src => src.Rol))
+                .ForMember(dest => dest.EmailConfirmed, opt => opt.MapFrom(src => src.EmailConfirmed));
 
             CreateMap<RegisterAdminsRequest, SaveAdminsViewModel>()
                 .ForMember(d => d.Error, o => o.Ignore())
@@ -59,17 +67,16 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Password, opt => opt.Ignore()) 
-                .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore()) 
+                .ForMember(dest => dest.Password, opt => opt.Ignore())
+                .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore())
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber))
                 .ForMember(dest => dest.Rol, opt => opt.MapFrom(src => src.Rol))
-                .ForMember(dest => dest.ProfileImage, opt => opt.Ignore()) 
+                .ForMember(dest => dest.ProfileImage, opt => opt.Ignore())
                 .ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => src.ImagePath))
-                .ForMember(dest => dest.EmailConfirmed, opt => opt.MapFrom(src => src.IsVerified))
+                .ForMember(dest => dest.EmailConfirmed, opt => opt.MapFrom(src => src.EmailConfirmed))
                 .ForMember(dest => dest.HasError, opt => opt.MapFrom(src => src.HasError))
-                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => src.Error))
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => src.Error));
 
             #endregion
 

@@ -13,7 +13,8 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<RegisterAdminsResponse> RegisterAdminUserAsync(RegisterAdminsRequest request, string origin);
         Task<RegisterAdminsResponse> RegisterDesarrolladorUserAsync(RegisterAdminsRequest request, string origin);
         Task<UpdateResponse> UpdateUserAsync(UpdateRequest request, string id);
-        Task<AuthenticationResponse> GetUserById(string id);
+        Task<AuthenticationResponse> GetUserById(string id); 
+        Task<AuthenticationResponse> GetUserByAdminId(string id);
         Task SignOutAsync();
 
         Task<UpdateResponse> ActivateUserAsync(string id);

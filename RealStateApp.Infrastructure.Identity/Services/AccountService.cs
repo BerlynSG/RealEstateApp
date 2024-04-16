@@ -405,6 +405,29 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             response.Error = $"No existe ningun usuario con el id: {id}";
             return response;
         }
+        public async Task<AuthenticationResponse> GetUserByAdminId(string id)
+        {
+            AuthenticationResponse response = new();
+            ApplicationUser user = new();
+            user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                response.Id = user.Id;
+                response.FirstName = user.FirstName;
+                response.LastName = user.LastName;
+                response.Cedula = user.Cedula;
+                response.Email = user.Email;                
+                response.UserName = user.UserName;                
+                response.EmailConfirmed = user.EmailConfirmed;
+
+                return response;
+            }
+
+            response.HasError = true;
+            response.Error = $"No existe ningun usuario con el id: {id}";
+            return response;
+        }
         public async Task<UpdateResponse> ActivateUserAsync(string id)
         {
             UpdateResponse response = new();

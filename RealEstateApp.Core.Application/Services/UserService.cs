@@ -117,14 +117,25 @@ namespace RealEstateApp.Core.Application.Services
             var usersVm = _mapper.Map<List<SaveUserViewModel>>(users);
 
             return usersVm;
-        }*/
+        }
+
         public async Task<SaveUserViewModel> GetUserById(string id)
         {
             AuthenticationResponse user = await _accountService.GetUserById(id);
             SaveUserViewModel userMap = _mapper.Map<SaveUserViewModel>(user);
             return userMap;
         }
-        
+        public async Task<SaveAdminsViewModel> GetUserByAdminId(string id)
+        {
+            AuthenticationResponse user = await _accountService.GetUserByAdminId(id);
+            SaveAdminsViewModel userMap = _mapper.Map<SaveAdminsViewModel>(user);
+            return userMap;
+        }
+
+        public async Task<UpdateResponse> ActivateUserAsync(string id)
+        {
+            return await _accountService.ActivateUserAsync(id);
+        }
 
     }
 }

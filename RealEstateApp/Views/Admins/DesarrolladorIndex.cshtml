@@ -1,7 +1,8 @@
-﻿@*@using RealEstateApp.Core.Application.ViewModels.User
+﻿@using RealEstateApp.Core.Application.ViewModels.User
 @using Microsoft.AspNetCore.Http
 @using RealEstateApp.Core.Application.Dtos.Account
 @using RealEstateApp.Core.Application.Helpers;
+@using RealEstateApp.Core.Application.Enums
 @inject IHttpContextAccessor httpContextAccessor
 @{
     var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
@@ -9,14 +10,67 @@
 
 @model SaveAdminsViewModel
 @{
-    ViewData["Title"] = "Registro";
+    ViewData["Title"] = "Mantenimiento de Desarrolladores";
 }
 
-<div class="container-fluid">
-    <div class="row mb-3">
-        <div class="col-3 offset-9">
-            <a asp-controller="Admins" asp-action="RegisterDesarrollador" class="btn btn-outline-success">Registrar desarrollador</a>
+<div class="row">
+    <div class=" col-md-10 mx-auto">
+        <div class="container pt-5 p-5 bg-dark rounded-3">
+            <div class="d-flex justify-content-between mb-3 text-dark">
+                <h2 class="text-white">DESARROLLADORES</h2>
+                <a asp-controller="Admins" asp-action="RegisterDesarrollador" class="btn btn-lg btn-success mt-2 text-light mt-2 mb-2"><i class='bx bxs-user-plus'></i> Registrar desarollador</a>
+            </div>
+            <table id="table-invited" class=" table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Cedula</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Estado</th>
+                        <th class="text-center" scope="col">Editar</th>
+                        <th class="text-center" scope="col">Cambiar estados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (AuthenticationResponse user in ViewBag.Users)
+                    {
+                        @if (user.Roles[0] == Roles.Desarrollador.ToString())
+                        {
+                            <tr class="table-light">
+                                <td>@user.FirstName</td>
+                                <td>@user.LastName</td>
+                                <td>@user.UserName</td>
+                                <td>@user.Cedula</td>
+                                <td>@user.Email</td>
+                                <td>@user.Roles[0]</td>
+                                <td>@(user.EmailConfirmed ? "Activo" : "Inactivo")</td>
+                                <td>
+                                    @if (user.Id != User.Id)
+                                    {
+                                        <a asp-controller="Admins" asp-action="UpdateUser" asp-route-id="@user.Id" class="btn btn-sm btn-warning"><i class='bx bx-edit'></i></a>
+                                    }
+                                </td>
+                                <td>
+                                    @if (user.Id != User.Id)
+                                    {
+                                        @if (user.EmailConfirmed)
+                                        {
+                                            <a asp-controller="Admins" asp-action="ActivateUser" asp-route-id="@user.Id" class="btn btn-sm btn-primary px-4"><i class='bx bx-toggle-right'></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="Admins" asp-action="ActivateUser" asp-route-id="@user.Id" class="btn btn-sm btn-danger px-4"><i class='bx bx-toggle-left'></i></a>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-*@

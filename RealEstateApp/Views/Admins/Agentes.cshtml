@@ -1,0 +1,75 @@
+﻿@using RealEstateApp.Core.Application.ViewModels.User
+@using Microsoft.AspNetCore.Http
+@using RealEstateApp.Core.Application.Dtos.Account
+@using RealEstateApp.Core.Application.Helpers;
+@using RealEstateApp.Core.Application.Enums
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+}
+
+@model SaveAdminsViewModel
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <div class="container pt-5 p-5 bg-dark rounded-3">
+            <div class="d-flex justify-content-between mb-3 text-dark">
+                <h2 class="text-white">AGENTES</h2>
+            </div>
+            <table id="table-invited" class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Propiedades</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Cambiar estado</th>
+                        <th scope="col">Eliminar</th>
+                    </tr>
+                </thead>
+                @if (User.Rol == 3)
+                {
+                    <tbody>
+                        @foreach (AuthenticationResponse user in ViewBag.Users)
+                        {
+                            @if (user.Roles[0] == Roles.Agente.ToString())
+                            {
+                                <tr class="table-light">
+                                    <td>@user.FirstName</td>
+                                    <td>@user.LastName</td>
+                                    <td>@user.Cedula</td>
+                                    <td>@user.Email</td>
+                                    <td>@(user.EmailConfirmed ? "Activo" : "Inactivo")</td>
+                                    <td>
+                                        @if (user.Id != User.Id)
+                                        {
+                                            @if (user.EmailConfirmed)
+                                            {
+                                                <a asp-controller="Admins" asp-action="ActivateUser" asp-route-id="@user.Id" class="btn btn-sm btn-primary px-4"><i class='bx bx-toggle-right'></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-controller="Admins" asp-action="ActivateUser" asp-route-id="@user.Id" class="btn btn-sm btn-danger px-4"><i class='bx bx-toggle-left'></i></a>
+                                            }
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (user.Id != User.Id)
+                                        {
+                                            <a asp-controller="Admins" asp-action="DeleteUser" asp-route-id="@user.Id" class="btn btn-sm btn-danger"><i class='bx bx-delete'></i></a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+

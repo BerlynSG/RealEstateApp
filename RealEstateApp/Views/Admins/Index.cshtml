@@ -10,44 +10,18 @@
 
 @model SaveAdminsViewModel
 @{
-    ViewData["Title"] = "Registro";
+    ViewData["Title"] = "Mantenimiento de Administradores";
 }
 
-<div class="container-fluid">
-    <div class="row mb-3">
-        @if (User.Rol != null && User.Rol == 3)
-        {
-            <div class="col-3 offset-9">
-                <a asp-controller="Admins" asp-action="RegisterAdmin" class="btn btn-outline-success">Registrar administrador</a>
-            </div>
-        }
-        else if (User.Rol != null && User.Rol == 4)
-        {
-            <div class="col-3 offset-9">
-                <a asp-controller="Admins" asp-action="RegisterAdmin" class="btn btn-outline-success">Registrar desarrollador</a>
-            </div>
-        }
-
-    </div>
-</div>
 <div class="row">
     <div class=" col-md-10 mx-auto">
         <div class="container pt-5 p-5 bg-dark rounded-3">
-            <table id="table-invited" class=" table table-dark table-hover">
+            <div class="d-flex justify-content-between mb-3 text-dark">
+                <h2 class="text-white">ADMINISTRADORES</h2>
+                <a asp-controller="Admins" asp-action="RegisterAdmin" class="btn btn-lg btn-success mt-2 text-light mt-2 mb-2"><i class='bx bxs-user-plus'></i> Registrar administrador</a>
+            </div>
+            <table id="table-invited" class=" table table-dark table-hover">                           
 
-                
-                @if (User.Rol == 3)
-                {
-                    <div class="d-flex justify-content-between mb-3 text-dark">
-                        <h2 class="text-white">ADMINISTRADORES</h2>
-                    </div>
-                }
-                else
-                {
-                    <div class="d-flex justify-content-between mb-3 text-dark">
-                        <h2 class="text-white">DESARROLLADORES</h2>
-                    </div>
-                }
                 <thead>
                     <tr>
                         <th scope="col">Nombre</th>

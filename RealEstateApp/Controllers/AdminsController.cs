@@ -25,12 +25,16 @@ namespace RealEstateApp.Controllers
             ViewBag.Users = await _userService.GetAllUsers();
             return View();
         }
-
-        public IActionResult DesarrolladorIndex()
+        public async Task<IActionResult> DesarrolladorIndex()
         {
+            ViewBag.Users = await _userService.GetAllUsers();
             return View();
         }
-
+        public async Task<IActionResult> Agentes()
+        {
+            ViewBag.Users = await _userService.GetAllUsers();
+            return View();
+        }
         public IActionResult RegisterAdmin()
         {
             var vm = new SaveAdminsViewModel(); // Modelo para el registro de un nuevo administrador
@@ -69,16 +73,16 @@ namespace RealEstateApp.Controllers
         }
         public async Task<IActionResult> ActivateUser(string id)
         {
-            return View("ActiveUser", await _userService.GetUserById(id));
+            return View("ActivateUser", await _userService.GetUserByAdminId(id));
         }
 
         [HttpPost]
         public async Task<IActionResult> ActivateUser(SaveAdminsViewModel vm)
         {
             await _userService.ActivateUserAsync(vm.Id);
-            return RedirectToRoute(new { controller = "Home", action = "UserManagement" });
+            return RedirectToRoute(new { controller = "Admins", action = "Index" });
         }
-        /*public IActionResult RegisterDesarrollador()
+        public IActionResult RegisterDesarrollador()
         {
             var vm = new SaveAdminsViewModel(); // Modelo para el registro de un nuevo administrador
             return View(vm); // Devuelve la vista de registro para administradores
@@ -100,6 +104,6 @@ namespace RealEstateApp.Controllers
                  }
 
             return RedirectToRoute(new { controller = "Admins", action = "Index" });
-        }*/
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<RegisterAdminsResponse> RegisterAdminAsync(SaveAdminsViewModel vm, string origin);
         Task<RegisterAdminsResponse> RegisterDesarrolladorAsync(SaveAdminsViewModel vm, string origin);
         Task<SaveUserViewModel> GetUserById(string id);
+        Task<SaveAdminsViewModel> GetUserByAdminId(string id);
         Task SignOutAsync();
         Task<UpdateResponse> UpdateUserAsync(AgenteViewModel vm, string id);
         Task<UpdateResponse> UpdateUserAsync(SaveUserViewModel vm, string id);

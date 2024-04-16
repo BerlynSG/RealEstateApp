@@ -15,7 +15,15 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Propiedad" asp-action="Index" asp-route-id="0">RealEstateApp</a>
+                        
+                @if (!User.IsInRole(Roles.Administrador.ToString()))
+                {
+                    <a class="navbar-brand" asp-controller="Propiedad" asp-action="Index" asp-route-id="0">RealEstateApp</a>
+                }
+                @if (User.IsInRole(Roles.Administrador.ToString()))
+                {
+                    <a class="navbar-brand" asp-controller="Admins" asp-action="Home">RealEstateApp</a>
+                }
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,9 +31,12 @@
                 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="0">Home</a>
-                        </li>
+                        @if (!User.IsInRole(Roles.Administrador.ToString()))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="0">Home</a>
+                            </li>
+                        }
                         @if (User.Identity.IsAuthenticated)
                         {
                             @if (User.IsInRole(Roles.Cliente.ToString()))
@@ -49,10 +60,16 @@
                             else if (User.IsInRole(Roles.Administrador.ToString()))
                             {
                                 <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="Home">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="Agentes">Listado de Agentes</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Admins" asp-action="Index">Mantenimiento de Administradores</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="Index">Mantenimiento de Desarolladores</a>
+                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="DesarrolladorIndex">Mantenimiento de Desarolladores</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="TipoPropiedad" asp-action="Index">Mantenimiento de Tipos de Propiedades</a>
@@ -62,6 +79,12 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Mejora" asp-action="Index">Mantenimiento de Mejoras</a>
+                                </li>
+                            }
+                            else if (User.IsInRole(Roles.Desarrollador.ToString()))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="DesarrolladorIndex">Mantenimiento de Desarolladores</a>
                                 </li>
                             }
                             <li class="nav-item align-content-end">
