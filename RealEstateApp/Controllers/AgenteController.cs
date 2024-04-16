@@ -124,7 +124,7 @@ namespace RealEstateApp.Controllers
 
             await _userService.UpdateUserAsync( vm,  vm.Id.ToString());
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Agente");
         }
 
     }
