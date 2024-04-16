@@ -5,11 +5,12 @@ namespace RealEstateApp.Core.Application.ViewModels.User
 {
     public class SaveAdminsViewModel
     {
-        [Required(ErrorMessage = "Debe colocar el nombre del usuario")]
+        public string Id { get; set; }
+        [Required(ErrorMessage = "Debe colocar el nombre")]
         [DataType(DataType.Text)]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Debe colocar el apellido del usuario")]
+        [Required(ErrorMessage = "Debe colocar el apellido")]
         [DataType(DataType.Text)]
         public string LastName { get; set; }
 
@@ -30,7 +31,7 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         public string Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "Las contraseñas no coiciden")]
-        [Required(ErrorMessage = "Debe colocar la contraseña")]
+        [Required(ErrorMessage = "Debe de confirmar la contraseña")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
         public int Rol { get; set; }

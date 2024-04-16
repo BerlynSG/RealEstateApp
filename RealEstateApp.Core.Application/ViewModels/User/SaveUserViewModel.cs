@@ -5,11 +5,11 @@ namespace RealEstateApp.Core.Application.ViewModels.User
 {
     public class SaveUserViewModel
     {
-        [Required(ErrorMessage = "Debe colocar el nombre del usuario")]
+        [Required(ErrorMessage = "Debe colocar el nombre")]
         [DataType(DataType.Text)]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Debe colocar el apellido del usuario")]
+        [Required(ErrorMessage = "Debe colocar el apellido")]
         [DataType(DataType.Text)]
         public string LastName { get; set; }
 

@@ -1,0 +1,36 @@
+﻿@model RealEstateApp.Core.Application.ViewModels.User.SaveAdminsViewModel
+@{
+    bool mode = Model.EmailConfirmed == false ? false : true;
+    ViewData["Title"] = "Cambiar el estado del usuario";
+}
+
+<div class="col-6 offset-4 py-5 mb-5 pe-5 me-5">
+    <div class="card bg-dark mt-5 mb-5" style="border-radius: 1rem;">
+        <div class="card-body">
+            <h1 class="text-center fw-bold text-warning">Warning</h1>
+           
+            <h4 class="fs-5 fw-bold px-2 mb-3 text-white text-center">
+                @(mode ? $"¿Estás seguro de que deseas inactivar a este usuario?" : $"¿Estás seguro de que deseas activar este usuario?")
+            </h4>
+
+            <div class="text-center mx-auto">
+                <div class="d-flex justify-content-end">
+                    <a asp-controller="Admins" asp-action="Index" class="btn btn-lg btn-light me-2 mt-0">Cancel</a>
+
+                    <form method="post" asp-controller="Admins" asp-action="ActiveUser">
+                        <input type="hidden" asp-for="Id" />
+
+                        @if (mode)
+                        {
+                            <button type="submit" class="btn btn-lg btn-danger me-3">Inactive</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-lg btn-danger me-3">Active</button>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

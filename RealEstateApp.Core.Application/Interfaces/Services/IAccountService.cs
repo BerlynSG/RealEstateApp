@@ -15,5 +15,8 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<UpdateResponse> UpdateUserAsync(UpdateRequest request, string id);
         Task<AuthenticationResponse> GetUserById(string id);
         Task SignOutAsync();
+
+        Task<UpdateResponse> ActivateUserAsync(string id);
+        Task<List<AuthenticationResponse>> GetAllUsers();
     }
 }

@@ -106,21 +106,28 @@ namespace RealEstateApp.Core.Application.Services
         {
             return await _accountService.ConfirmAccountAsync(userId, token);
         }
-
-        /*public async Task<List<SaveUserViewModel>> GetAllViewModel()
+        public async Task<List<AuthenticationResponse>> GetAllUsers()
+        {
+            List<AuthenticationResponse> users = await _accountService.GetAllUsers();
+            return users;
+        }
+        public async Task<List<SaveUserViewModel>> GetAllViewModel()
         {
             var users = await this.GetAllUsers();
             var usersVm = _mapper.Map<List<SaveUserViewModel>>(users);
 
             return usersVm;
-        }*/
+        }
         public async Task<SaveUserViewModel> GetUserById(string id)
         {
             AuthenticationResponse user = await _accountService.GetUserById(id);
             SaveUserViewModel userMap = _mapper.Map<SaveUserViewModel>(user);
             return userMap;
         }
-        
 
+        public async Task<UpdateResponse> ActivateUserAsync(string id)
+        {
+            return await _accountService.ActivateUserAsync(id);
+        }
     }
 }

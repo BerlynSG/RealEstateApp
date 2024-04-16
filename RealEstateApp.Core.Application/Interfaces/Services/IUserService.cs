@@ -18,5 +18,10 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task SignOutAsync();
         Task<UpdateResponse> UpdateUserAsync(AgenteViewModel vm, string id);
         Task<UpdateResponse> UpdateUserAsync(SaveUserViewModel vm, string id);
+
+        
+        Task<UpdateResponse> ActivateUserAsync(string id);
+        Task<List<SaveUserViewModel>> GetAllViewModel();
+        Task<List<AuthenticationResponse>> GetAllUsers();
     }
 }

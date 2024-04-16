@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
@@ -378,6 +379,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return verificationUri;
         }
+
         public async Task<AuthenticationResponse> GetUserById(string id)
         {
             AuthenticationResponse response = new();
@@ -393,14 +395,82 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 response.LastName = user.LastName;
                 response.UserName = user.UserName;
                 response.PhoneNumber = user.PhoneNumber;
-                response.IsVerified = user.IsVerified;
+                response.EmailConfirmed = user.EmailConfirmed;
                 response.ImagePath = user.ImagePath;
 
                 return response;
             }
 
             response.HasError = true;
-            response.Error = $"Not user exists with this id: {id}";
+            response.Error = $"No existe ningun usuario con el id: {id}";
+            return response;
+        }
+        public async Task<UpdateResponse> ActivateUserAsync(string id)
+        {
+            UpdateResponse response = new();
+            response.HasError = false;
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                if (user.EmailConfirmed)
+                {
+                    user.EmailConfirmed = false;
+                    var userUpdated = await _userManager.UpdateAsync(user);
+                    if (!userUpdated.Succeeded)
+                    {
+                        response.HasError = true;
+                        response.Error = "Error al intentar desactivar el usuario";
+                        return response;
+
+                    }
+                    return response;
+                }
+                else
+                {
+                    user.EmailConfirmed = true;
+                    var userUpdated = await _userManager.UpdateAsync(user);
+                    if (!userUpdated.Succeeded)
+                    {
+                        response.HasError = true;
+                        response.Error = "Error al intentar desactivar el usuario";
+                        return response;
+
+                    }
+                    return response;
+                }
+            }
+            else
+            {
+                response.HasError = true;
+                response.Error = $"No existe ningun usuario con el id:  {id}";
+                return response;
+            }
+        }
+        public async Task<List<AuthenticationResponse>> GetAllUsers()
+        {
+            var users = await _userManager.Users.ToListAsync();
+
+            List<AuthenticationResponse> response = new();
+
+            foreach (var user in users)
+            {
+                var rol = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+
+                AuthenticationResponse user_res = new()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    Cedula = user.Cedula,
+                    Email = user.Email,                   
+                    Roles = rol.ToList(),
+                    EmailConfirmed = user.EmailConfirmed
+                };
+
+                response.Add(user_res);
+            };
+
             return response;
         }
     }

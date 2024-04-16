@@ -9,6 +9,5 @@
         public string? Cedula { get; set; }
         public int Rol { get; set; }
         public string? ImagePath { get; set; }
-        public bool IsVerified { get; internal set; }
     }
 }
