@@ -1,5 +1,8 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using RealEstateApp.Core.Application.Features.TiposPropiedad.Commands.CreateTipoPropiedad;
+using RealEstateApp.Core.Application.Features.TiposPropiedad.Commands.DeleteTipoPropiedad;
+using RealEstateApp.Core.Application.Features.TiposPropiedad.Commands.UpdateTipoPropiedad;
 using RealEstateApp.Core.Application.Features.TiposPropiedad.Queries.GetAllTiposPropiedad;
 using RealEstateApp.Core.Application.Features.TiposPropiedad.Queries.GetTipoPropiedadById;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
@@ -20,14 +23,21 @@ namespace RealEstateApp.WebApi.Controllers.v1
         )]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<TipoPropiedadViewModel>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get()
         {
-            return Ok(await Mediator.Send(new GetAllTipoPropiedadesQuery()));
+            try
+            {
+                return Ok(await Mediator.Send(new GetAllTipoPropiedadesQuery()));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
-        [HttpGet("GetById/{id}")]
+        [HttpGet("{id}")]
         [SwaggerOperation(
             Summary = "Tipo de propiedad por id",
             Description = "Obtiene un tipo de propiedad filtrado por el id"
@@ -38,7 +48,87 @@ namespace RealEstateApp.WebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await Mediator.Send(new GetTipoPropiedadByIdQuery { Id = id }));
+            try
+            {
+                return Ok(await Mediator.Send(new GetTipoPropiedadByIdQuery { Id = id }));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [SwaggerOperation(
+          Summary = "Crear un tipo de propiedad",
+          Description = "Crea un tipo de propiedad"
+        )]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Create([FromBody] CreateTipoPropiedadCommand command)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                await Mediator.Send(command);
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [SwaggerOperation(
+          Summary = "Actualizar un tipo de propiedad",
+          Description = "Actualizar un tipo de propiedad"
+        )]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateTipoPropiedadResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Update([FromBody] UpdateTipoPropiedadCommand command, int id)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                command.Id = id;
+                return Ok(await Mediator.Send(command));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [SwaggerOperation(
+          Summary = "Eliminar un tipo de propiedad",
+          Description = "Eliminar un tipo de propiedad"
+        )]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await Mediator.Send(new DeleteTipoPropiedadCommand() { Id = id });
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

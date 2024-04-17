@@ -29,15 +29,6 @@
 	<Folder Include="Features\Agentes\Commands\UpdateAgente\" />
 	<Folder Include="Features\Agentes\Queries\GetAgenteById\" />
 	<Folder Include="Features\Agentes\Queries\GetAllAgentes\" />
-	<Folder Include="Features\Mejoras\Commands\CreateMejora\" />
-	<Folder Include="Features\Mejoras\Commands\DeleteMejoraById\" />
-	<Folder Include="Features\Mejoras\Commands\UpdateMejora\" />
-	<Folder Include="Features\TiposVenta\Commands\CreateTipoVenta\" />
-	<Folder Include="Features\TiposVenta\Commands\DeleteTipoVentaById\" />
-	<Folder Include="Features\TiposVenta\Commands\UpdateTipoVenta\" />
-	<Folder Include="Features\TiposPropiedad\Commands\CreateTipoPropiedad\" />
-	<Folder Include="Features\TiposPropiedad\Commands\DeleteTipoPropiedadById\" />
-	<Folder Include="Features\TiposPropiedad\Commands\UpdateTipoPropiedad\" />
   </ItemGroup>
 
   <ItemGroup>

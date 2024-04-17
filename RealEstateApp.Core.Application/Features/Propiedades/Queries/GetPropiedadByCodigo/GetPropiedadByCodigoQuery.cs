@@ -11,9 +11,7 @@ namespace RealEstateApp.Core.Application.Features.Propiedades.Queries.GetPropied
     /// </summary>
     public class GetPropiedadByCodigoQuery : IRequest<PropiedadViewModel>
     {
-        /// <example>
-        /// 238456
-        /// </example>
+        /// <example>238456</example>
         [SwaggerParameter(Description = "Código para filtrar la propiedad")]
         public string Codigo { get; set; }
     }
