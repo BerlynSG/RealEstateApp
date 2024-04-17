@@ -12,11 +12,11 @@ namespace RealEstateApp.Core.Application.Features.Mejoras.Commands.CreateMejora
     public class CreateMejoraCommand : IRequest<int>
     {
         /// <example>Piscina</example>
-        [SwaggerParameter(Description = "Nombre del mejora")]
+        [SwaggerParameter(Description = "Nombre de la mejora")]
         public string Nombre { get; set; }
 
         /// <example>Area de recreación donde se agrupa una gran cantidad de agua para pasar el tiempo junto a otra persona o solo.</example>
-        [SwaggerParameter(Description = "Descripción del mejora")]
+        [SwaggerParameter(Description = "Descripción de la mejora")]
         public string Descripcion { get; set; }
     }
     public class CreateMejoraCommandHandler : IRequestHandler<CreateMejoraCommand, int>

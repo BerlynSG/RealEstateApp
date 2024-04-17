@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using RealEstateApp.Core.Application.Interfaces.Repositories;
-using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -12,9 +11,7 @@ namespace RealEstateApp.Core.Application.Features.TiposVenta.Queries.GetTipoVent
     /// </summary>
     public class GetTipoVentaByIdQuery : IRequest<TipoVentaViewModel>
     {
-        /// <example>
-        /// 1
-        /// </example>
+        /// <example>1</example>
         [SwaggerParameter(Description = "Id para filtrar la propiedad")]
         public int Id { get; set; }
     }
