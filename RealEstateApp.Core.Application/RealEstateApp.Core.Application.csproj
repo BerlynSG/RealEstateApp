@@ -32,18 +32,12 @@
 	<Folder Include="Features\Mejoras\Commands\CreateMejora\" />
 	<Folder Include="Features\Mejoras\Commands\DeleteMejoraById\" />
 	<Folder Include="Features\Mejoras\Commands\UpdateMejora\" />
-	<Folder Include="Features\Mejoras\Queries\GetMejoraById\" />
-	<Folder Include="Features\Mejoras\Queries\GetAllMejoras\" />
 	<Folder Include="Features\TiposVenta\Commands\CreateTipoVenta\" />
 	<Folder Include="Features\TiposVenta\Commands\DeleteTipoVentaById\" />
 	<Folder Include="Features\TiposVenta\Commands\UpdateTipoVenta\" />
-	<Folder Include="Features\TiposVenta\Queries\GetTipoVentaById\" />
-	<Folder Include="Features\TiposVenta\Queries\GetAllTiposVenta\" />
 	<Folder Include="Features\TiposPropiedad\Commands\CreateTipoPropiedad\" />
 	<Folder Include="Features\TiposPropiedad\Commands\DeleteTipoPropiedadById\" />
 	<Folder Include="Features\TiposPropiedad\Commands\UpdateTipoPropiedad\" />
-	<Folder Include="Features\TiposPropiedad\Queries\GetTipoPropiedadById\" />
-	<Folder Include="Features\TiposPropiedad\Queries\GetAllTiposPropiedad\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using MediatR;
 using RealEstateApp.Core.Application.Interfaces.Repositories;
-using RealEstateApp.Core.Application.ViewModels.Propiedad;
+using RealEstateApp.Core.Application.ViewModels.Mejora;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace RealEstateApp.Core.Application.Features.Propiedades.Queries.GetPropiedadById
+namespace RealEstateApp.Core.Application.Features.Mejoras.Queries.GetMejoraById
 {
     /// <summary>
-    /// Parámetros para obtener una propiedad
+    /// Parámetros para obtener una mejora
     /// </summary>
-    public class GetPropiedadByIdQuery : IRequest<PropiedadViewModel>
+    public class GetMejoraByIdQuery : IRequest<MejoraViewModel>
     {
         /// <example>
         /// 1
@@ -18,29 +18,29 @@ namespace RealEstateApp.Core.Application.Features.Propiedades.Queries.GetPropied
         public int Id { get; set; }
     }
 
-    public class GetPropiedadByIdQueryHandler : IRequestHandler<GetPropiedadByIdQuery, PropiedadViewModel>
+    public class GetMejoraByIdQueryHandler : IRequestHandler<GetMejoraByIdQuery, MejoraViewModel>
     {
-        private readonly IPropiedadRepository _propiedadRepository;
+        private readonly IPropiedadRepository _mejoraRepository;
         private readonly IMapper _mapper;
 
-        public GetPropiedadByIdQueryHandler(IPropiedadRepository propiedadRepository, IMapper mapper)
+        public GetMejoraByIdQueryHandler(IPropiedadRepository mejoraRepository, IMapper mapper)
         {
-            _propiedadRepository = propiedadRepository;
+            _mejoraRepository = mejoraRepository;
             _mapper = mapper;
         }
 
-        public async Task<PropiedadViewModel> Handle(GetPropiedadByIdQuery request, CancellationToken cancellationToken)
+        public async Task<MejoraViewModel> Handle(GetMejoraByIdQuery request, CancellationToken cancellationToken)
         {
             var Propiedades = await GetByIdViewModel(request.Id);
             if (Propiedades == null) throw new Exception("Propiedades not found");
             return Propiedades;
         }
 
-        public virtual async Task<PropiedadViewModel> GetByIdViewModel(int id)
+        public virtual async Task<MejoraViewModel> GetByIdViewModel(int id)
         {
-            var entity = await _propiedadRepository.GetByIdAsync(id);
+            var entity = await _mejoraRepository.GetByIdAsync(id);
 
-            PropiedadViewModel vm = _mapper.Map<PropiedadViewModel>(entity);
+            MejoraViewModel vm = _mapper.Map<MejoraViewModel>(entity);
             return vm;
         }
     }
