@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application;
-using RealStateApp.Infrastructure.Identity;
+using RealEstateApp.Infrastructure.Identity;
 using RealEstateApp.Infrastructure.Persistence;
 using RealEstateApp.Infrastructure.Shared;
 using RealEstateApp.WebApi.Extensions;
-using RealEstateApp.Infrastructure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -30,7 +30,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             return Ok(await Mediator.Send(new GetAllTipoVentasQuery()));
         }
 
-        [HttpGet("GetById/{id}")]
+        [HttpGet("{id}")]
         [SwaggerOperation(
             Summary = "Tipo de venta por id",
             Description = "Obtiene un tipo de venta filtrado por el id"
@@ -70,7 +70,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
-        [HttpPut]
+        [HttpPut("Update/{id}")]
         [SwaggerOperation(
           Summary = "Actualizar un tipo de venta",
           Description = "Actualizar un tipo de venta"
@@ -96,7 +96,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("Delete/{id}")]
         [SwaggerOperation(
           Summary = "Eliminar un tipo de venta",
           Description = "Eliminar un tipo de venta"

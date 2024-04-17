@@ -30,7 +30,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             return Ok(await Mediator.Send(new GetAllMejorasQuery()));
         }
 
-        [HttpGet("GetById/{id}")]
+        [HttpGet("{id}")]
         [SwaggerOperation(
             Summary = "Mejora por id",
             Description = "Obtiene una mejora filtrado por el id"
@@ -70,7 +70,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
-        [HttpPut]
+        [HttpPut("Update/{id}")]
         [SwaggerOperation(
           Summary = "Actualizar una mejora",
           Description = "Actualizar una mejora"
@@ -96,7 +96,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("Delete/{id}")]
         [SwaggerOperation(
           Summary = "Eliminar una mejora",
           Description = "Eliminar una mejora"
