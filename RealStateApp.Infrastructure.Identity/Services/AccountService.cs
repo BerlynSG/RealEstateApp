@@ -50,6 +50,12 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 response.Error = $"Cuenta no activada para {request.Email}";
                 return response;
             }
+            if (user.Rol==4)
+            {
+                response.HasError = true;
+                response.Error = $"No tiene permiso para ingresar a la aplicación. {request.Email}";
+                return response;
+            }
 
             response.Id = user.Id;
             response.Email = user.Email;

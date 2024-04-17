@@ -81,12 +81,6 @@
                                     <a class="nav-link text-dark" asp-controller="Mejora" asp-action="Index">Mantenimiento de Mejoras</a>
                                 </li>
                             }
-                            else if (User.IsInRole(Roles.Desarrollador.ToString()))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="DesarrolladorIndex">Mantenimiento de Desarolladores</a>
-                                </li>
-                            }
                             <li class="nav-item align-content-end">
                                 <a class="nav-link text-dark" asp-controller="User" asp-action="LogOut">Cerrar Sesión</a>
                             </li>
