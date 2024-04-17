@@ -24,5 +24,6 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<int> GetInactiveClientsCount();
         Task<int> GetActiveDevelopersCount();
         Task<int> GetInactiveDevelopersCount();
+        Task<UpdateResponse> DeleteUserAsync(string id);
     }
 }

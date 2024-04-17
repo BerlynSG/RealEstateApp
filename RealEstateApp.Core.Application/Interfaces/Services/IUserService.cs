@@ -17,13 +17,13 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
         Task<SaveUserViewModel> GetUserById(string id);
         Task<SaveAdminsViewModel> GetUserByAdminId(string id);
         Task SignOutAsync();
-        Task<UpdateResponse> UpdateUserAsync(AgenteViewModel vm, string id);
-        Task<UpdateResponse> UpdateUserAsync(SaveUserViewModel vm, string id);
+        Task<UpdateResponse> UpdateAgentAsync(AgenteViewModel vm, string id);
 
         
         Task<UpdateResponse> ActivateUserAsync(string id);
         Task<List<SaveUserViewModel>> GetAllViewModel();
         Task<List<AuthenticationResponse>> GetAllUsers();
         Task<Dictionary<string, int>> GetAdminDashboardData();
+        Task<UpdateResponse> DeleteUserAsync(string id);
     }
 }

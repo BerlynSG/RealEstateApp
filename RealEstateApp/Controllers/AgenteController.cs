@@ -122,7 +122,7 @@ namespace RealEstateApp.Controllers
 
             var agente = _mapper.Map<AgenteViewModel>(vm);
 
-            await _userService.UpdateUserAsync( vm,  vm.Id.ToString());
+            await _userService.UpdateAgentAsync( vm,  vm.Id.ToString());
 
             return RedirectToAction("Index", "Agente");
         }

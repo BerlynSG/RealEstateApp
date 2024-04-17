@@ -5,11 +5,12 @@
 @inject IHttpContextAccessor httpContextAccessor
 @{
     var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+    bool editMode = !string.IsNullOrEmpty(Model.Id);
 }
 
 @model SaveAdminsViewModel
 @{
-    ViewData["Title"] = "Registro de desarrollador";
+    ViewData["Title"] = editMode ? "Editar desarrollador" : "Registro de desarrollador";
 }
 
 <div class="container-fluid">
@@ -18,7 +19,7 @@
         <div class="col-6 offset-3">
             <div class="card">
                 <div class="card-header bg-dark text-light">
-                    <h4>Registro de nuevo usuario</h4>
+                    <h4>@ViewData["Title"]</h4>
                 </div>
                 <div class="card-body">
 
@@ -30,40 +31,45 @@
                         </div>
                     }
 
-                    @if (User != null)
-                    {
-                        <form method="post" asp-controller="Admins" asp-action="RegisterDesarrollador" enctype="multipart/form-data">
+                    <form method="post" asp-controller="Admins" asp-action="@(editMode ? "EditDesarrollador" : "RegisterDesarrollador")" enctype="multipart/form-data">
 
-                            <div class="mb-3">
-                                <label asp-for="FirstName" class="form-label">Nombre: </label>
-                                <input asp-for="FirstName" class="form-control" />
-                                <span asp-validation-for="FirstName" class="text-danger"></span>
-                            </div>
+                        @if (editMode)
+                        {
+                            <input type="hidden" asp-for="Id" />
+                        }
 
-                            <div class="mb-3">
-                                <label asp-for="LastName" class="form-label">Apellido: </label>
-                                <input asp-for="LastName" class="form-control" />
-                                <span asp-validation-for="LastName" class="text-danger"></span>
-                            </div>
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label">Nombre: </label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
 
-                            <div class="mb-3">
-                                <label asp-for="Cedula" class="form-label">Cedula: </label>
-                                <input asp-for="Cedula" class="form-control" />
-                                <span asp-validation-for="Cedula" class="text-danger"></span>
-                            </div>
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label">Apellido: </label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
 
-                            <div class="mb-3">
-                                <label asp-for="Email" class="form-label">Correo: </label>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
+                        <div class="mb-3">
+                            <label asp-for="Cedula" class="form-label">Cedula: </label>
+                            <input asp-for="Cedula" class="form-control" />
+                            <span asp-validation-for="Cedula" class="text-danger"></span>
+                        </div>
 
-                            <div class="mb-3">
-                                <label asp-for="Username" class="form-label">Nombre de usuario: </label>
-                                <input asp-for="Username" class="form-control" />
-                                <span asp-validation-for="Username" class="text-danger"></span>
-                            </div>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Correo: </label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
 
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label">Nombre de usuario: </label>
+                            <input asp-for="Username" class="form-control" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+
+                        @if (!editMode)
+                        {
                             <div class="mb-3">
                                 <label asp-for="Password" class="form-label">Contraseña: </label>
                                 <input asp-for="Password" class="form-control" />
@@ -76,15 +82,24 @@
                                 <input asp-for="ConfirmPassword" class="form-control" />
                                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                             </div>
+                        }
 
-                            <input type="hidden" asp-for="EmailConfirmed" value="true" />
-                            <input type="hidden" asp-for="Rol" value="4" />
+                        <input type="hidden" asp-for="EmailConfirmed" value="true" />
+                        <input type="hidden" asp-for="Rol" value="4" />
 
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a asp-controller="Admins" asp-action="DesarrolladorIndex" class="btn btn-warning">Volver atrás</a>
+                        <button type="submit" class="btn btn-primary">
+                            @if (editMode)
+                            {
+                                <text>Actualizar</text>
+                            }
+                            else
+                            {
+                                <text>Guardar</text>
+                            }
+                        </button>
+                        <a asp-controller="Admins" asp-action="DesarrolladorIndex" class="btn btn-warning">Volver atrás</a>
 
-                        </form>
-                    }
+                    </form>
                 </div>
             </div>
         </div>

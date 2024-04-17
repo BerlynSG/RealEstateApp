@@ -399,9 +399,10 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 response.PhoneNumber = user.PhoneNumber;
                 response.EmailConfirmed = user.EmailConfirmed;
                 response.ImagePath = user.ImagePath;
-
+                
                 return response;
             }
+
 
             response.HasError = true;
             response.Error = $"No existe ningun usuario con el id: {id}";
@@ -546,6 +547,32 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             var inactiveDevelopersCount = await _userManager.Users.CountAsync(u => u.Rol == (int)Roles.Desarrollador && !u.EmailConfirmed);
 
             return inactiveDevelopersCount;
+        }
+        public async Task<UpdateResponse> DeleteUserAsync(string id)
+        {
+            UpdateResponse response = new UpdateResponse();
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                response.HasError = true;
+                response.Error = $"Usuario con Id {id} no encontrado.";
+                return response;
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+
+                response.Message = $"Usuario con Id {id} eliminado correctamente.";
+            }
+            else
+            {
+                response.HasError = true;
+                response.Error = $"Error al eliminar usuario con Id {id}.";
+            }
+
+            return response;
         }
     }
 }

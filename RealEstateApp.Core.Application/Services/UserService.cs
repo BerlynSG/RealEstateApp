@@ -5,9 +5,7 @@ using RealEstateApp.Core.Application.Interfaces.Repositories;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.User;
-using RealEstateApp.Core.Domain.Entities;
-using System.IO;
-using System.Threading.Tasks;
+
 
 namespace RealEstateApp.Core.Application.Services
 {
@@ -94,17 +92,12 @@ namespace RealEstateApp.Core.Application.Services
 
             return Path.Combine("img", "Agentes", uniqueFileName).Replace("\\", "/");
         }
-        public async Task<UpdateResponse> UpdateUserAsync(AgenteViewModel vm, string id)
+        public async Task<UpdateResponse> UpdateAgentAsync(AgenteViewModel vm, string id)
         {
             UpdateRequest req = _mapper.Map<UpdateRequest>(vm);
             return await _accountService.UpdateUserAsync(req, id);
         }
-
-        public async Task<UpdateResponse> UpdateUserAsync(SaveUserViewModel vm, string id)
-        {
-            UpdateRequest req = _mapper.Map<UpdateRequest>(vm);
-            return await _accountService.UpdateUserAsync(req, id);
-        }
+           
 
         public async Task<string> ConfirmEmailAsync(string userId, string token)
         {
@@ -167,6 +160,10 @@ namespace RealEstateApp.Core.Application.Services
             dashboardData.Add("InactiveDevelopersCount", inactiveDevelopersCount);
 
             return dashboardData;
+        }
+        public async Task<UpdateResponse> DeleteUserAsync(string id)
+        {
+            return await _accountService.DeleteUserAsync(id);
         }
 
     }
