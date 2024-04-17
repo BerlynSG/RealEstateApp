@@ -84,7 +84,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
-        [HttpPut]
+        [HttpPut("Update/{id}")]
         [SwaggerOperation(
           Summary = "Actualizar un tipo de propiedad",
           Description = "Actualizar un tipo de propiedad"
@@ -110,7 +110,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("Delete/{id}")]
         [SwaggerOperation(
           Summary = "Eliminar un tipo de propiedad",
           Description = "Eliminar un tipo de propiedad"
