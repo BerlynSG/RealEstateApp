@@ -1,5 +1,11 @@
 ﻿using AutoMapper;
 using RealEstateApp.Core.Application.Dtos.Account;
+using RealEstateApp.Core.Application.Features.Mejoras.Commands.CreateMejora;
+using RealEstateApp.Core.Application.Features.Mejoras.Commands.UpdateMejora;
+using RealEstateApp.Core.Application.Features.TiposPropiedad.Commands.CreateTipoPropiedad;
+using RealEstateApp.Core.Application.Features.TiposPropiedad.Commands.UpdateTipoPropiedad;
+using RealEstateApp.Core.Application.Features.TiposVenta.Commands.CreateTipoVenta;
+using RealEstateApp.Core.Application.Features.TiposVenta.Commands.UpdateTipoVenta;
 using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Mejora;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
@@ -80,6 +86,8 @@ namespace RealEstateApp.Core.Application.Mapping
 
             #endregion
 
+            #region Propiedad
+
             CreateMap<Propiedad, PropiedadViewModel>()
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes.Select(i => i.Path).ToList()))
                 .ForMember(p => p.Agente, opt => opt.Ignore())
@@ -111,6 +119,10 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(p => p.Imagenes, opt => opt.MapFrom(p => p.Imagenes
                     .Select(i => new ImagenPropiedad() { PropiedadId = p.Id, Path = i }).ToList()));
 
+            #endregion
+
+            #region "Tipo de Propiedad"
+
             CreateMap<TipoPropiedad, TipoPropiedadViewModel>()
                 .ForMember(p => p.CantidadPropiedades, opt => opt.MapFrom(p => p.Propiedades.Count))
                 .ReverseMap()
@@ -119,6 +131,19 @@ namespace RealEstateApp.Core.Application.Mapping
             CreateMap<TipoPropiedad, SaveTipoPropiedadViewModel>()
                 .ReverseMap()
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
+
+            CreateMap<CreateTipoPropiedadCommand, TipoPropiedad>()
+                .ForMember(p => p.Id, opt => opt.Ignore())
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
+
+            CreateMap<UpdateTipoPropiedadCommand, TipoPropiedad>()
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
+
+            CreateMap<TipoPropiedad, UpdateTipoPropiedadResponse>();
+
+            #endregion
+
+            #region "Tipo de Venta"
 
             CreateMap<TipoVenta, TipoVentaViewModel>()
                 .ForMember(p => p.CantidadPropiedades, opt => opt.MapFrom(p => p.Propiedades.Count))
@@ -129,6 +154,19 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ReverseMap()
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
+            CreateMap<CreateTipoVentaCommand, TipoVenta>()
+                .ForMember(p => p.Id, opt => opt.Ignore())
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
+
+            CreateMap<UpdateTipoVentaCommand, TipoVenta>()
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
+
+            CreateMap<TipoVenta, UpdateTipoVentaResponse>();
+
+            #endregion
+
+            #region Mejora
+
             CreateMap<Mejora, MejoraViewModel>()
                 .ForMember(p => p.CantidadPropiedades, opt => opt.MapFrom(m => m.Propiedades.Count))
                 .ReverseMap()
@@ -138,18 +176,16 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ReverseMap()
                 .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
-            /*CreateMap<TipoVenta, SaveTipoVentaViewModel>()
-                .ReverseMap()
-                .ForMember(t => t.Id, opt => opt.Ignore())
-                .ForMember(t => t.HastaCuenta, opt => opt.Ignore())
-                .ForMember(t => t.DesdeCuenta, opt => opt.Ignore());
+            CreateMap<CreateMejoraCommand, Mejora>()
+                .ForMember(p => p.Id, opt => opt.Ignore())
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
-            CreateMap<Mejora, MejoraViewModel>()
-                .ReverseMap();
+            CreateMap<UpdateMejoraCommand, Mejora>()
+                .ForMember(p => p.Propiedades, opt => opt.Ignore());
 
-            CreateMap<Mejora, SaveMejoraViewModel>()
-                .ReverseMap()
-                .ForMember(b => b.Cuenta, opt => opt.Ignore());*/
+            CreateMap<Mejora, UpdateMejoraResponse>();
+
+            #endregion
         }
     }
 }
