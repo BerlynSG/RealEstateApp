@@ -15,10 +15,10 @@ namespace RealEstateApp.Core.Application.Features.Mejoras.Queries.GetAllMejoras
 
     public class GetAllMejorasQueryHandler : IRequestHandler<GetAllMejorasQuery, IList<MejoraViewModel>>
     {
-        private readonly IPropiedadRepository _mejoraRepository;
+        private readonly IMejoraRepository _mejoraRepository;
         private readonly IMapper _mapper;
 
-        public GetAllMejorasQueryHandler(IPropiedadRepository mejoraRepository, IMapper mapper)
+        public GetAllMejorasQueryHandler(IMejoraRepository mejoraRepository, IMapper mapper)
         {
             _mejoraRepository = mejoraRepository;
             _mapper = mapper;
@@ -26,9 +26,9 @@ namespace RealEstateApp.Core.Application.Features.Mejoras.Queries.GetAllMejoras
 
         public async Task<IList<MejoraViewModel>> Handle(GetAllMejorasQuery request, CancellationToken cancellationToken)
         {
-            var Propiedades = await GetAllViewModel();
-            if (Propiedades == null || Propiedades.Count == 0) throw new Exception("Mejoras not found");
-            return Propiedades;
+            var Mejoras = await GetAllViewModel();
+            if (Mejoras == null || Mejoras.Count == 0) throw new Exception("Mejoras not found");
+            return Mejoras;
         }
 
         private async Task<List<MejoraViewModel>> GetAllViewModel()

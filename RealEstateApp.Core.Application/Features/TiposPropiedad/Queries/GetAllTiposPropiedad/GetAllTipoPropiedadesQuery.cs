@@ -26,9 +26,9 @@ namespace RealEstateApp.Core.Application.Features.TiposPropiedad.Queries.GetAllT
 
         public async Task<IList<TipoPropiedadViewModel>> Handle(GetAllTipoPropiedadesQuery request, CancellationToken cancellationToken)
         {
-            var Propiedades = await GetAllViewModel();
-            if (Propiedades == null || Propiedades.Count == 0) throw new Exception("Propiedades not found");
-            return Propiedades;
+            var TiposPropiedad = await GetAllViewModel();
+            if (TiposPropiedad == null || TiposPropiedad.Count == 0) throw new Exception("Tipos Propiedad not found");
+            return TiposPropiedad;
         }
 
         private async Task<List<TipoPropiedadViewModel>> GetAllViewModel()
