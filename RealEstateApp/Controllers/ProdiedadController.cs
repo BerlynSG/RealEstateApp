@@ -18,9 +18,6 @@ namespace RealEstateApp.Controllers
         private readonly ITipoPropiedadService _tipoPropiedadService;
         private readonly ITipoVentaService _tipoVentaService;
         private readonly IMejoraService _mejoraService;
-        //private List<AgenteViewModel> agentes;
-        //private int tipoUsuario = 1;
-        //private int idAgente = 0;
 
         public PropiedadController(IPropiedadService propiedadRepository, ITipoPropiedadService tipoPropiedadService,
             ITipoVentaService tipoVentaService, IMejoraService mejoraService)
@@ -29,27 +26,6 @@ namespace RealEstateApp.Controllers
             _tipoPropiedadService = tipoPropiedadService;
             _tipoVentaService = tipoVentaService;
             _mejoraService = mejoraService;
-            /*agentes = new List<AgenteViewModel>()
-            {
-                new()
-                    {
-                        Id = 0,
-                        Nombre = "José Antonio",
-                        Apellidos = "Fernandez Ramirez",
-                        Foto = "/img/Agentes/Agente.jpeg",
-                        Celular = "829 254 3687",
-                        Correo = "JoséFernandez@email.com"
-                    },
-                new()
-                    {
-                        Id = 1,
-                        Nombre = "Pedro",
-                        Apellidos = "De La Cruz",
-                        Foto = "/img/Agentes/Agente.jpeg",
-                        Celular = "829 254 3687",
-                        Correo = "JoséFernandez@email.com"
-                    }
-            };*/
         }
 
         public async Task<IActionResult> Index(int id, int messageType, string message)
@@ -69,8 +45,6 @@ namespace RealEstateApp.Controllers
                     vm.Modo = id == 0 ? 0 : 2;
                     vm.Filtros.TipoFiltroUsuario = 2;
                 }
-                //vm.Filtros.TipoFiltroUsuario = tipoUsuario;
-                //vm.Modo = id;
             }
             
             vm.propiedades = await _propiedadService.GetAllFilteredViewModel(vm.Filtros);

@@ -79,6 +79,11 @@ namespace RealEstateApp.Core.Application.Services
             return _mapper.Map<SavePropiedadViewModel>(await _repository.GetByCodigo(codigo));
         }
 
+        public override async Task<List<PropiedadViewModel>> GetAllViewModel()
+        {
+            return _mapper.Map<List<PropiedadViewModel>>(await _repository.GetAllWithInclude());
+        }
+
         public async Task<int> AddFavorito(string codigo, string clientId)
         {
             return await _repository.AddFavorito(codigo, clientId);
@@ -89,11 +94,13 @@ namespace RealEstateApp.Core.Application.Services
             Propiedad propiedad = _mapper.Map<Propiedad>(model);
             return _mapper.Map<SavePropiedadViewModel>(propiedad);
         }
+
         public async Task<int> GetTotalPropertiesCountAsync()
         {
             return await _repository.GetTotalPropertiesCountAsync();
 
         }
+
         private string GenerarCodigoUnico()
         {
             Random random = new Random();

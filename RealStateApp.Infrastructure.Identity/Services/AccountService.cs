@@ -406,6 +406,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 response.Phone = user.PhoneNumber;
                 response.EmailConfirmed = user.EmailConfirmed;
                 response.ImagePath = user.ImagePath;
+                response.Rol = user.Rol;
                 
                 return response;
             }
@@ -430,6 +431,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 response.Email = user.Email;                
                 response.UserName = user.UserName;                
                 response.EmailConfirmed = user.EmailConfirmed;
+                response.Rol = user.Rol;
 
                 return response;
             }
@@ -501,7 +503,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                     ImagePath = user.ImagePath,
                     Phone = user.PhoneNumber,
                     Roles = rol.ToList(),
-                    EmailConfirmed = user.EmailConfirmed
+                    Rol = user.Rol,
                 };
 
                 response.Add(user_res);

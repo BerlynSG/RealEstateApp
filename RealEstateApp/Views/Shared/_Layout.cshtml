@@ -44,9 +44,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Agente" asp-action="Index">Agentes</a>
                                 </li>
-                                <li class="nav-item">
+                                <!--<li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Agente" asp-action="Indexx">Agentess</a>
-                                </li>
+                                </li>-->
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="1">Mis Propiedades</a>
                                 </li>
@@ -54,7 +54,7 @@
                             else if (User.IsInRole(Roles.Agente.ToString()))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="2">Mantenimiento de Propiedades</a>
+                                    <a class="nav-link text-dark" asp-controller="Propiedad" asp-action="Index" asp-route-id="2">Mant. Propiedades</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Agente" asp-action="MiPerfil">Mi Perfil</a>
@@ -66,7 +66,7 @@
                                     <a class="nav-link text-dark" asp-controller="Admins" asp-action="Home">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="Agentes">Listado de Agentes</a>
+                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="Agentes">List. Agentes</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Admins" asp-action="Index">Mant. de Administradores</a>

@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
+using RealEstateApp.Core.Application.Services;
+using RealEstateApp.Core.Application.ViewModels.Agente;
+using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.User;
 
 
@@ -13,11 +17,15 @@ namespace RealEstateApp.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAccountService _accountService;
+        private readonly IPropiedadService _propiedadService;
+        private readonly IMapper _mapper;
 
-        public AdminsController(IUserService userService, IAccountService accountService)
+        public AdminsController(IUserService userService, IAccountService accountService, IPropiedadService propiedadService, IMapper mapper)
         {
             _userService = userService;
             _accountService = accountService;
+            _propiedadService = propiedadService;
+            _mapper = mapper;
         }
         public async Task<IActionResult> Home()
         {
@@ -40,16 +48,25 @@ namespace RealEstateApp.Controllers
 
             return View();
         }
+
         public async Task<IActionResult> DesarrolladorIndex()
         {
             ViewBag.Users = await _userService.GetAllUsers();
             return View();
         }
+
         public async Task<IActionResult> Agentes()
         {
-            ViewBag.Users = await _userService.GetAllUsers();
-            return View();
+            List<AuthenticationResponse> usuarios = (await _userService.GetAllUsers()).Where(u => u.Roles.Contains(Roles.Agente.ToString())).ToList();
+            List<AgenteViewModel> agentes = _mapper.Map<List<AgenteViewModel>>(usuarios);
+
+            List<PropiedadViewModel> propiedades = await _propiedadService.GetAllViewModel();
+
+            agentes.ForEach(async a => a.Propiedades = propiedades.Where(p => p.AgenteId == a.Id).ToList());
+
+            return View(agentes);
         }
+
         public IActionResult RegisterAdmin()
         {
             var vm = new SaveAdminsViewModel(); // Modelo para el registro de un nuevo administrador
@@ -86,6 +103,7 @@ namespace RealEstateApp.Controllers
 
             return RedirectToRoute(new { controller = "Admins", action = "Index" });
         }
+
         public async Task<IActionResult> ActivateUser(string id)
         {
             return View("ActivateUser", await _userService.GetUserByAdminId(id));
@@ -97,6 +115,7 @@ namespace RealEstateApp.Controllers
             await _userService.ActivateUserAsync(vm.Id);
             return RedirectToRoute(new { controller = "Admins", action = "Index" });
         }
+
         public IActionResult RegisterDesarrollador()
         {
             var vm = new SaveAdminsViewModel(); // Modelo para el registro de un nuevo administrador
@@ -183,6 +202,7 @@ namespace RealEstateApp.Controllers
 
             return RedirectToAction("Index"); 
         }
+
         public async Task<IActionResult> EditDesarrollador(string id)
         {
             var user = await _accountService.GetUserById(id);
@@ -233,7 +253,5 @@ namespace RealEstateApp.Controllers
 
             return RedirectToAction("DesarrolladorIndex", "Admins");
         }
-
-
     }
 }

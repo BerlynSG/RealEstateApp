@@ -103,7 +103,6 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(p => p.Favorito, opt => opt.Ignore())
                 .ReverseMap()
                 .ForMember(p => p.Favoritos, opt => opt.Ignore())
-                .ForMember(p => p.AgenteId, opt => opt.Ignore())
                 .ForMember(p => p.TipoVentaId, opt => opt.MapFrom(p => p.TipoVenta.Id))
                 .ForMember(p => p.TipoPropiedadId, opt => opt.MapFrom(p => p.TipoPropiedad.Id))
                 .ForMember(p => p.Mejoras, opt => opt.MapFrom(p => p.Mejoras

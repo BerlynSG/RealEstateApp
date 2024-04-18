@@ -28,6 +28,7 @@
                         <input type="hidden" asp-for="Filtros.Habitaciones" />
                         <input type="hidden" asp-for="Filtros.Baños" />
                         <input type="hidden" asp-for="Filtros.TipoFiltroUsuario" />
+                        <input type="hidden" asp-for="Filtros.UsuarioId" />
                         <input type="hidden" asp-for="Modo" />
                     </div>
                     <div class="col-2 col-lg-4 col-sm-2 ps-0 btn-group">
@@ -188,9 +189,9 @@
                         <label asp-for="Filtros.TipoPropiedad" class="form-label">Tipo de propiedad: </label>
                         <select asp-for="Filtros.TipoPropiedad" class="form-control">
                             <option value="0">Ninguna</option>
-                            @for(int i = 1; i < Model.tiposPropiedad.Count(); i++)
+                            @foreach (var tp in Model.tiposPropiedad)
                             {
-                                <option value="@i">@Model.tiposPropiedad[i].Nombre</option>
+                                <option value="@tp.Id">@tp.Nombre</option>
                             }
                         </select>
                     </div>
@@ -245,6 +246,7 @@
                     <input type="hidden" asp-for="Filtros.Habitaciones" />
                     <input type="hidden" asp-for="Filtros.Baños" />
                     <input type="hidden" asp-for="Filtros.TipoFiltroUsuario" />
+                    <input type="hidden" asp-for="Filtros.UsuarioId" />
                     <input type="hidden" asp-for="Modo" />
                     <p>¿Desea eliminar esta propiedad?</p>
                 </div>

@@ -103,11 +103,13 @@ namespace RealEstateApp.Core.Application.Services
         {
             return await _accountService.ConfirmAccountAsync(userId, token);
         }
+
         public async Task<List<AuthenticationResponse>> GetAllUsers()
         {
             List<AuthenticationResponse> users = await _accountService.GetAllUsers();
             return users;
         }
+
         public async Task<List<SaveUserViewModel>> GetAllViewModel()
         {
             var users = await this.GetAllUsers();
