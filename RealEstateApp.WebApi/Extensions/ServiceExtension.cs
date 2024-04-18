@@ -15,12 +15,12 @@ namespace RealEstateApp.WebApi.Extensions
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "StockApp API",
-                    Description = "This Api will be responsible for overall data distribution",
+                    Title = "RealEstate API",
+                    Description = "Esta API será responsable de la distribución general de datos.",
                     Contact = new OpenApiContact
                     {
-                        Name = "Leonardo Tavarez",
-                        Email = "ltavarez@itla.edu.do",
+                        Name = "Berlyn Sánchez",
+                        Email = "",
                         Url = new Uri("https://www.itla.edu.do")
                     }
                 });
@@ -33,7 +33,7 @@ namespace RealEstateApp.WebApi.Extensions
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
-                    Description = "Input your Bearer token in this format - Bearer {your token here}"
+                    Description = "Ingrese su token de portador en este formato: Bearer {su token aquí}"
                 });
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {

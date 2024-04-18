@@ -7,6 +7,7 @@ namespace RealEstateApp.Core.Application.Interfaces.Services
     public interface IAccountService
     {
         Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
+        Task<AuthenticationResponse> AuthenticateApiAsync(AuthenticationRequest request);
         Task SignOutAsync();
         Task<RegisterResponse> RegisterClienteUserAsync(RegisterRequest request, string origin, IFormFile profileImage);
         Task<RegisterResponse> RegisterAgenteUserAsync(RegisterRequest request, string origin, IFormFile profileImage);

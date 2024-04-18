@@ -2,13 +2,18 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
-using RealEstateApp.Core.Domain.Entities;
-using RealEstateApp.Infrastructure.Identity.Contexts;
+using RealEstateApp.Core.Domain.Settings;
 using RealEstateApp.Infrastructure.Identity.Entities;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
+
 
 namespace RealEstateApp.Infrastructure.Identity.Services
 {
@@ -17,12 +22,19 @@ namespace RealEstateApp.Infrastructure.Identity.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailService _emailService;
+        private readonly JWTSettings _jwtSettings;
 
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailService emailService)
+        public AccountService(
+            UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager, 
+            IEmailService emailService,
+            IOptions<JWTSettings> jwtSettings
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
+            _jwtSettings = jwtSettings.Value;
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
@@ -44,32 +56,16 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 response.Error = $"Credenciales invalidos para {request.Email}";
                 return response;
             }
-            if (!user.EmailConfirmed)
-            {
-                response.HasError = true;
-                response.Error = $"Cuenta no activada para {request.Email}";
-                return response;
-            }
-            if (user.Rol==4)
+            if (user.Rol == 4)
             {
                 response.HasError = true;
                 response.Error = $"Los desarrolladores no tienen permiso para ingresar a la aplicación.";
                 return response;
             }
-
-            response.Id = user.Id;
-            response.Email = user.Email;
-            response.UserName = user.UserName;
-            response.Rol = user.Rol;
-
-
-            var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
-
-            response.Roles = rolesList.ToList();
-
+            
             return response;
         }
-
+        
         public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
@@ -77,7 +73,10 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
         public async Task<RegisterResponse> RegisterClienteUserAsync(RegisterRequest request, string origin, IFormFile profileImage)
         {
-            RegisterResponse response = new RegisterResponse();
+            RegisterResponse response = new()
+            {
+                HasError = false
+            };
 
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
@@ -136,7 +135,10 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
         public async Task<RegisterResponse> RegisterAgenteUserAsync(RegisterRequest request, string origin, IFormFile profileImage)
         {
-            RegisterResponse response = new RegisterResponse { HasError = false };
+            RegisterResponse response = new()
+            {
+                HasError = false
+            };
 
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
@@ -189,7 +191,10 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
         public async Task<RegisterAdminsResponse> RegisterAdminUserAsync(RegisterAdminsRequest request, string origin)
         {
-            RegisterAdminsResponse response = new RegisterAdminsResponse() ;
+            RegisterAdminsResponse response = new ()
+            {
+                HasError = false
+            };
 
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
@@ -218,8 +223,6 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 EmailConfirmed = request.EmailConfirmed
             };
 
-            _userManager.Options.SignIn.RequireConfirmedEmail = false;
-
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
@@ -238,7 +241,10 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
         public async Task<RegisterAdminsResponse> RegisterDesarrolladorUserAsync(RegisterAdminsRequest request, string origin)
         {
-            RegisterAdminsResponse response = new RegisterAdminsResponse ();
+            RegisterAdminsResponse response = new()
+            {
+                HasError = false
+            };
 
             var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
             if (userWithSameUserName != null)
@@ -266,8 +272,6 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 Rol = request.Rol = 4,
                 EmailConfirmed = request.EmailConfirmed
             };
-
-            _userManager.Options.SignIn.RequireConfirmedEmail = false;
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
@@ -416,6 +420,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             response.Error = $"No existe ningun usuario con el id: {id}";
             return response;
         }
+
         public async Task<AuthenticationResponse> GetUserByAdminId(string id)
         {
             AuthenticationResponse response = new();
@@ -440,6 +445,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             response.Error = $"No existe ningun usuario con el id: {id}";
             return response;
         }
+
         public async Task<UpdateResponse> ActivateUserAsync(string id)
         {
             UpdateResponse response = new();
@@ -481,6 +487,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 return response;
             }
         }
+
         public async Task<List<AuthenticationResponse>> GetAllUsers()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -558,6 +565,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return inactiveDevelopersCount;
         }
+
         public async Task<UpdateResponse> DeleteUserAsync(string id)
         {
             UpdateResponse response = new UpdateResponse();
@@ -584,5 +592,118 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return response;
         }
+
+        #region API
+        private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
+        {
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var roleClaims = new List<Claim>();
+
+            foreach (var role in roles)
+            {
+                roleClaims.Add(new Claim("roles", role));
+            }
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub,user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email,user.Email),
+                new Claim("uid", user.Id)
+            }
+            .Union(userClaims)
+            .Union(roleClaims);
+
+            var symmectricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+            var signingCredetials = new SigningCredentials(symmectricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                signingCredentials: signingCredetials);
+
+            return jwtSecurityToken;
+        }
+
+        private RefreshToken GenerateRefreshToken()
+        {
+            return new RefreshToken
+            {
+                Token = RandomTokenString(),
+                Expires = DateTime.UtcNow.AddDays(7),
+                Created = DateTime.UtcNow
+            };
+        }
+
+        private string RandomTokenString()
+        {
+            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            var ramdomBytes = new byte[40];
+            rngCryptoServiceProvider.GetBytes(ramdomBytes);
+
+            return BitConverter.ToString(ramdomBytes).Replace("-", "");
+        }
+
+        public async Task<AuthenticationResponse> AuthenticateApiAsync(AuthenticationRequest request)
+        {
+            AuthenticationResponse response = new();
+
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null)
+            {
+                response.HasError = true;
+                response.Error = $"Ninguna cuenta registrada con el correo {request.Email}";
+                return response;
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
+            if (!result.Succeeded)
+            {
+                response.HasError = true;
+                response.Error = $"Credenciales invalidos para {request.Email}";
+                return response;
+            }
+            if (!user.EmailConfirmed)
+            {
+                response.HasError = true;
+                response.Error = $"Cuenta no activada para {request.Email}";
+                return response;
+            }
+            if (user.Rol == 1)
+            {
+                response.HasError = true;
+                response.Error = $"Los Clientes no tienen permiso para ingresar a la aplicación.";
+                return response;
+            }
+            if (user.Rol == 2)
+            {
+                response.HasError = true;
+                response.Error = $"Los Agentes no tienen permiso para ingresar a la aplicación.";
+                return response;
+            }
+
+            JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
+
+            response.Id = user.Id;
+            response.Email = user.Email;
+            response.UserName = user.UserName;
+            response.Rol = user.Rol;
+
+
+            var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+
+            response.Roles = rolesList.ToList();
+            response.EmailConfirmed = user.EmailConfirmed;
+            response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            var refreshToken = GenerateRefreshToken();
+            response.RefreshToken = refreshToken.Token;
+
+            return response;
+        }
+        #endregion
     }
 }

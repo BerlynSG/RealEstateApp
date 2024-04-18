@@ -87,14 +87,14 @@ namespace RealEstateApp.Infrastructure.Identity
                         context.HandleResponse();
                         context.Response.StatusCode = 401;
                         context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new Response<string>("You are not Authorized"));
+                        var result = JsonConvert.SerializeObject(new Response<string>("Usted no está autorizado."));
                         return context.Response.WriteAsync(result);
                     },
                     OnForbidden = context =>
                     {
                         context.Response.StatusCode = 403;
                         context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new Response<string>("You are not authorized to access this resource"));
+                        var result = JsonConvert.SerializeObject(new Response<string>("Usted no está autorizado a acceder a este recurso."));
                         return context.Response.WriteAsync(result);
                     }
                 };

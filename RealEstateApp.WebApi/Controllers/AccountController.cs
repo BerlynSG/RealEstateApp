@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,61 +19,40 @@ namespace RealEstateApp.WebApi.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost("authenticate")]
+        [HttpPost("Login")]
         [SwaggerOperation(
          Summary = "Login de usuario",
          Description = "Autentica un usuario en el sistema y le retorna un JWT"
         )]
         [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> AuthenticateAsync(AuthenticationRequest request)
+        public async Task<IActionResult> AuthenticateApiAsync(AuthenticationRequest request)
         {
-            return Ok(await _accountService.AuthenticateAsync(request));
+            return Ok(await _accountService.AuthenticateApiAsync(request));
         }
 
-        [HttpPost("register")]
+        [Authorize(Roles = "Administrador")]
+        [HttpPost("Register-Admin")]
         [SwaggerOperation(
-            Summary = "Creacion de usuario basico",
-            Description = "Recibe los parametros necesarios para crear un usuario con el rol basico"
+            Summary = "Creacion de usuario administrador",
+            Description = "Recibe los parametros necesarios para crear un usuario administrador"
         )]
         [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> RegisterAsync(RegisterAdminsRequest request)
+        public async Task<IActionResult> RegisterAdminAsync(RegisterAdminsRequest request)
+        {
+            var origin = Request.Headers["origin"];
+            return Ok(await _accountService.RegisterAdminUserAsync(request, origin));
+        }
+
+        [HttpPost("Register-Desarrollador")]
+        [SwaggerOperation(
+            Summary = "Creacion de usuario desarrollador",
+            Description = "Recibe los parametros necesarios para crear un usuario desarrollador"
+        )]
+        [Consumes(MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> RegisterDesarrolladorAsync(RegisterAdminsRequest request)
         {
             var origin = Request.Headers["origin"];
             return Ok(await _accountService.RegisterDesarrolladorUserAsync(request, origin));
         }
-
-        [HttpGet("confirm-email")]
-        [SwaggerOperation(
-          Summary = "Confirmacion de usuario",
-          Description = "Permite activar un usuario nuevo"
-        )]
-        [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> RegisterAsync([FromQuery] string userId, [FromQuery] string token)
-        {
-            return Ok(await _accountService.ConfirmAccountAsync(userId, token));
-        }
-
-        /*[HttpPost("forgot-password")]
-        [SwaggerOperation(
-             Summary = "Recordar contrasenia",
-             Description = "Permite al usuario iniciar el proceso para obtener una nueva contrasenia"
-         )]
-        [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> ForgotPasswordAsync(ForgotPasswordRequest request)
-        {
-            var origin = Request.Headers["origin"];
-            return Ok(await _accountService.ForgotPasswordAsync(request, origin));
-        }*/
-
-        /*[HttpPost("reset-password")]
-        [SwaggerOperation(
-            Summary = "Reinicio de contrasenia",
-            Description = "Permite al usuario cambiar su contrasenia actual por una nueva"
-        )]
-        [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request)
-        {
-            return Ok(await _accountService.ResetPasswordAsync(request));
-        }*/
     }
 }
