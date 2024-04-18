@@ -3,14 +3,10 @@
 
 // Write your JavaScript code.
 
-function mostrarModal(modal) {
-    var miModal = new bootstrap.Modal(modal);
+function mostrarModalSimple(idModal, idInput, id) {
+    var miModal = new bootstrap.Modal("#" + idModal);
+    document.getElementById(idInput).value = id;
     miModal.show();
-}
-
-function mostrarEliminar(id) {
-    mostrarModal("#eliminarModal");
-    document.getElementById('EliminarCodigo').value = id;
 }
 
 function añadirMejora(id) {

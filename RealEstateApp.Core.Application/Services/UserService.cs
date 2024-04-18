@@ -163,7 +163,22 @@ namespace RealEstateApp.Core.Application.Services
         }
         public async Task<UpdateResponse> DeleteUserAsync(string id)
         {
-            return await _accountService.DeleteUserAsync(id);
+            var response = await _accountService.DeleteUserAsync(id);
+
+            if (!response.HasError)
+            {
+                var properties = await _propiedadRepository.GetAllByAgente(id);
+
+                if (properties != null && properties.Any())
+                {
+                    foreach (var property in properties)
+                    {
+                        await _propiedadRepository.DeleteAsync(property);
+                    }
+                }
+            }
+
+            return response;
         }
 
     }
