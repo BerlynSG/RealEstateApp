@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Features.TiposPropiedad.Commands.CreateTipoPropiedad;
 using RealEstateApp.Core.Application.Features.TiposPropiedad.Commands.DeleteTipoPropiedad;
@@ -12,7 +13,7 @@ using System.Net.Mime;
 namespace RealEstateApp.WebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Administrador,Desarrollador")]
     [SwaggerTag("Mantenimiento de tipos de propiedades")]
     public class TipoPropiedadController : BaseApiController
     {
@@ -58,6 +59,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [SwaggerOperation(
           Summary = "Crear un tipo de propiedad",
@@ -84,6 +86,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPut("Update/{id}")]
         [SwaggerOperation(
           Summary = "Actualizar un tipo de propiedad",
@@ -110,6 +113,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpDelete("Delete/{id}")]
         [SwaggerOperation(
           Summary = "Eliminar un tipo de propiedad",

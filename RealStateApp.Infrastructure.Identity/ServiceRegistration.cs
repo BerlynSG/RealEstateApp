@@ -54,16 +54,14 @@ namespace RealEstateApp.Infrastructure.Identity
 
             services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
 
-            services.AddAuthentication(options =>
-            {
+            services.AddAuthentication(options => {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
+            }).AddJwtBearer(options => {
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = false;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
+
+                options.TokenValidationParameters = new TokenValidationParameters {
                     ValidateIssuerSigningKey = true,
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -73,32 +71,30 @@ namespace RealEstateApp.Infrastructure.Identity
                     ValidAudience = configuration["JWTSettings:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"]))
                 };
-                options.Events = new JwtBearerEvents()
-                {
-                    OnAuthenticationFailed = context =>
-                    {
+
+                options.Events = new JwtBearerEvents() {
+                    OnAuthenticationFailed = context => {
                         context.NoResult();
                         context.Response.StatusCode = 500;
                         context.Response.ContentType = "text/plain";
                         return context.Response.WriteAsync(context.Exception.ToString());
                     },
-                    OnChallenge = context =>
-                    {
+
+                    OnChallenge = context => {
                         context.HandleResponse();
                         context.Response.StatusCode = 401;
                         context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new Response<string>("Usted no está autorizado."));
+                        var result = JsonConvert.SerializeObject(new Response<string>("Usted no tiene autorización."));
                         return context.Response.WriteAsync(result);
                     },
-                    OnForbidden = context =>
-                    {
+
+                    OnForbidden = context => {
                         context.Response.StatusCode = 403;
                         context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new Response<string>("Usted no está autorizado a acceder a este recurso."));
+                        var result = JsonConvert.SerializeObject(new Response<string>("Usted no tiene autorización para usar esta función."));
                         return context.Response.WriteAsync(result);
                     }
                 };
-
             });
             #endregion
 

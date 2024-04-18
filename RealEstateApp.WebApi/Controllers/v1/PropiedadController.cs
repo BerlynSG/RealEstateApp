@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Features.Propiedades.Queries.GetAllPropiedades;
 using RealEstateApp.Core.Application.Features.Propiedades.Queries.GetPropiedadByCodigo;
@@ -10,7 +11,7 @@ using System.Net.Mime;
 namespace RealEstateApp.WebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Administrador,Desarrollador")]
     [SwaggerTag("Mantenimiento de propiedades")]
     public class PropiedadController : BaseApiController
     {

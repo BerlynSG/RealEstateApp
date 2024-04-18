@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Features.Mejoras.Commands.CreateMejora;
 using RealEstateApp.Core.Application.Features.Mejoras.Commands.DeleteMejora;
@@ -12,7 +13,7 @@ using System.Net.Mime;
 namespace RealEstateApp.WebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Administrador,Desarrollador")]
     [SwaggerTag("Mantenimiento de mejoras")]
     public class MejoraController : BaseApiController
     {
@@ -44,6 +45,8 @@ namespace RealEstateApp.WebApi.Controllers.v1
             return Ok(await Mediator.Send(new GetMejoraByIdQuery { Id = id }));
         }
 
+
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [SwaggerOperation(
           Summary = "Crear una mejora",
@@ -70,6 +73,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPut("Update/{id}")]
         [SwaggerOperation(
           Summary = "Actualizar una mejora",
@@ -96,6 +100,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpDelete("Delete/{id}")]
         [SwaggerOperation(
           Summary = "Eliminar una mejora",

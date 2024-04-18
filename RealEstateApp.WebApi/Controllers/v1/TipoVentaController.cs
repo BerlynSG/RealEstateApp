@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Features.TiposVenta.Commands.CreateTipoVenta;
 using RealEstateApp.Core.Application.Features.TiposVenta.Commands.DeleteTipoVenta;
@@ -12,7 +13,7 @@ using System.Net.Mime;
 namespace RealEstateApp.WebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Administrador,Desarrollador")]
     [SwaggerTag("Mantenimiento de tipos de ventas")]
     public class TipoVentaController : BaseApiController
     {
@@ -44,6 +45,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             return Ok(await Mediator.Send(new GetTipoVentaByIdQuery { Id = id }));
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [SwaggerOperation(
           Summary = "Crear un tipo de venta",
@@ -70,6 +72,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPut("Update/{id}")]
         [SwaggerOperation(
           Summary = "Actualizar un tipo de venta",
@@ -96,6 +99,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpDelete("Delete/{id}")]
         [SwaggerOperation(
           Summary = "Eliminar un tipo de venta",
