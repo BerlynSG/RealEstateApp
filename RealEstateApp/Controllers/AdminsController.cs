@@ -113,11 +113,6 @@ namespace RealEstateApp.Controllers
             return RedirectToRoute(new { controller = "Admins", action = "Index" });
         }
 
-        public async Task<IActionResult> ActivateUser(string id)
-        {
-            return View("ActivateUser", await _userService.GetUserByAdminId(id));
-        }
-
         [HttpPost]
         public async Task<IActionResult> ActivateUser(ListaAgenteViewModel vm)
         {
