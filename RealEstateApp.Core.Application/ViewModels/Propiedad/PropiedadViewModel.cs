@@ -15,6 +15,7 @@ namespace RealEstateApp.Core.Application.ViewModels.Propiedad
         public double Tamaño { get; set; }
         public string Descripcion { get; set; }
         public bool Favorito { get; set; }
+        public string AgenteId { get; set; }
 
         public TipoPropiedadViewModel TipoPropiedad { get; set; }
         public TipoVentaViewModel TipoVenta { get; set; }
