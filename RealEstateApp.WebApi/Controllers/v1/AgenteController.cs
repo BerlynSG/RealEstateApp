@@ -61,8 +61,8 @@ namespace RealEstateApp.WebApi.Controllers.v1
         [Authorize(Roles = "Administrador")]
         [HttpPatch]
         [SwaggerOperation(
-          Summary = "Crear una Agente",
-          Description = "Crea una Agente"
+          Summary = "Cambiar el estado del Agente",
+          Description = "Cambiar el estado del Agente"
         )]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
