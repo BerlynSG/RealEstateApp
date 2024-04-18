@@ -106,36 +106,42 @@ namespace RealEstateApp.Controllers
         {
             return View();
         }
-        
-        private string UploadFile(IFormFile file, string? id, bool isEditMode = false, string imagePath = "")
+
+
+
+        public string UploadFile(IFormFile file, string id, bool isEditing = false, string photoUrl = "")
         {
-            if (isEditMode)
+            if (isEditing && file == null)
             {
-                if (file == null)
-                {
-                    return imagePath;
-                }
+                return photoUrl;
             }
-            string basePath = $"/Images/Users/{id}";
+            //get directory path
+            string basePath = $"/img/Agentes/{id}";
             string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");
-
+            //create directory path
             if (!Directory.Exists(path))
-            {
                 Directory.CreateDirectory(path);
-            }
-
-            Guid guid = Guid.NewGuid();
-            FileInfo fileInfo = new(file.FileName);
-            string fileName = guid + fileInfo.Extension;
-
-            string fileNameWithPath = Path.Combine(path, fileName);
-
-            using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+            //generade file name
+            FileInfo fileInfo = new FileInfo(file.FileName);
+            string filename = Guid.NewGuid() + fileInfo.Extension;
+            //get final path
+            string finalfilePath = Path.Combine(path, filename);
+            //copy the uploaded file
+            using (var stream = new FileStream(finalfilePath, FileMode.Create))
             {
                 file.CopyTo(stream);
             }
-
-            return $"{basePath}/{fileName}";
+            if (isEditing)
+            {
+                string[] oldImagePart = photoUrl.Split('/');
+                string oldFileName = oldImagePart[^1];
+                string oldFilePath = Path.Combine(path, oldFileName);
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
+            }
+            return $"{basePath}/{filename}";
         }
     }
 }

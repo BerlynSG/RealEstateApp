@@ -188,9 +188,9 @@
                         <label asp-for="Filtros.TipoPropiedad" class="form-label">Tipo de propiedad: </label>
                         <select asp-for="Filtros.TipoPropiedad" class="form-control">
                             <option value="0">Ninguna</option>
-                            @for(int i = 1; i < Model.tiposPropiedad.Count(); i++)
+                            @foreach (var tp in Model.tiposPropiedad)
                             {
-                                <option value="@i">@Model.tiposPropiedad[i].Nombre</option>
+                                <option value="@tp.Id">@tp.Nombre</option>
                             }
                         </select>
                     </div>

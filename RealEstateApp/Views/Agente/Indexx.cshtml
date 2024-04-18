@@ -33,10 +33,10 @@
                         <a asp-controller="Agente" asp-action="Detalles" asp-route-id="@user.Id" class="item-propiedad">
                             <div class="card-body row">
                                 <div class="col-6">
-                                    <img class="img-fluid rounded-circle m-0" src="@user.ImagePath" />
+                                    <img class="img-fluid rounded-circle m-0" src="/@user.ImagePath" />
                                 </div>
                                 <div class="col-6">
-                                    <h4> <b> @user.FirstName @user.LastName</b></h4>
+                                    <h4> <b> @user.FirstName @user.LastName @user.ImagePath</b></h4>
                                 </div>
                             </div>
                         </a>

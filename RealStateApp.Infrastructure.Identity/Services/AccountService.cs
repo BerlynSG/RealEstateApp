@@ -497,7 +497,10 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                     Cedula = user.Cedula,
                     Email = user.Email,                   
                     Roles = rol.ToList(),
-                    EmailConfirmed = user.EmailConfirmed
+                    EmailConfirmed = user.EmailConfirmed,
+                    ImagePath = user.ImagePath,
+                    PhoneNumber = user.PhoneNumber,
+                    Rol = user.Rol
                 };
 
                 response.Add(user_res);
