@@ -58,14 +58,15 @@ namespace RealEstateApp.Controllers
 
         public async Task<IActionResult> Agentes()
         {
+            ListaAgenteViewModel vm = new ListaAgenteViewModel();
             List<AuthenticationResponse> usuarios = (await _userService.GetAllUsers()).Where(u => u.Roles.Contains(Roles.Agente.ToString())).ToList();
-            List<AgenteViewModel> agentes = _mapper.Map<List<AgenteViewModel>>(usuarios);
+            vm.Agentes = _mapper.Map<List<AgenteViewModel>>(usuarios);
 
             List<PropiedadViewModel> propiedades = await _propiedadService.GetAllViewModel();
 
-            agentes.ForEach(async a => a.Propiedades = propiedades.Where(p => p.AgenteId == a.Id).ToList());
+            vm.Agentes.ForEach(async a => a.Propiedades = propiedades.Where(p => p.AgenteId == a.Id).ToList());
 
-            return View(agentes);
+            return View(vm);
         }
 
         public IActionResult RegisterAdmin()
@@ -140,6 +141,7 @@ namespace RealEstateApp.Controllers
 
             return RedirectToRoute(new { controller = "Admins", action = "Index" });
         }
+
         public async Task<IActionResult> DeleteUser(string id)
         {
             var response = await _userService.DeleteUserAsync(id);
@@ -151,6 +153,20 @@ namespace RealEstateApp.Controllers
 
             return RedirectToAction("Agentes");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAgente(ListaAgenteViewModel vm)
+        {
+            var response = await _userService.DeleteUserAsync(vm.SearchTerm);
+
+            if (response.HasError)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Agentes");
+        }
+
         public async Task<IActionResult> EditAdmin(string id)
         {
             var user = await _accountService.GetUserById(id);
