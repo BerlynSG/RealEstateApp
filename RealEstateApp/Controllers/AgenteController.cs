@@ -3,11 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Interfaces.Services;
 using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
-using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
-using RealEstateApp.Core.Application.ViewModels.TipoVenta;
-using RealEstateApp.Core.Application.ViewModels.User;
 using System.Security.Claims;
-using System.Linq;
 using RealEstateApp.Core.Application.Enums;
 
 namespace RealEstateApp.Controllers
@@ -19,7 +15,7 @@ namespace RealEstateApp.Controllers
         private readonly IPropiedadService _propiedadService;
         private readonly ITipoPropiedadService _tipoPropiedadService;
 
-        private List<TipoPropiedadViewModel> tiposPropiedad = new()
+        /*private List<TipoPropiedadViewModel> tiposPropiedad = new()
         {
             new(), new(){ Nombre = "Apartamento" }, new(){ Nombre = "Casa" }, new(){ Nombre = "Terreno" }
         };
@@ -27,7 +23,7 @@ namespace RealEstateApp.Controllers
         {
             new (), new (){ Nombre = "Alquiler" }, new (){ Nombre = "Venta" }
         };
-        private static List<AgenteViewModel> _agentes;
+        private static List<AgenteViewModel> _agentes;*/
 
         public AgenteController(IUserService userService, IMapper mapper, IPropiedadService propiedadService, ITipoPropiedadService tipoPropiedadService)
         {
@@ -136,7 +132,7 @@ namespace RealEstateApp.Controllers
             return RedirectToRoute(new { controller = "Agente", action = "Index" });
         }
 
-        public IActionResult Propiedades(string? codigoAgente)
+        /*public IActionResult Propiedades(string? codigoAgente)
         {
             if (codigoAgente == null || codigoAgente == "")
             {
@@ -150,7 +146,7 @@ namespace RealEstateApp.Controllers
             }
 
             return View(agente.Propiedades);
-        }
+        }*/
 
         public async Task<IActionResult> MiPerfil()
         {
