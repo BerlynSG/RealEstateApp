@@ -1,14 +1,12 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
-using RealEstateApp.Core.Application.Services;
 using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.User;
-
 
 namespace RealEstateApp.Controllers
 {
@@ -39,7 +37,7 @@ namespace RealEstateApp.Controllers
             ViewBag.ActiveDevelopersCount = dashboardData["ActiveDevelopersCount"];
             ViewBag.InactiveDevelopersCount = dashboardData["InactiveDevelopersCount"];
 
-            return View(); 
+            return View();
         }
 
         public async Task<IActionResult> Index()
@@ -129,13 +127,13 @@ namespace RealEstateApp.Controllers
 
             var origin = Request.Headers["origin"];
 
-                 RegisterAdminsResponse response = await _userService.RegisterDesarrolladorAsync(vm, origin);
-                 if (response.HasError)
-                 {
-                     vm.HasError = response.HasError;
-                     vm.Error = response.Error;
-                     return View(vm);
-                 }
+            RegisterAdminsResponse response = await _userService.RegisterDesarrolladorAsync(vm, origin);
+            if (response.HasError)
+            {
+                vm.HasError = response.HasError;
+                vm.Error = response.Error;
+                return View(vm);
+            }
 
             return RedirectToRoute(new { controller = "Admins", action = "Index" });
         }
@@ -197,10 +195,10 @@ namespace RealEstateApp.Controllers
             if (response.HasError)
             {
                 ModelState.AddModelError(string.Empty, response.Error);
-                return View("RegisterAdmin", model); 
+                return View("RegisterAdmin", model);
             }
 
-            return RedirectToAction("Index"); 
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> EditDesarrollador(string id)
