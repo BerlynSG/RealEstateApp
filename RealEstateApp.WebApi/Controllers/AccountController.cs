@@ -38,6 +38,7 @@ namespace RealEstateApp.WebApi.Controllers
         )]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> RegisterAdminAsync(RegisterAdminsRequest request)
         {
             var origin = Request.Headers["origin"];

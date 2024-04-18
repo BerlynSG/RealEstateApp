@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using RealEstateApp.Core.Application.Wrappers;
 using RealEstateApp.Core.Domain.Settings;
+using RealEstateApp.Core.Application.Dtos.Account;
 
 namespace RealEstateApp.Infrastructure.Identity
 {
@@ -73,27 +74,28 @@ namespace RealEstateApp.Infrastructure.Identity
                 };
 
                 options.Events = new JwtBearerEvents() {
-                    OnAuthenticationFailed = context => {
-                        context.NoResult();
-                        context.Response.StatusCode = 500;
-                        context.Response.ContentType = "text/plain";
-                        return context.Response.WriteAsync(context.Exception.ToString());
-                    },
-
-                    OnChallenge = context => {
-                        context.HandleResponse();
-                        context.Response.StatusCode = 403;
-                        context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new Response<string>("Acceso denegado."));
-                        return context.Response.WriteAsync(result);
-                    },
-                    OnForbidden = context =>
+                    OnAuthenticationFailed = c =>
                     {
-                        context.Response.StatusCode = 401;
-                        context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new Response<string>("Usted no tiene autorización."));
-                        return context.Response.WriteAsync(result);
+                        c.NoResult();
+                        c.Response.StatusCode = 500;
+                        c.Response.ContentType = "text/plain";
+                        return c.Response.WriteAsync(c.Exception.ToString());
                     },
+                    OnChallenge = c =>
+                    {
+                        c.HandleResponse();
+                        c.Response.StatusCode = 401;
+                        c.Response.ContentType = "application/json";
+                        var result = JsonConvert.SerializeObject(new JwtResponse { HasError = true, Error = "No esta autorizado." });
+                        return c.Response.WriteAsync(result);
+                    },
+                    OnForbidden = c =>
+                    {
+                        c.Response.StatusCode = 403;
+                        c.Response.ContentType = "application/json";
+                        var result = JsonConvert.SerializeObject(new JwtResponse { HasError = true, Error = "Acceso denegadoo." });
+                        return c.Response.WriteAsync(result);
+                    }
                 };
             });
             #endregion
