@@ -15,6 +15,7 @@ namespace RealEstateApp.Infrastructure.Identity.Seeds
                 ImagePath = "",
                 FirstName = "Adminis",
                 LastName = "Trador",
+                Cedula = "1010101010",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 Rol = 3

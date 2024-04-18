@@ -11,10 +11,12 @@ namespace RealEstateApp.Infrastructure.Identity.Seeds
             ApplicationUser clientUser = new()
             {
                 UserName = "Cliente",
-                Email = "clientuser@gmail.com",
+                Email = "clienteuser@gmail.com",
                 ImagePath = "",
                 FirstName = "Cli",
+                PhoneNumber = "1234567890",
                 LastName = "Ente",
+                Cedula = "",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 Rol = 1

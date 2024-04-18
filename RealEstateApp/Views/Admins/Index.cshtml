@@ -20,8 +20,7 @@
                 <h2 class="text-white">ADMINISTRADORES</h2>
                 <a asp-controller="Admins" asp-action="RegisterAdmin" class="btn btn-lg btn-success mt-2 text-light mt-2 mb-2"><i class='bx bxs-user-plus'></i> Registrar administrador</a>
             </div>
-            <table id="table-invited" class=" table table-dark table-hover">                           
-
+            <table id="table-invited" class=" table table-dark table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Nombre</th>
@@ -29,10 +28,9 @@
                         <th scope="col">Usuario</th>
                         <th scope="col">Cedula</th>
                         <th scope="col">Correo</th>
-                        <th scope="col">Rol</th>
                         <th scope="col">Estado</th>
                         <th class="text-center" scope="col">Editar</th>
-                        <th class="text-center" scope="col">Cambiar estados</th>
+                        <th class="text-center" scope="col">Cambiar estado</th>
                     </tr>
                 </thead>
                 @if (User.Rol == 3){
@@ -47,7 +45,6 @@
                                     <td>@user.UserName</td>
                                     <td>@user.Cedula</td>
                                     <td>@user.Email</td>
-                                    <td>@user.Roles[0]</td>
                                     <td>@(user.EmailConfirmed ? "Activo" : "Inactivo")</td>
                                     <td>
                                         @if (user.Id != User.Id)

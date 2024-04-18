@@ -1,4 +1,12 @@
 ﻿@model RealEstateApp.Core.Application.ViewModels.User.SaveAdminsViewModel
+@using Microsoft.AspNetCore.Http
+@using RealEstateApp.Core.Application.Dtos.Account
+@using RealEstateApp.Core.Application.Helpers;
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+    bool editMode = !string.IsNullOrEmpty(Model.Id);
+}
 @{
     bool mode = Model.EmailConfirmed == false ? false : true;
     ViewData["Title"] = "Cambiar el estado del usuario";
@@ -11,11 +19,14 @@
            
             <h4 class="fs-5 fw-bold px-2 mb-3 text-white text-center">
                 @(mode ? $"¿Estás seguro de que deseas inactivar a este usuario?" : $"¿Estás seguro de que deseas activar este usuario?")
+                @Model.Rol
+                @Model.Cedula
+                @Model.Email
             </h4>
 
             <div class="text-center mx-auto">
                 <div class="d-flex justify-content-end">
-                    <a asp-controller="Admins" asp-action="Home" class="btn btn-lg btn-light me-2 mt-0">Cancel</a>
+                        <a asp-controller="Admins" asp-action="Index" class="btn btn-lg btn-light me-2 mt-0">Cancelar</a>
 
                     <form method="post" asp-controller="Admins" asp-action="ActivateUser">
                         <input type="hidden" asp-for="Id" />
