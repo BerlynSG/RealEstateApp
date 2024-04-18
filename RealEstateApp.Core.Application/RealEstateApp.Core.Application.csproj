@@ -24,11 +24,6 @@
 
   <ItemGroup>
 	<Folder Include="Enums\" />
-	<Folder Include="Features\Agentes\Commands\CreateAgente\" />
-	<Folder Include="Features\Agentes\Commands\DeleteAgenteById\" />
-	<Folder Include="Features\Agentes\Commands\UpdateAgente\" />
-	<Folder Include="Features\Agentes\Queries\GetAgenteById\" />
-	<Folder Include="Features\Agentes\Queries\GetAllAgentes\" />
   </ItemGroup>
 
   <ItemGroup>

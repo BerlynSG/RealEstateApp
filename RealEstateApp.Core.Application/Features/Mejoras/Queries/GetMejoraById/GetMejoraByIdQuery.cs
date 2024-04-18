@@ -11,9 +11,7 @@ namespace RealEstateApp.Core.Application.Features.Mejoras.Queries.GetMejoraById
     /// </summary>
     public class GetMejoraByIdQuery : IRequest<MejoraViewModel>
     {
-        /// <example>
-        /// 1
-        /// </example>
+        /// <example>1</example>
         [SwaggerParameter(Description = "Id para filtrar la Mejora")]
         public int Id { get; set; }
     }

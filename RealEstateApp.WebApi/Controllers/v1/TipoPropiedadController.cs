@@ -29,7 +29,7 @@ namespace RealEstateApp.WebApi.Controllers.v1
         {
             try
             {
-                return Ok(await Mediator.Send(new GetAllTipoPropiedadesQuery()));
+                return Ok(await Mediator.Send(new GetAllTiposPropiedadesQuery()));
             }
             catch (Exception ex)
             {

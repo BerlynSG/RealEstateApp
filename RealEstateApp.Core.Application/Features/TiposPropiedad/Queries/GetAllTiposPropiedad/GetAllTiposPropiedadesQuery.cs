@@ -8,12 +8,12 @@ namespace RealEstateApp.Core.Application.Features.TiposPropiedad.Queries.GetAllT
     /// <summary>
     /// Parámetros para obtener todas los tipos de propiedades
     /// </summary>
-    public class GetAllTipoPropiedadesQuery : IRequest<IList<TipoPropiedadViewModel>>
+    public class GetAllTiposPropiedadesQuery : IRequest<IList<TipoPropiedadViewModel>>
     {
 
     }
 
-    public class GetAllTipoPropiedadesQueryHandler : IRequestHandler<GetAllTipoPropiedadesQuery, IList<TipoPropiedadViewModel>>
+    public class GetAllTipoPropiedadesQueryHandler : IRequestHandler<GetAllTiposPropiedadesQuery, IList<TipoPropiedadViewModel>>
     {
         private readonly ITipoPropiedadRepository _tipoPropiedadRepository;
         private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace RealEstateApp.Core.Application.Features.TiposPropiedad.Queries.GetAllT
             _mapper = mapper;
         }
 
-        public async Task<IList<TipoPropiedadViewModel>> Handle(GetAllTipoPropiedadesQuery request, CancellationToken cancellationToken)
+        public async Task<IList<TipoPropiedadViewModel>> Handle(GetAllTiposPropiedadesQuery request, CancellationToken cancellationToken)
         {
             var TiposPropiedad = await GetAllViewModel();
             if (TiposPropiedad == null || TiposPropiedad.Count == 0) throw new Exception("Tipos Propiedad not found");
