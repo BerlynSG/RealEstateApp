@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using RealEstateApp.Core.Application.Exceptions;
+﻿using RealEstateApp.Core.Application.Exceptions;
 using RealEstateApp.Core.Application.Wrappers;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace ApiEstadisticas.WebApi.Middlewares
 {
