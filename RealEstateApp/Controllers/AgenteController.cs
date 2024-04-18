@@ -57,7 +57,7 @@ namespace RealEstateApp.Controllers
             };*/
         }
 
-        public IActionResult Indexx(string searchTerm)
+        /*public IActionResult Indexx(string searchTerm)
         {
             var users = await _userService.GetAllUsers();
             users = users.Where(u => u.Roles.Contains(Roles.Agente.ToString())).ToList();
@@ -74,7 +74,8 @@ namespace RealEstateApp.Controllers
             agentes = agentes.OrderBy(a => a.Nombre).ToList();
 
             return View(new ListaAgenteViewModel { Agentes = agentes, SearchTerm = searchTerm });
-        }
+        }*/
+
         public async Task<IActionResult> Index(string searchTerm)
         {
             // Obtén todos los usuarios del servicio _userService.
@@ -94,7 +95,7 @@ namespace RealEstateApp.Controllers
         }
 
 
-        public IActionResult Detalles(string? codigo)
+        public async Task <IActionResult> Detalles(string? agenteId)
         {
             if (agenteId == null || agenteId == "")
             {
@@ -146,7 +147,7 @@ namespace RealEstateApp.Controllers
             }
 
             return View(agente.Propiedades);
-        }
+        }*/
 
         [Authorize(Roles = "Agente")]
         public async Task<IActionResult> MiPerfil()
