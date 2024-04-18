@@ -509,7 +509,8 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                     Rol = user.Rol,
                     ImagePath = user.ImagePath,
                     Phone = user.PhoneNumber,
-                    Roles = rol.ToList(),
+                    EmailConfirmed = user.EmailConfirmed,
+                    Roles = rol.ToList()
                 };
 
                 response.Add(user_res);

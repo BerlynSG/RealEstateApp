@@ -89,6 +89,7 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(dest => dest.Apellidos, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Celular, opt => opt.MapFrom(src => src.Phone))
+                .ForMember(dest => dest.EmailConfirmed, opt => opt.MapFrom(src => src.EmailConfirmed))
                 .ForMember(dest => dest.ProfileImage, opt => opt.Ignore())
                 .ForMember(dest => dest.Foto, opt => opt.MapFrom(src => src.ImagePath));
 

@@ -4,5 +4,6 @@
     {
         public List<AgenteViewModel> Agentes { get; set; }
         public string SearchTerm { get; set; }
+        public int tipo { get; set; }
     }
 }

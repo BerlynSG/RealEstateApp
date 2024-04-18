@@ -13,6 +13,8 @@ namespace RealEstateApp.Core.Application.ViewModels.Agente
         public List<PropiedadViewModel> Propiedades { get; set; }
         public string Correo { get; set; }
         public string Celular { get; set; }
+        public string Cedula { get; set; }
+        public string UserName { get; set; }
         public bool EmailConfirmed { get; set; }
     }
 }

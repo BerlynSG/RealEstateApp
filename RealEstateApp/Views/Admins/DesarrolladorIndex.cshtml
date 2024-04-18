@@ -1,4 +1,5 @@
 ﻿@using RealEstateApp.Core.Application.ViewModels.User
+@using RealEstateApp.Core.Application.ViewModels.Agente
 @using Microsoft.AspNetCore.Http
 @using RealEstateApp.Core.Application.Dtos.Account
 @using RealEstateApp.Core.Application.Helpers;
@@ -8,7 +9,7 @@
     var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
 }
 
-@model SaveAdminsViewModel
+@model ListaAgenteViewModel
 @{
     ViewData["Title"] = "Mantenimiento de Desarrolladores";
 }
@@ -34,41 +35,66 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (AuthenticationResponse user in ViewBag.Users)
+                    @foreach (AgenteViewModel user in Model.Agentes)
                     {
-                        @if (user.Roles[0] == Roles.Desarrollador.ToString())
-                        {
-                            <tr class="table-light">
-                                <td>@user.FirstName</td>
-                                <td>@user.LastName</td>
-                                <td>@user.UserName</td>
-                                <td>@user.Cedula</td>
-                                <td>@user.Email</td>
-                                <td>@(user.EmailConfirmed ? "Activo" : "Inactivo")</td>
-                                <td>
-                                    @if (user.Id != User.Id)
-                                    {
-                                        <a asp-controller="Admins" asp-action="EditDesarrollador" asp-route-id="@user.Id" class="btn btn-sm btn-warning"><i class='bx bx-edit'></i></a>
-                                    }
-                                </td>
-                                <td>
-                                    @if (user.Id != User.Id)
-                                    {
+                        <tr class="table-light">
+                            <td>@user.Nombre</td>
+                            <td>@user.Apellidos</td>
+                            <td>@user.UserName</td>
+                            <td>@user.Cedula</td>
+                            <td>@user.Correo</td>
+                            <td>@(user.EmailConfirmed ? "Activo" : "Inactivo")</td>
+                            <td>
+                                @if (User != null && user.Id != User.Id)
+                                {
+                                    <a asp-controller="Admins" asp-action="EditDesarrollador" asp-route-id="@user.Id" class="btn btn-sm btn-warning"><i class='bx bx-edit'></i></a>
+                                }
+                            </td>
+                            <td>
+                                @if (user.Id != User.Id)
+                                {
+                                    <a onclick='mostrarModalSimple("CambiarModal", "CambiarCodigo", "@user.Id")' class="btn btn-sm btn-@(user.EmailConfirmed ? "primary" : "danger")">
                                         @if (user.EmailConfirmed)
                                         {
-                                            <a asp-controller="Admins" asp-action="ActivateUser" asp-route-id="@user.Id" class="btn btn-sm btn-primary px-4"><i class='bx bx-toggle-right'></i></a>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                                                <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0" />
+                                            </svg>
                                         }
                                         else
                                         {
-                                            <a asp-controller="Admins" asp-action="ActivateUser" asp-route-id="@user.Id" class="btn btn-sm btn-danger px-4"><i class='bx bx-toggle-left'></i></a>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                                            </svg>
                                         }
-                                    }
-                                </td>
-                            </tr>
-                        }
+                                    </a>
+                                }
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CambiarModal" tabindex="-1" aria-labelledby="CambiarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-controller="Admins" asp-action="ActivateUser">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="CambiarModalLabel">Cambiar Estado</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="CambiarCodigo" asp-for="SearchTerm" hidden />
+                    <input type="hidden" asp-for="tipo" />
+                    <p>¿Desea cambiar el estado de este desarrollador?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Sí</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
