@@ -94,13 +94,6 @@ namespace RealEstateApp.Infrastructure.Identity
                         var result = JsonConvert.SerializeObject(new Response<string>("Usted no tiene autorización."));
                         return context.Response.WriteAsync(result);
                     },
-
-                    OnForbidden = context => {
-                        context.Response.StatusCode = 403;
-                        context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new Response<string>("Usted no tiene autorización para usar esta función."));
-                        return context.Response.WriteAsync(result);
-                    }*/
                 };
             });
             #endregion
