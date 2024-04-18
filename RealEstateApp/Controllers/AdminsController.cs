@@ -42,15 +42,24 @@ namespace RealEstateApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Users = await _userService.GetAllUsers();
+            ListaAgenteViewModel vm = new ListaAgenteViewModel();
+            List<AuthenticationResponse> usuarios = (await _userService.GetAllUsers())
+                .Where(u => u.Roles.Contains(Roles.Administrador.ToString())).ToList();
+            vm.Agentes = _mapper.Map<List<AgenteViewModel>>(usuarios);
+            vm.tipo = 2;
 
-            return View();
+            return View(vm);
         }
 
         public async Task<IActionResult> DesarrolladorIndex()
         {
-            ViewBag.Users = await _userService.GetAllUsers();
-            return View();
+            ListaAgenteViewModel vm = new ListaAgenteViewModel();
+            List<AuthenticationResponse> usuarios = (await _userService.GetAllUsers())
+                .Where(u => u.Roles.Contains(Roles.Desarrollador.ToString())).ToList();
+            vm.Agentes = _mapper.Map<List<AgenteViewModel>>(usuarios);
+            vm.tipo = 1;
+
+            return View(vm);
         }
 
         public async Task<IActionResult> Agentes()
@@ -58,6 +67,7 @@ namespace RealEstateApp.Controllers
             ListaAgenteViewModel vm = new ListaAgenteViewModel();
             List<AuthenticationResponse> usuarios = (await _userService.GetAllUsers()).Where(u => u.Roles.Contains(Roles.Agente.ToString())).ToList();
             vm.Agentes = _mapper.Map<List<AgenteViewModel>>(usuarios);
+            vm.tipo = 0;
 
             List<PropiedadViewModel> propiedades = await _propiedadService.GetAllViewModel();
 
@@ -109,9 +119,17 @@ namespace RealEstateApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActivateUser(SaveAdminsViewModel vm)
+        public async Task<IActionResult> ActivateUser(ListaAgenteViewModel vm)
         {
-            await _userService.ActivateUserAsync(vm.Id);
+            await _userService.ActivateUserAsync(vm.SearchTerm);
+            if (vm.tipo == 0)
+            {
+                return RedirectToRoute(new { controller = "Admins", action = "Agentes" });
+            }
+            else if (vm.tipo == 1)
+            {
+                return RedirectToRoute(new { controller = "Admins", action = "DesarrolladorIndex" });
+            }
             return RedirectToRoute(new { controller = "Admins", action = "Index" });
         }
 
