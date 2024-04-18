@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Features.Agentes.Queries.GetAgenteById;
 using RealEstateApp.Core.Application.Features.Agentes.Queries.GetAgentePropiedades;
@@ -11,7 +12,7 @@ using System.Net.Mime;
 namespace RealEstateApp.WebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Administrador,Desarrollador")]
     [SwaggerTag("Mantenimiento de Agentes")]
     public class AgenteController : BaseApiController
     {
@@ -57,15 +58,16 @@ namespace RealEstateApp.WebApi.Controllers.v1
             return Ok(await Mediator.Send(new GetAgentePropiedadesQuery() { Id = id }));
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPatch]
         [SwaggerOperation(
-          Summary = "Crear una Agente",
-          Description = "Crea una Agente"
+          Summary = "Cambiar el estado del Agente",
+          Description = "Cambiar el estado del Agente"
         )]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([FromBody] ChangeStatusAgenteQuery command)
+        public async Task<IActionResult> ChangeStatus([FromBody] ChangeStatusAgenteQuery command)
         {
             try
             {

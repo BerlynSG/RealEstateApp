@@ -24,7 +24,8 @@ namespace RealEstateApp.WebApi.Controllers
          Summary = "Login de usuario",
          Description = "Autentica un usuario en el sistema y le retorna un JWT"
         )]
-        public async Task<IActionResult> AuthenticateApiAsync(AuthenticationRequest request)
+        [Consumes(MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> AuthenticateApiAsync([FromBody] AuthenticationRequest request)
         {
             return Ok(await _accountService.AuthenticateApiAsync(request));
         }

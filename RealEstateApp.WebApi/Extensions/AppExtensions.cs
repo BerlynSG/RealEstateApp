@@ -1,5 +1,4 @@
 ﻿using ApiEstadisticas.WebApi.Middlewares;
-using Microsoft.AspNetCore.Builder;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace RealEstateApp.WebApi.Extensions
