@@ -28,10 +28,9 @@
                         <th scope="col">Usuario</th>
                         <th scope="col">Cedula</th>
                         <th scope="col">Correo</th>
-                        <th scope="col">Rol</th>
                         <th scope="col">Estado</th>
                         <th class="text-center" scope="col">Editar</th>
-                        <th class="text-center" scope="col">Cambiar estados</th>
+                        <th class="text-center" scope="col">Cambiar estado</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,7 +44,6 @@
                                 <td>@user.UserName</td>
                                 <td>@user.Cedula</td>
                                 <td>@user.Email</td>
-                                <td>@user.Roles[0]</td>
                                 <td>@(user.EmailConfirmed ? "Activo" : "Inactivo")</td>
                                 <td>
                                     @if (user.Id != User.Id)

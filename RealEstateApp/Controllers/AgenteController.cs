@@ -7,6 +7,7 @@ using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
 using RealEstateApp.Core.Application.ViewModels.User;
 using System.Security.Claims;
+using System.Linq;
 
 namespace RealEstateApp.Controllers
 {
@@ -64,6 +65,27 @@ namespace RealEstateApp.Controllers
             agentes = agentes.OrderBy(a => a.Nombre).ToList();
 
             return View(new ListaAgenteViewModel { Agentes = agentes, SearchTerm = searchTerm });
+        }
+        public async Task<IActionResult> Indexx(string searchTerm)
+        {
+            // Obtén todos los usuarios del servicio _userService.
+            var users = await _userService.GetAllUsers();
+
+            // Aplica el filtrado si se proporciona un término de búsqueda.
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                // Filtra los usuarios por nombre o apellidos que contengan el término de búsqueda, sin importar mayúsculas/minúsculas.
+                users = users.Where(a =>
+                    a.FirstName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    a.LastName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            // Pasa la lista filtrada (o sin filtrar si no hay término de búsqueda) a la vista usando ViewBag.
+            ViewBag.Users = users;
+
+            // Devuelve la vista correspondiente.
+            return View();
         }
 
         public IActionResult Detalles(string? codigo)

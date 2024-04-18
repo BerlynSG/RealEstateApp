@@ -40,6 +40,8 @@ namespace RealEstateApp.Core.Application.ViewModels.User
         public string? ImagePath { get; set; }
         public bool? EmailConfirmed { get; set; }        
         public bool HasError { get; set; }
+        public string? SearchTerm { get; set; }
+
         public string? Error { get; set; }
     }
 }

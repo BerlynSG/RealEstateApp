@@ -107,7 +107,7 @@ namespace RealEstateApp.Controllers
             return View();
         }
         
-        /*private string UploadFile(IFormFile file, string? id, bool isEditMode = false, string imagePath = "")
+        private string UploadFile(IFormFile file, string? id, bool isEditMode = false, string imagePath = "")
         {
             if (isEditMode)
             {
@@ -136,7 +136,7 @@ namespace RealEstateApp.Controllers
             }
 
             return $"{basePath}/{fileName}";
-        }*/
+        }
     }
 }
 
