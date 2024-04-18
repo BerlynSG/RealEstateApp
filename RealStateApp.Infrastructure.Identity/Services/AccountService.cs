@@ -56,6 +56,12 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 response.Error = $"Credenciales invalidos para {request.Email}";
                 return response;
             }
+            if (!user.EmailConfirmed)
+            {
+                response.HasError = true;
+                response.Error = $"Cuenta no confirmada para {request.Email}";
+                return response;
+            }
             if (user.Rol == 4)
             {
                 response.HasError = true;
