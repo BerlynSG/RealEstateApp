@@ -36,6 +36,7 @@ namespace RealEstateApp.WebApi.Controllers
             Description = "Recibe los parametros necesarios para crear un usuario administrador"
         )]
         [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RegisterAdminAsync(RegisterAdminsRequest request)
         {
             var origin = Request.Headers["origin"];
