@@ -1,4 +1,4 @@
-﻿@model RealEstateApp.Core.Application.ViewModels.Agente.AgenteViewModel;
+﻿@model RealEstateApp.Core.Application.ViewModels.Agente.DetallesAgenteViewModel;
 
 @{
     ViewData["Title"] = "Detalles del Agente";
@@ -9,22 +9,60 @@
         <h1>Detalles del Agente</h1>
         <div class="row">
             <div class="col-3">
-                <img src="@Model.Foto" class="img-fluid rounded-circle" alt="Foto del Agente">
+                <img src="@Model.Agente.Foto" class="img-fluid rounded-circle" alt="Foto del Agente">
             </div>
             <div class="col-9">
-                <h3>@Model.Nombre @Model.Apellidos</h3>
+                <h3>@Model.Agente.Nombre @Model.Agente.Apellidos</h3>
                 <p>
-                    <b>Número de Celular:</b> @Model.Celular<br>
-                    <b>Correo:</b> @Model.Correo
+                    <b>Número de Celular:</b> @Model.Agente.Celular<br>
+                    <b>Correo:</b> @Model.Agente.Correo
                 </p>
             </div>
         </div>
         <hr>
         <h2>Propiedades del Agente</h2>
-        @if (Model.Propiedades != null && Model.Propiedades.Any())
+        <div class="row mb-3">
+            <div class="col-12 col-lg-3 col-md-6 col-sm-12 offset-0 offset-lg-6 offset-md-2 offset-sm-0">
+                <form method="post" asp-controller="Agente" asp-action="Detalles">
+                    <div class="row">
+                        <div class="col-10 col-lg-8 pe-0">
+                            <input asp-for="Filtros.Codigo" class="form-control" />
+                            <input type="hidden" asp-for="Filtros.TipoPropiedad" />
+                            <input type="hidden" asp-for="Filtros.PrecioMinimo" />
+                            <input type="hidden" asp-for="Filtros.PrecioMaximo" />
+                            <input type="hidden" asp-for="Filtros.Habitaciones" />
+                            <input type="hidden" asp-for="Filtros.Baños" />
+                            <input type="hidden" asp-for="Filtros.TipoFiltroUsuario" />
+                            <input type="hidden" asp-for="Filtros.UsuarioId" />
+                            <input type="hidden" asp-for="Agente" />
+                            <input type="hidden" asp-for="Agente.Id" />
+                            <input type="hidden" asp-for="Agente.ProfileImage" />
+                            <input type="hidden" asp-for="Agente.Foto" />
+                            <input type="hidden" asp-for="Agente.Nombre" />
+                            <input type="hidden" asp-for="Agente.Apellidos" />
+                            <input type="hidden" asp-for="Agente.Celular" />
+                            <input type="hidden" asp-for="Agente.Correo" />
+                        </div>
+                        <div class="col-2 col-lg-4 col-sm-2 ps-0 btn-group">
+                            <button type="submit" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                </svg>
+                            </button>
+                            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#filtroModal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @if (Model.Agente.Propiedades != null && Model.Agente.Propiedades.Any())
         {
             <div class="row">
-                @foreach (var item in Model.Propiedades)
+                @foreach (var item in Model.Agente.Propiedades)
                 {
                     <div class="col-lg-3 col-md-4 col-sm-12 mb-4">
                         <div class="card shadow-sm">
@@ -47,7 +85,10 @@
                             </div>
                             <a asp-controller="Propiedad" asp-action="Detalles" asp-route-codigo="@item.Codigo" class="item-propiedad">
                                 <div class="card-body p-0">
-                                    <img class="img-fluid m-0" src="@item.Imagenes[0]" />
+                                    @if (item.Imagenes != null && item.Imagenes.Count > 0)
+                                    {
+                                        <img class="img-fluid m-0" src="@item.Imagenes[0]" />
+                                    }
                                     <div class="p-3 py-2">
                                         <h4> <b> @item.TipoPropiedad.Nombre </b></h4>
                                         <p class="m-0">
@@ -102,5 +143,67 @@
         {
             <p>No hay propiedades registradas para este agente.</p>
         }
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="filtroModal" tabindex="-1" aria-labelledby="filtroModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-controller="Agente" asp-action="Detalles">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="filtroModalLabel">Filtro de búsqueda</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" asp-for="Filtros.Codigo" />
+                    <div class="mb-3">
+                        <label asp-for="Filtros.TipoPropiedad" class="form-label">Tipo de propiedad: </label>
+                        <select asp-for="Filtros.TipoPropiedad" class="form-control">
+                            <option value="0">Ninguna</option>
+                            @foreach (var tp in Model.TiposPropiedad)
+                            {
+                                <option value="@tp.Id">@tp.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3 row">
+                        <label asp-for="Filtros.PrecioMinimo" class="form-label">Rango de precio: </label>
+                        <div class="col-6">
+                            <label asp-for="Filtros.PrecioMinimo" class="form-label">Mínimo: </label>
+                            <input asp-for="Filtros.PrecioMinimo" class="form-control" />
+                        </div>
+                        <div class="col-6">
+                            <label asp-for="Filtros.PrecioMaximo" class="form-label">Máximo: </label>
+                            <input asp-for="Filtros.PrecioMaximo" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label asp-for="Filtros.Habitaciones" class="form-label">Cantidad: </label>
+                        <div class="col-6">
+                            <label asp-for="Filtros.Habitaciones" class="form-label">Habitaciones: </label>
+                            <input asp-for="Filtros.Habitaciones" class="form-control" />
+                        </div>
+                        <div class="col-6">
+                            <label asp-for="Filtros.Baños" class="form-label">Baños: </label>
+                            <input asp-for="Filtros.Baños" class="form-control" />
+                        </div>
+                        <input type="hidden" asp-for="Filtros.TipoFiltroUsuario" />
+                        <input type="hidden" asp-for="Filtros.UsuarioId" />
+                        <input type="hidden" asp-for="Agente.Id" />
+                        <input type="hidden" asp-for="Agente.ProfileImage" />
+                        <input type="hidden" asp-for="Agente.Foto" />
+                        <input type="hidden" asp-for="Agente.Nombre" />
+                        <input type="hidden" asp-for="Agente.Apellidos" />
+                        <input type="hidden" asp-for="Agente.Celular" />
+                        <input type="hidden" asp-for="Agente.Correo" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Aplicar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

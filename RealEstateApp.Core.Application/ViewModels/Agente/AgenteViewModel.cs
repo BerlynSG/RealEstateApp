@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
+using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 
 namespace RealEstateApp.Core.Application.ViewModels.Agente
 {
@@ -13,5 +14,8 @@ namespace RealEstateApp.Core.Application.ViewModels.Agente
         public List<PropiedadViewModel> Propiedades { get; set; }
         public string Correo { get; set; }
         public string Celular { get; set; }
+
+        //public FiltroPropiedadViewModel Filtros { get; set; }
+        //public List<TipoPropiedadViewModel> TiposPropiedad { get; set; }
     }
 }

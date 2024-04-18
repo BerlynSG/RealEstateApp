@@ -8,6 +8,7 @@ using RealEstateApp.Core.Application.ViewModels.TipoVenta;
 using RealEstateApp.Core.Application.ViewModels.User;
 using System.Security.Claims;
 using System.Linq;
+using RealEstateApp.Core.Application.Enums;
 
 namespace RealEstateApp.Controllers
 {
@@ -15,6 +16,9 @@ namespace RealEstateApp.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IPropiedadService _propiedadService;
+        private readonly ITipoPropiedadService _tipoPropiedadService;
+
         private List<TipoPropiedadViewModel> tiposPropiedad = new()
         {
             new(), new(){ Nombre = "Apartamento" }, new(){ Nombre = "Casa" }, new(){ Nombre = "Terreno" }
@@ -25,11 +29,13 @@ namespace RealEstateApp.Controllers
         };
         private static List<AgenteViewModel> _agentes;
 
-        public AgenteController(IUserService userService, IMapper mapper)
+        public AgenteController(IUserService userService, IMapper mapper, IPropiedadService propiedadService, ITipoPropiedadService tipoPropiedadService)
         {
             _mapper = mapper;
             _userService = userService;
-            _agentes = new List<AgenteViewModel>
+            _propiedadService = propiedadService;
+            _tipoPropiedadService = tipoPropiedadService;
+            /*_agentes = new List<AgenteViewModel>
             {
                 new AgenteViewModel { Id = "1", Nombre = "Juan", Apellidos = "Perez", Foto = "/img/Agentes/Agente.jpeg", Propiedades = new List<PropiedadViewModel>
                     {
@@ -48,25 +54,29 @@ namespace RealEstateApp.Controllers
                         new PropiedadViewModel { Codigo = "005", TipoPropiedad = tiposPropiedad[3], TipoVenta = tiposVenta[2], Valor = 50000, Tamaño = 500, Descripcion = "Terreno en urbanización cerrada", Imagenes = new List<string> { "/img/Propiedades/Apartamento.jpg" } }
                     }
                 }
-            };
+            };*/
         }
 
-        public IActionResult Index(string searchTerm)
+        public async Task<IActionResult> Index(string searchTerm)
         {
-            List<AgenteViewModel> agentes = _agentes;
+            var users = await _userService.GetAllUsers();
+            users = users.Where(u => u.Roles.Contains(Roles.Agente.ToString())).ToList();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                agentes = agentes
-                    .Where(a => a.Nombre.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase) || a.Apellidos.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase))
-                    .ToList();
+                users = users
+                    .Where(a => a.FirstName.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase)
+                    || a.LastName.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase)).ToList();
             }
+
+            List<AgenteViewModel> agentes = _mapper.Map<List<AgenteViewModel>>(users);
 
             agentes = agentes.OrderBy(a => a.Nombre).ToList();
 
             return View(new ListaAgenteViewModel { Agentes = agentes, SearchTerm = searchTerm });
         }
-        public async Task<IActionResult> Indexx(string searchTerm)
+
+        /*public async Task<IActionResult> Indexx(string searchTerm)
         {
             // Obtén todos los usuarios del servicio _userService.
             var users = await _userService.GetAllUsers();
@@ -86,22 +96,44 @@ namespace RealEstateApp.Controllers
 
             // Devuelve la vista correspondiente.
             return View();
-        }
+        }*/
 
-        public IActionResult Detalles(string? codigo)
+        public async Task<IActionResult> Detalles(string? agenteId)
         {
-            if (codigo == null || codigo == "")
+            if (agenteId == null || agenteId == "")
             {
                 return NotFound();
             }
+            var agente = new DetallesAgenteViewModel();
+            agente.Agente = _mapper.Map<AgenteViewModel>(await _userService.GetUserById(agenteId));
+            agente.Filtros = new FiltroPropiedadViewModel()
+            {
+                TipoFiltroUsuario = 2,
+                UsuarioId = agenteId
+            };
+            agente.Agente.Propiedades = await _propiedadService.GetAllFilteredViewModel(agente.Filtros);
+            agente.TiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
 
-            var agente = _agentes.FirstOrDefault(a => a.Id == codigo);
             if (agente == null)
             {
                 return NotFound();
             }
 
             return View(agente);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Detalles(DetallesAgenteViewModel vm)
+        {
+            if (vm != null && vm.Agente != null)
+            {
+                vm.Filtros.TipoFiltroUsuario = 2;
+                vm.Agente.Propiedades = await _propiedadService.GetAllFilteredViewModel(vm.Filtros);
+                vm.TiposPropiedad = await _tipoPropiedadService.GetAllViewModel();
+
+                return View(vm);
+            }
+            return RedirectToRoute(new { controller = "Agente", action = "Index" });
         }
 
         public IActionResult Propiedades(string? codigoAgente)
@@ -119,6 +151,7 @@ namespace RealEstateApp.Controllers
 
             return View(agente.Propiedades);
         }
+
         public async Task<IActionResult> MiPerfil()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
