@@ -12,9 +12,9 @@ namespace RealEstateApp.Infrastructure.Identity.Seeds
             {
                 UserName = "Agente",
                 Email = "agenteuser@gmail.com",
-                ImagePath = "",
-                FirstName = "Age",
-                LastName = "Nte",
+                ImagePath = "/img/Agentes/Agente.jpeg",
+                FirstName = "Agente",
+                LastName = "Default",
                 PhoneNumber = "8090001111",
                 Cedula = "",
                 EmailConfirmed = true,

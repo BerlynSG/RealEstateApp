@@ -89,7 +89,8 @@
                         <input type="hidden" asp-for="EmailConfirmed" value="true" />
                         <input type="hidden" asp-for="Rol" value="@(User != null && User.Rol == 3 ? 3 : 4)" />
 
-                        <button type="submit" class="btn btn-primary">@if (editMode)
+                        <button type="submit" class="btn btn-primary float-end">
+                            @if (editMode)
                             {
                                 <text>Actualizar</text>
                             }
@@ -97,7 +98,7 @@
                             {
                                 <text>Registrar</text>
                             }</button>
-                        <a asp-controller="Admins" asp-action="Index" class="btn btn-warning">Volver atrás</a>
+                        <a asp-controller="Admins" asp-action="Index" class="btn btn-warning float-end">Volver atrás</a>
 
                     </form>
                 </div>

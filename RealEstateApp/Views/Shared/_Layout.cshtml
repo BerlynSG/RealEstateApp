@@ -13,8 +13,8 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color:#D8EFFF;">
+            <div class="container-fluid" >
                         
                 @if (!User.IsInRole(Roles.Administrador.ToString()))
                 {
@@ -69,19 +69,19 @@
                                     <a class="nav-link text-dark" asp-controller="Admins" asp-action="Agentes">Listado de Agentes</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="Index">Mantenimiento de Administradores</a>
+                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="Index">Mant. de Administradores</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="DesarrolladorIndex">Mantenimiento de Desarolladores</a>
+                                    <a class="nav-link text-dark" asp-controller="Admins" asp-action="DesarrolladorIndex">Mant. de Desarolladores</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="TipoPropiedad" asp-action="Index">Mantenimiento de Tipos de Propiedades</a>
+                                    <a class="nav-link text-dark" asp-controller="TipoPropiedad" asp-action="Index">Mant. de Tipos de Propiedades</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="TipoVenta" asp-action="Index">Mantenimiento de Tipos de Ventas</a>
+                                    <a class="nav-link text-dark" asp-controller="TipoVenta" asp-action="Index">Mant. de Tipos de Ventas</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Mejora" asp-action="Index">Mantenimiento de Mejoras</a>
+                                    <a class="nav-link text-dark" asp-controller="Mejora" asp-action="Index">Mant. de Mejoras</a>
                                 </li>
                             }
                             <li class="nav-item align-content-end">

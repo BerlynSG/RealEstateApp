@@ -53,7 +53,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             if (user.Rol==4)
             {
                 response.HasError = true;
-                response.Error = $"No tiene permiso para ingresar a la aplicación. {request.Email}";
+                response.Error = $"Los desarrolladores no tienen permiso para ingresar a la aplicación.";
                 return response;
             }
 
@@ -61,6 +61,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
             response.Email = user.Email;
             response.UserName = user.UserName;
             response.Rol = user.Rol;
+
 
             var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
 
@@ -300,7 +301,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 await imageFile.CopyToAsync(fileStream);
             }
 
-            return Path.Combine("img", "Agentes", uniqueFileName).Replace("\\", "/");
+            return Path.Combine("/img", "Agentes", uniqueFileName).Replace("\\", "/");
         }
 
         public async Task<string> ConfirmAccountAsync(string userId, string token)
@@ -402,7 +403,7 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                 response.FirstName = user.FirstName;
                 response.LastName = user.LastName;
                 response.UserName = user.UserName;
-                response.PhoneNumber = user.PhoneNumber;
+                response.Phone = user.PhoneNumber;
                 response.EmailConfirmed = user.EmailConfirmed;
                 response.ImagePath = user.ImagePath;
                 
@@ -495,7 +496,10 @@ namespace RealEstateApp.Infrastructure.Identity.Services
                     LastName = user.LastName,
                     UserName = user.UserName,
                     Cedula = user.Cedula,
-                    Email = user.Email,                   
+                    Email = user.Email,
+                    Rol = user.Rol,
+                    ImagePath = user.ImagePath,
+                    Phone = user.PhoneNumber,
                     Roles = rol.ToList(),
                     EmailConfirmed = user.EmailConfirmed
                 };
@@ -505,7 +509,6 @@ namespace RealEstateApp.Infrastructure.Identity.Services
 
             return response;
         }
-    
 
         public async Task<int> GetActiveAgentsCount()
         {

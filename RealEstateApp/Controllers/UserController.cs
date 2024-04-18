@@ -37,8 +37,16 @@ namespace RealEstateApp.Controllers
             if (userVm != null && userVm.HasError != true)
             {
                 HttpContext.Session.Set<AuthenticationResponse>("user", userVm);
-                return RedirectToRoute(new { controller = "Home", action = "Index" });
-            }   
+                if (userVm.Rol == 3)
+                {
+                    return RedirectToRoute(new { controller = "Admins", action = "Home" });
+                }
+                else
+                {
+                    return RedirectToRoute(new { controller = "Propiedad", action = "Index" });
+                }              
+                
+            }                
             else
             {
                 vm.HasError = userVm.HasError;

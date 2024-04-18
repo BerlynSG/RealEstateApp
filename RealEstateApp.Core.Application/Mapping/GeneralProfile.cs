@@ -76,7 +76,7 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(dest => dest.Password, opt => opt.Ignore())
                 .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore())
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
                 .ForMember(dest => dest.Rol, opt => opt.MapFrom(src => src.Rol))
                 .ForMember(dest => dest.ProfileImage, opt => opt.Ignore())
                 .ForMember(dest => dest.ImagePath, opt => opt.MapFrom(src => src.ImagePath))
@@ -88,7 +88,7 @@ namespace RealEstateApp.Core.Application.Mapping
                 .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.Apellidos, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.Email))
-                .ForMember(dest => dest.Celular, opt => opt.MapFrom(src => src.PhoneNumber))
+                .ForMember(dest => dest.Celular, opt => opt.MapFrom(src => src.Phone))
                 .ForMember(dest => dest.ProfileImage, opt => opt.Ignore())
                 .ForMember(dest => dest.Foto, opt => opt.MapFrom(src => src.ImagePath));
 

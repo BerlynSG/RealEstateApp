@@ -5,14 +5,15 @@ using RealEstateApp.Core.Application.ViewModels.Agente;
 using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoPropiedad;
 using RealEstateApp.Core.Application.ViewModels.TipoVenta;
-using RealEstateApp.Core.Application.ViewModels.User;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Linq;
 
 namespace RealEstateApp.Controllers
 {
+    
     public class AgenteController : Controller
-    {
+    {        
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private List<TipoPropiedadViewModel> tiposPropiedad = new()
@@ -51,7 +52,7 @@ namespace RealEstateApp.Controllers
             };
         }
 
-        public IActionResult Index(string searchTerm)
+        public IActionResult Indexx(string searchTerm)
         {
             List<AgenteViewModel> agentes = _agentes;
 
@@ -66,27 +67,24 @@ namespace RealEstateApp.Controllers
 
             return View(new ListaAgenteViewModel { Agentes = agentes, SearchTerm = searchTerm });
         }
-        public async Task<IActionResult> Indexx(string searchTerm)
+        public async Task<IActionResult> Index(string searchTerm)
         {
             // Obtén todos los usuarios del servicio _userService.
             var users = await _userService.GetAllUsers();
 
-            // Aplica el filtrado si se proporciona un término de búsqueda.
+            // Filtrar por searchTerm si existe
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                // Filtra los usuarios por nombre o apellidos que contengan el término de búsqueda, sin importar mayúsculas/minúsculas.
-                users = users.Where(a =>
-                    a.FirstName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    a.LastName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
+                users = users.Where(u =>
+                    u.FirstName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    u.LastName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                ).ToList();
             }
 
-            // Pasa la lista filtrada (o sin filtrar si no hay término de búsqueda) a la vista usando ViewBag.
-            ViewBag.Users = users;
-
-            // Devuelve la vista correspondiente.
-            return View();
+            // Devuelve la vista correspondiente con la lista filtrada y el término de búsqueda
+            return View(users);
         }
+
 
         public IActionResult Detalles(string? codigo)
         {
@@ -119,6 +117,8 @@ namespace RealEstateApp.Controllers
 
             return View(agente.Propiedades);
         }
+
+        [Authorize(Roles = "Agente")]
         public async Task<IActionResult> MiPerfil()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -134,6 +134,7 @@ namespace RealEstateApp.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "Agente")]
         [HttpPost]
         public async Task<IActionResult> MiPerfil(AgenteViewModel vm)
         {
@@ -148,6 +149,5 @@ namespace RealEstateApp.Controllers
 
             return RedirectToAction("Index", "Agente");
         }
-
     }
 }

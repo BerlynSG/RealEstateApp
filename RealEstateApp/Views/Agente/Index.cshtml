@@ -1,43 +1,51 @@
-﻿@using RealEstateApp.Core.Application.ViewModels.Agente;
-@model ListaAgenteViewModel
-@{
-    ViewData["Title"] = "Agentes";
-}
+﻿@using RealEstateApp.Core.Application.ViewModels.User
+@using Microsoft.AspNetCore.Http
+@using RealEstateApp.Core.Application.Dtos.Account
+@using RealEstateApp.Core.Application.Helpers;
+@using RealEstateApp.Core.Application.Enums
+@model List<AuthenticationResponse>
 
 <div class="container-fluid">
     <h1>Listado de Agentes</h1>
+
     <div class="row mb-3">
         <div class="col-6">
             <form method="get" asp-controller="Agente" asp-action="Index" class="d-flex">
-                <input type="text" class="form-control me-2" placeholder="Buscar por nombre" name="searchTerm" value="@Model.SearchTerm">
+                <input type="text" class="form-control me-2" placeholder="Buscar por nombre o apellido" name="searchTerm" value="@ViewContext.HttpContext.Request.Query["searchTerm"]">
                 <button class="btn btn-primary" type="submit">Buscar</button>
             </form>
-
         </div>
     </div>
+
     <div class="row">
-        @if (Model == null || Model.Agentes.Count == 0)
+        @if (Model.Count == 0)
         {
-            <h2>No hay agentes registrados</h2>
+            <div class="col-12">
+                <h4>No se ha encontrado ningún agente.</h4>
+            </div>
         }
         else
         {
-            @foreach (var item in Model.Agentes.OrderBy(a => a.Nombre))
+            @foreach (var user in Model)
             {
-                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                    <div class="card shadow-sm">
-                        <a asp-controller="Agente" asp-action="Detalles" asp-route-id="@item.Id" class="item-propiedad">
-                            <div class="card-body row">
-                                <div class="col-6">
-                                    <img class="img-fluid rounded-circle m-0" src="@item.Foto" />
+                @if (user.Roles[0] == Roles.Agente.ToString())
+                {
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <div class="card shadow-sm">
+                            <a asp-controller="Agente" asp-action="Detalles" asp-route-id="@user.Id" class="item-propiedad">
+                                <div class="card-body row align-items-center">
+                                    <!-- Alineación vertical central -->
+                                    <div class="col-6">
+                                        <img class="img-fluid rounded-circle m-0" src="@user.ImagePath" style="width: 200px; height: 170px;" />
+                                    </div>
+                                    <div class="col-6">
+                                        <h4 class="text-center"><b>@user.FirstName @user.LastName</b></h4> <!-- Centrado del texto -->
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <h4> <b> @item.Nombre @item.Apellidos </b></h4>
-                                </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
-                </div>
+                }
             }
         }
     </div>

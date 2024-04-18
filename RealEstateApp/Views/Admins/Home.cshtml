@@ -2,76 +2,80 @@
     ViewData["Title"] = "Dashboard de Administrador";
 }
 
-<div class="container mt-5">
-    <h1 class="mb-4">Dashboard de Administrador</h1>
+<div class="row">
+    <div class=" col-md-10 mx-auto">
+        <div class="container pt-5 p-5 bg-dark rounded-3">
+            <h1 class="mb-4 text-white">Dashboard de Administrador</h1>
 
-    <div class="row">
-        <!-- Tarjeta de Propiedades Registradas -->
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Propiedades Registradas</h5>
-                    <h1 class="card-text">@ViewBag.TotalPropertiesCount</h1>
+            <div class="row">
+                <!-- Tarjeta de Propiedades Registradas -->
+                <div class="col-md-4 mb-4">
+                    <div class="card text-white" style="background-color:#ff6347;">
+                        <div class="card-body">
+                            <h5 class="card-title">Propiedades Registradas</h5>
+                            <h1 class="card-text">@ViewBag.TotalPropertiesCount</h1>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Tarjeta de Agentes Activos -->
-        <div class="col-md-4 mb-4">
-            <div class="card bg-success text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Agentes Activos</h5>
-                    <h1 class="card-text">@ViewBag.ActiveAgentsCount</h1>
+                <!-- Tarjeta de Agentes Activos -->
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Agentes Activos</h5>
+                            <h1 class="card-text">@ViewBag.ActiveAgentsCount</h1>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Tarjeta de Agentes Inactivos -->
-        <div class="col-md-4 mb-4">
-            <div class="card bg-danger text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Agentes Inactivos</h5>
-                    <h1 class="card-text">@ViewBag.InactiveAgentsCount</h1>
+                <!-- Tarjeta de Agentes Inactivos -->
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Agentes Inactivos</h5>
+                            <h1 class="card-text">@ViewBag.InactiveAgentsCount</h1>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Tarjeta de Clientes Activos -->
-        <div class="col-md-4 mb-4">
-            <div class="card bg-info text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Clientes Activos</h5>
-                    <h1 class="card-text">@ViewBag.ActiveClientsCount</h1>
+                <!-- Tarjeta de Clientes Activos -->
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Clientes Activos</h5>
+                            <h1 class="card-text">@ViewBag.ActiveClientsCount</h1>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Tarjeta de Clientes Inactivos -->
-        <div class="col-md-4 mb-4">
-            <div class="card bg-secondary text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Clientes Inactivos</h5>
-                    <h1 class="card-text">@ViewBag.InactiveClientsCount</h1>
+                <!-- Tarjeta de Clientes Inactivos -->
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-secondary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Clientes Inactivos</h5>
+                            <h1 class="card-text">@ViewBag.InactiveClientsCount</h1>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Tarjeta de Desarrolladores Activos -->
-        <div class="col-md-4 mb-4">
-            <div class="card bg-warning text-dark">
-                <div class="card-body">
-                    <h5 class="card-title">Desarrolladores Activos</h5>
-                    <h1 class="card-text">@ViewBag.ActiveDevelopersCount</h1>
+                <!-- Tarjeta de Desarrolladores Activos -->
+                <div class="col-md-4 mb-4">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Desarrolladores Activos</h5>
+                            <h1 class="card-text">@ViewBag.ActiveDevelopersCount</h1>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Tarjeta de Desarrolladores Inactivos -->
-        <div class="col-md-4 mb-4">
-            <div class="card bg-dark text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Desarrolladores Inactivos</h5>
-                    <h1 class="card-text">@ViewBag.InactiveDevelopersCount</h1>
+                <!-- Tarjeta de Desarrolladores Inactivos -->
+                <div class="col-md-4 mb-4">
+                    <div class="card text-white" style="background-color:#6100FF;">
+                        <div class="card-body">
+                            <h5 class="card-title">Desarrolladores Inactivos</h5>
+                            <h1 class="card-text">@ViewBag.InactiveDevelopersCount</h1>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,17 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateApp.Core.Application.Dtos.Account;
 using RealEstateApp.Core.Application.Enums;
 using RealEstateApp.Core.Application.Interfaces.Services;
-using RealEstateApp.Core.Application.Services;
-using RealEstateApp.Core.Application.ViewModels.Propiedad;
 using RealEstateApp.Core.Application.ViewModels.User;
-using RealEstateApp.Infrastructure.Identity.Services;
-using RealEstateApp.Middlewares;
+
 
 namespace RealEstateApp.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class AdminsController : Controller
     {
         private readonly IUserService _userService;
